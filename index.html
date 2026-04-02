@@ -93,12 +93,32 @@ body{font-family:'Pretendard','Inter',system-ui,sans-serif;background:#f8fafc;co
 <div class="hdr"><h1>Spavy VOC 통합 관리</h1><span class="sub" id="subtitle"></span></div>
 <div class="toolbar">
   <button class="btn btn-pub" onclick="publish()">🚀 발행 (data.json)</button>
+  <button class="btn" style="background:#7c3aed;color:white;border-color:#7c3aed" onclick="showAddForm()">➕ 새 항목 추가</button>
   <button class="btn btn-xl" onclick="toExcel()">📥 Excel</button>
   <button class="btn btn-pdf" onclick="toPDF()">📄 PDF</button>
   <button class="btn" onclick="resetData()">🔄 초기화</button>
   <span style="font-size:10px;color:#9ca3af;margin-left:auto" id="lastSave"></span>
 </div>
 <div class="dirty-bar" id="dirty">⚠️ 수정사항이 있습니다. <b>발행</b>을 눌러 data.json을 다운로드하고 git push 하세요.</div>
+<div id="addModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.4);z-index:999;align-items:center;justify-content:center">
+<div style="background:white;border-radius:10px;padding:20px;max-width:520px;width:90%;max-height:80vh;overflow-y:auto">
+  <h3 style="font-size:15px;margin-bottom:12px">➕ 새 항목 추가</h3>
+  <div style="display:grid;grid-template-columns:80px 1fr;gap:6px 10px;font-size:12px;align-items:center">
+    <label>ID</label><input id="nId" placeholder="예: SEA-30, MC-20" style="padding:5px 8px;border:1px solid #d1d5db;border-radius:4px;font-size:12px">
+    <label>고객사</label><select id="nC" style="padding:5px 8px;border:1px solid #d1d5db;border-radius:4px;font-size:12px"><option>E&A</option><option>물산</option><option>전자</option><option>공통</option></select>
+    <label>카테고리</label><input id="nCat" placeholder="예: Space, API, 중요" style="padding:5px 8px;border:1px solid #d1d5db;border-radius:4px;font-size:12px">
+    <label>제목</label><input id="nT" placeholder="기능/이슈 제목" style="padding:5px 8px;border:1px solid #d1d5db;border-radius:4px;font-size:12px">
+    <label>설명</label><input id="nD" placeholder="상세 설명" style="padding:5px 8px;border:1px solid #d1d5db;border-radius:4px;font-size:12px">
+    <label>상태</label><select id="nS" style="padding:5px 8px;border:1px solid #d1d5db;border-radius:4px;font-size:12px"><option>요청</option><option>대기</option><option>진행중</option><option>검토중</option><option>기획</option><option>계획</option><option>완료</option></select>
+    <label>일정</label><input id="nDue" placeholder="예: Q2, 4월, 미정" style="padding:5px 8px;border:1px solid #d1d5db;border-radius:4px;font-size:12px">
+    <label>담당자</label><input id="nA" placeholder="담당자명" style="padding:5px 8px;border:1px solid #d1d5db;border-radius:4px;font-size:12px">
+    <label>비고</label><input id="nN" placeholder="비고" style="padding:5px 8px;border:1px solid #d1d5db;border-radius:4px;font-size:12px">
+  </div>
+  <div style="display:flex;gap:8px;margin-top:14px;justify-content:flex-end">
+    <button class="btn" onclick="closeAddForm()">취소</button>
+    <button class="btn" style="background:#7c3aed;color:white;border-color:#7c3aed" onclick="addItem()">추가</button>
+  </div>
+</div></div>
 <div class="tabs" id="tabs"></div>
 <div id="content"></div>
 </div>
@@ -227,6 +247,24 @@ function updateItem(id,field,val){
   if(item){item[field]=val;markDirty();render();}
 }
 
+function showAddForm(){$("#addModal").style.display="flex"}
+function closeAddForm(){$("#addModal").style.display="none"}
+function addItem(){
+  const id=$("#nId").value.trim(),c=$("#nC").value,cat=$("#nCat").value.trim(),
+    t=$("#nT").value.trim(),d=$("#nD").value.trim(),s=$("#nS").value,
+    due=$("#nDue").value.trim()||"미정",a=$("#nA").value.trim(),n=$("#nN").value.trim();
+  if(!id||!t){alert("ID와 제목은 필수입니다.");return}
+  if(D.find(x=>x.id===id)){alert("이미 존재하는 ID입니다.");return}
+  D.push({id,c,cat:cat||"기타",t,d,s,due,m:0,a,n});
+  markDirty();closeAddForm();
+  ["nId","nCat","nT","nD","nDue","nA","nN"].forEach(x=>$("#"+x).value="");
+  render();
+}
+function deleteItem(id){
+  if(!confirm(id+" 항목을 삭제하시겠습니까?"))return;
+  D=D.filter(x=>x.id!==id);expanded=null;markDirty();render();
+}
+
 // Excel export
 function toExcel(){
   let csv="\uFEFFID,고객사,카테고리,제목,설명,상태,일정,담당자,비고\n";
@@ -330,6 +368,7 @@ function renderList(el){
           <label>담당</label><input data-id="${d.id}" data-f="a" value="${esc(d.a)}" placeholder="담당자">
           <label>일정</label><input data-id="${d.id}" data-f="due" value="${esc(d.due)}" placeholder="일정">
           <label>비고</label><input data-id="${d.id}" data-f="n" value="${esc(d.n)}" placeholder="비고" style="width:200px">
+          <button onclick="deleteItem('${d.id}')" style="padding:3px 10px;border-radius:4px;border:1px solid #fca5a5;background:#fef2f2;color:#dc2626;font-size:10px;font-weight:600;cursor:pointer;margin-left:auto">🗑 삭제</button>
         </div>
       </div></div>`;
   });
