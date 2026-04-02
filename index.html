@@ -322,6 +322,10 @@ function renderList(el){
       <div class="card-b ${o?"open":""}">
         <b>설명:</b> ${esc(d.d)}${d.n?`<br><b>비고:</b> ${esc(d.n)}`:""}<br><b>일정:</b> ${d.due} | <b>담당:</b> ${d.a||"미정"}
         <div class="edit-row">
+          <label>제목</label><input data-id="${d.id}" data-f="t" value="${esc(d.t)}" placeholder="제목" style="width:280px">
+          <label>설명</label><input data-id="${d.id}" data-f="d" value="${esc(d.d)}" placeholder="설명" style="width:280px">
+        </div>
+        <div class="edit-row">
           <label>상태</label><select data-id="${d.id}" data-f="s">${STATS.map(st=>`<option ${d.s===st?"selected":""}>${st}</option>`).join("")}</select>
           <label>담당</label><input data-id="${d.id}" data-f="a" value="${esc(d.a)}" placeholder="담당자">
           <label>일정</label><input data-id="${d.id}" data-f="due" value="${esc(d.due)}" placeholder="일정">
