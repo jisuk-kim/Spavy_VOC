@@ -6,9 +6,19 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Pretendard','Inter',system-ui,sans-serif;background:#f8fafc;color:#1f2937;font-size:13px}
-.wrap{max-width:1260px;margin:0 auto;padding:14px 18px}
-.hdr h1{font-size:20px;font-weight:700;color:#111827}.hdr p{font-size:12px;color:#6b7280;margin-top:2px}
-.tabs{display:flex;gap:2px;border-bottom:2px solid #e5e7eb;margin:14px 0}
+.wrap{max-width:1280px;margin:0 auto;padding:14px 18px}
+.hdr{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.hdr h1{font-size:20px;font-weight:700;color:#111827}
+.hdr .sub{font-size:12px;color:#6b7280}
+.toolbar{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0;align-items:center}
+.btn{padding:6px 14px;border-radius:6px;border:1px solid #d1d5db;background:white;cursor:pointer;font-size:11px;font-weight:600;display:flex;align-items:center;gap:4px}
+.btn:hover{background:#f9fafb}
+.btn-pub{background:#dc2626;color:white;border-color:#dc2626}.btn-pub:hover{background:#b91c1c}
+.btn-xl{background:#047857;color:white;border-color:#047857}.btn-xl:hover{background:#065f46}
+.btn-pdf{background:#1d4ed8;color:white;border-color:#1d4ed8}.btn-pdf:hover{background:#1e3a8a}
+.dirty-bar{padding:6px 12px;background:#fef3c7;border:1px solid #fbbf24;border-radius:6px;font-size:11px;color:#92400e;margin-bottom:8px;display:none}
+.dirty-bar.show{display:block}
+.tabs{display:flex;gap:2px;border-bottom:2px solid #e5e7eb;margin-bottom:14px}
 .tabs button{padding:7px 14px;cursor:pointer;font-size:12px;font-weight:400;color:#6b7280;border:none;background:none;border-bottom:2px solid transparent;margin-bottom:-2px}
 .tabs button.on{font-weight:700;color:#2563eb;border-bottom-color:#2563eb}
 .fr{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;align-items:center}
@@ -17,7 +27,7 @@ body{font-family:'Pretendard','Inter',system-ui,sans-serif;background:#f8fafc;co
 .card{border:1px solid #e5e7eb;border-radius:7px;margin-bottom:5px;background:white;overflow:hidden}
 .card-h{padding:8px 12px;cursor:pointer;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .card-h:hover{background:#f9fafb}
-.card-b{padding:10px 12px;background:#f9fafb;font-size:11px;line-height:1.6;border-top:1px solid #e5e7eb;display:none}
+.card-b{padding:10px 12px;background:#f9fafb;font-size:11px;line-height:1.8;border-top:1px solid #e5e7eb;display:none}
 .card-b.open{display:block}
 .badge{display:inline-block;padding:1px 7px;border-radius:10px;font-size:10px;font-weight:600;white-space:nowrap}
 .ctag{display:inline-block;padding:1px 7px;border-radius:10px;font-size:10px;font-weight:600}
@@ -35,12 +45,18 @@ body{font-family:'Pretendard','Inter',system-ui,sans-serif;background:#f8fafc;co
 .st-상시{background:#f0fdf4;color:#15803d;border:1px solid #86efac}
 .st-확인중{background:#fefce8;color:#854d0e;border:1px solid #fde047}
 .cnt{font-size:11px;color:#9ca3af;margin-left:auto;white-space:nowrap}
-.id{font-size:10px;color:#9ca3af;font-weight:600;min-width:44px}
-.cat{font-size:11px;color:#6b7280;min-width:40px}
+.id-col{font-size:10px;color:#9ca3af;font-weight:600;min-width:44px}
+.cat-col{font-size:11px;color:#6b7280;min-width:40px}
 .ttl{font-size:12px;font-weight:500;flex:1}
-.due{font-size:10px;color:#6b7280;background:#f3f4f6;padding:1px 5px;border-radius:3px}
+.due-tag{font-size:10px;color:#6b7280;background:#f3f4f6;padding:1px 5px;border-radius:3px}
 .asgn{font-size:10px;color:#6b7280}
 .arrow{font-size:9px;color:#d1d5db}
+.edit-row{display:flex;gap:6px;align-items:center;margin-top:6px;flex-wrap:wrap}
+.edit-row label{font-size:10px;color:#6b7280;font-weight:600}
+.edit-row select,.edit-row input{padding:3px 6px;border:1px solid #d1d5db;border-radius:4px;font-size:11px}
+.edit-row input{width:120px}
+.edit-btn{padding:3px 10px;border-radius:4px;border:none;background:#2563eb;color:white;font-size:10px;font-weight:600;cursor:pointer}
+.edit-btn:hover{background:#1d4ed8}
 .sec{font-size:14px;font-weight:700;margin:16px 0 8px}
 .alert{padding:10px;border-radius:6px;margin-bottom:14px;font-size:12px}
 .alert-y{background:#fffbeb;border:1px solid #fbbf24}
@@ -60,48 +76,56 @@ body{font-family:'Pretendard','Inter',system-ui,sans-serif;background:#f8fafc;co
 .tl-hdr{display:flex;border-bottom:2px solid #e5e7eb;margin-bottom:8px}
 .tl-hdr div{flex:1;text-align:center;font-size:10px;color:#9ca3af;padding:4px 0}
 .tl-hdr .cur{font-weight:700;color:#2563eb;background:#eff6ff;border-radius:3px}
-.urgent{border-left:3px solid #ef4444}.warn{border-left:3px solid #f59e0b}.ws{border-left:3px solid #7c3aed}
+.urgent{border-left:3px solid #ef4444}.warn{border-left:3px solid #f59e0b}.ws-card{border-left:3px solid #7c3aed}
 .asgn-sec{margin-bottom:16px}
 .asgn-name{font-size:14px;font-weight:700}
 .asgn-cnt{font-size:11px;color:white;background:#6366f1;border-radius:10px;padding:1px 8px;font-weight:600}
-.asgn-bar{flex:1;height:6px;background:#f3f4f6;border-radius:3px;overflow:hidden;display:flex;gap:1px}
+.asgn-bar-wrap{flex:1;height:6px;background:#f3f4f6;border-radius:3px;overflow:hidden;display:flex;gap:1px}
 .asgn-row{display:flex;gap:6px;align-items:center;padding:4px 0;border-bottom:1px solid #f3f4f6;flex-wrap:wrap}
 .note-box{font-size:11px;line-height:2;padding:10px}
 .dup-box{font-size:12px;line-height:1.8;padding:10px;background:#f9fafb;border-radius:6px;border:1px solid #e5e7eb}
-.hidden{display:none}
-@media(max-width:768px){.left-col{width:160px}.tl-hdr div,.tl-cell{font-size:8px}}
+@media(max-width:768px){.left-col{width:160px}}
+@media print{.toolbar,.tabs,.fr,.dirty-bar,.edit-row,.edit-btn,.btn{display:none!important}.card-b{display:block!important}.wrap{padding:0}}
 </style>
 </head>
 <body>
 <div class="wrap">
-<div class="hdr"><h1>Spavy VOC 통합 관리 대시보드</h1><p id="subtitle"></p></div>
+<div class="hdr"><h1>Spavy VOC 통합 관리</h1><span class="sub" id="subtitle"></span></div>
+<div class="toolbar">
+  <button class="btn btn-pub" onclick="publish()">🚀 발행 (data.json)</button>
+  <button class="btn btn-xl" onclick="toExcel()">📥 Excel</button>
+  <button class="btn btn-pdf" onclick="toPDF()">📄 PDF</button>
+  <button class="btn" onclick="resetData()">🔄 초기화</button>
+  <span style="font-size:10px;color:#9ca3af;margin-left:auto" id="lastSave"></span>
+</div>
+<div class="dirty-bar" id="dirty">⚠️ 수정사항이 있습니다. <b>발행</b>을 눌러 data.json을 다운로드하고 git push 하세요.</div>
 <div class="tabs" id="tabs"></div>
 <div id="content"></div>
 </div>
 <script>
-const D=[
+const INIT_DATA=[
 {id:"SEA-15",c:"E&A",cat:"솔루션",t:"SPAVY Manual URL 공유",d:"사용자 상시 MANUAL LINK 접근",s:"대기",due:"Q1",m:3,a:"미정",n:"외부사이트 연결 확인"},
 {id:"SEA-1",c:"E&A",cat:"솔루션",t:"Project List 순서 변경",d:"Group, Name 순서 변경",s:"완료",due:"Q1",m:1,a:"",n:""},
-{id:"SEA-3",c:"E&A",cat:"솔루션",t:"모듈창 새창/기존Tab",d:"새창과 기존 Tab유지 모두 가능",s:"완료",due:"Q1",m:2,a:"",n:""},
-{id:"SEA-4",c:"E&A",cat:"솔루션",t:"Reset visibility 오류",d:"R키 시 다른 폴더 파일 로드 문제",s:"진행중",due:"Q1",m:3,a:"",n:""},
-{id:"SEA-5",c:"E&A",cat:"솔루션",t:"권한관리 자동선택",d:"상위권한 선택 시 하위 자동선택",s:"진행중",due:"Q1",m:3,a:"",n:""},
+{id:"SEA-3",c:"E&A",cat:"솔루션",t:"모듈창 새창/기존Tab",d:"새창과 기존 Tab유지",s:"완료",due:"Q1",m:2,a:"",n:""},
+{id:"SEA-4",c:"E&A",cat:"솔루션",t:"Reset visibility 오류",d:"R키 시 다른 폴더 파일 로드",s:"진행중",due:"Q1",m:3,a:"",n:""},
+{id:"SEA-5",c:"E&A",cat:"솔루션",t:"권한관리 자동선택",d:"상위권한 선택 시 하위 자동",s:"진행중",due:"Q1",m:3,a:"",n:""},
 {id:"SEA-10",c:"E&A",cat:"3D",t:"Search 다중조건",d:"Search set 외 다중조건",s:"진행중",due:"Q1",m:3,a:"",n:""},
-{id:"SEA-12",c:"E&A",cat:"데이터",t:"Tabular Data Manager",d:"Column setting 복사, excel 업로드",s:"진행중",due:"Q1",m:3,a:"",n:""},
+{id:"SEA-12",c:"E&A",cat:"데이터",t:"Tabular Data Manager",d:"Column setting 복사, excel",s:"진행중",due:"Q1",m:3,a:"",n:""},
 {id:"SEA-19",c:"E&A",cat:"PBI",t:"Fit World 기능",d:"view 내 fit world 추가",s:"진행중",due:"Q1",m:3,a:"나경",n:"현장 인터뷰"},
 {id:"SEA-7",c:"E&A",cat:"Space",t:"Space RVT Mass 인식",d:"Revit Room 인식",s:"진행중",due:"Q1",m:3,a:"유현재",n:"회신 필요"},
-{id:"SEA-8",c:"E&A",cat:"Clash",t:"Clash File Download",d:"",s:"완료",due:"Q1",m:1,a:"",n:""},
+{id:"SEA-8",c:"E&A",cat:"Clash",t:"Clash File Download",d:"파일 다운로드",s:"완료",due:"Q1",m:1,a:"",n:""},
 {id:"SEA-11",c:"E&A",cat:"Browser",t:"Property+ hovering",d:"보고싶은 속성만",s:"완료",due:"Q1",m:2,a:"",n:""},
 {id:"SEA-16",c:"E&A",cat:"Browser",t:"단축키 설명 show",d:"모서리 기본 기능 설명",s:"완료",due:"Q1",m:2,a:"",n:""},
 {id:"SEA-23",c:"E&A",cat:"데이터",t:"Composite Table 필드명",d:"필드명.Table명 변경",s:"완료",due:"Q1",m:2,a:"",n:""},
 {id:"SEA-2",c:"E&A",cat:"솔루션",t:"Project Name 콤보박스",d:"Group과 Name 모두 표기",s:"완료",due:"Q1",m:2,a:"",n:""},
-{id:"SEA-13",c:"E&A",cat:"Browser",t:"Grid On/Off 기능",d:"Spatial Planning Grid 활용",s:"진행중",due:"Q1",m:3,a:"",n:""},
+{id:"SEA-13",c:"E&A",cat:"Browser",t:"Grid On/Off 기능",d:"Spatial Planning Grid",s:"진행중",due:"Q1",m:3,a:"",n:""},
 {id:"RD-4",c:"E&A",cat:"Space",t:"Revit→Spavy Zoning",d:"PBS zone, Spatial Planning",s:"진행중",due:"2월",m:2,a:"유현재",n:"1단계 동기화"},
 {id:"RD-6",c:"E&A",cat:"PBI",t:"시각화 객체 VOC",d:"배경색/Grid/Space",s:"진행중",due:"2월",m:2,a:"유현재",n:"나경프로 인터뷰"},
 {id:"RD-7",c:"E&A",cat:"Space",t:"Multi Space",d:"Multi Space 기능 개선",s:"대기",due:"미정",m:0,a:"유현재",n:"E&A 추가 정의 필요"},
-{id:"RD-8",c:"공통",cat:"성능",t:"속도개선 Rendering/CRT",d:"CRT 반영, 안정성 확보",s:"진행중",due:"하반기",m:7,a:"유현재",n:"상반기 확보 후"},
-{id:"RD-9",c:"E&A",cat:"API",t:"REST/GET API (Vizeo)",d:"DB Link Table 포맷 협의",s:"대기",due:"3월",m:3,a:"김세헌",n:"JSON 포맷 대기"},
+{id:"RD-8",c:"공통",cat:"성능",t:"속도개선 Rendering/CRT",d:"CRT 반영, 안정성",s:"진행중",due:"하반기",m:7,a:"유현재",n:"상반기 확보 후"},
+{id:"RD-9",c:"E&A",cat:"API",t:"REST/GET API (Vizeo)",d:"DB Link Table 포맷 협의",s:"대기",due:"3월",m:3,a:"김세헌",n:"JSON 대기"},
 {id:"RD-10",c:"E&A",cat:"데이터",t:"Revit Sheet~Element ID",d:"배포 후 안내",s:"진행중",due:"2월",m:2,a:"김세헌",n:""},
-{id:"RD-11",c:"E&A",cat:"데이터",t:"Model Freezing PJT Export",d:"DB Copy Revision 생성",s:"진행중",due:"3월",m:3,a:"김세헌",n:"Space Export 논의"},
+{id:"RD-11",c:"E&A",cat:"데이터",t:"Model Freezing PJT Export",d:"DB Copy Revision",s:"진행중",due:"3월",m:3,a:"김세헌",n:"Space Export 논의"},
 {id:"RD-12",c:"E&A",cat:"Space",t:"Space 이슈 (Cutting/MECE)",d:"일괄 재실행, Rename",s:"진행중",due:"2월",m:2,a:"이종환",n:"평택 커버"},
 {id:"RD-13",c:"E&A",cat:"API",t:"Document 검색 API",d:"엘라스틱 API 조회",s:"진행중",due:"2~4월",m:4,a:"김세헌",n:"안정성 4월"},
 {id:"RD-14",c:"E&A",cat:"솔루션",t:"Quick Property",d:"Dynamic Property Pop-up",s:"완료",due:"2월",m:2,a:"김세헌",n:""},
@@ -110,22 +134,22 @@ const D=[
 {id:"RD-23",c:"공통",cat:"솔루션",t:"Color Coding Section",d:"컬러코드 기능",s:"대기",due:"4~5월",m:5,a:"",n:"담당자 미소통"},
 {id:"RD-24",c:"공통",cat:"CAD",t:"DWG 내보내기",d:"3D→2D 투영",s:"검토중",due:"미정",m:0,a:"윤프로",n:"투영 테스트"},
 {id:"RD-25",c:"E&A",cat:"운영",t:"Workspace 명칭/로고",d:"프로젝트 세팅 변경",s:"대기",due:"요청시",m:0,a:"한현우",n:""},
-{id:"RD-26",c:"공통",cat:"인프라",t:"Azure 보안 Issue",d:"Azure 전환 수시 대응",s:"상시",due:"상시",m:0,a:"한현우",n:""},
+{id:"RD-26",c:"공통",cat:"인프라",t:"Azure 보안 Issue",d:"Azure 전환 수시",s:"상시",due:"상시",m:0,a:"한현우",n:""},
 {id:"US-1",c:"물산",cat:"Sync",t:"Transform Set 일괄",d:"Acquisition Date 일괄",s:"요청",due:"미정",m:0,a:"김행운",n:""},
 {id:"US-4",c:"물산",cat:"Spatial",t:"Revit Position 일괄 변경",d:"Base Point, 폴더 전체 rvt",s:"요청",due:"미정",m:0,a:"김행운",n:""},
 {id:"US-7",c:"물산",cat:"360",t:"파노라마 스티칭 품질",d:"스티칭 품질 개선",s:"진행중",due:"Q2",m:4,a:"윤덕현",n:"3/31 회신"},
 {id:"US-18",c:"물산",cat:"Browser",t:"Unload 복구",d:"확인창 또는 Undo",s:"요청",due:"미정",m:0,a:"장나겸",n:""},
-{id:"US-21",c:"물산",cat:"Revit",t:"Revit 2025 지원",d:"지원 확인",s:"완료",due:"완료",m:3,a:"하남국",n:""},
+{id:"US-21",c:"물산",cat:"Revit",t:"Revit 2025 지원",d:"확인",s:"완료",due:"완료",m:3,a:"하남국",n:""},
 {id:"US-22",c:"물산",cat:"Revit",t:"Revit 2026 지원",d:"지원 계획",s:"진행중",due:"6월",m:6,a:"하남국",n:""},
-{id:"US-40",c:"물산",cat:"보안",t:"이름/이메일 암호화",d:"민감정보 암호화",s:"요청",due:"미정",m:0,a:"",n:""},
+{id:"US-40",c:"물산",cat:"보안",t:"이름/이메일 암호화",d:"민감정보",s:"요청",due:"미정",m:0,a:"",n:""},
 {id:"MC-1",c:"물산",cat:"중요",t:"장비배치 기능",d:"Browser 장비 이동/측정",s:"계획",due:"Q2-Q3",m:5,a:"김행운",n:"Q2 관절제외"},
-{id:"MC-3",c:"물산",cat:"중요",t:"Outbound API",d:"Spavy→외부 AI 파일 요청",s:"계획",due:"Q2",m:5,a:"여태기",n:""},
+{id:"MC-3",c:"물산",cat:"중요",t:"Outbound API",d:"Spavy→외부 파일 요청",s:"계획",due:"Q2",m:5,a:"여태기",n:""},
 {id:"MC-4",c:"물산",cat:"중요",t:"ACC 데이터 연동",d:"rvt, nwd 가져오기",s:"진행중",due:"Q2",m:4,a:"여태기",n:"붙이기 완료"},
-{id:"MC-5",c:"물산",cat:"중요",t:"360 이미지 UX",d:"Bubble 즉시변경, FOV",s:"진행중",due:"Q2",m:4,a:"윤덕현",n:"Z축 이번달"},
+{id:"MC-5",c:"물산",cat:"중요",t:"360 이미지 UX",d:"Bubble 즉시, FOV",s:"진행중",due:"Q2",m:4,a:"윤덕현",n:"Z축 이번달"},
 {id:"MC-6",c:"물산",cat:"중요",t:"3DGS 고도화",d:"가시화, LCC, Dock",s:"진행중",due:"상시",m:0,a:"김행운",n:""},
 {id:"MC-7",c:"물산",cat:"로드맵",t:"CRT 진행사항",d:"SDK API 내부 test",s:"진행중",due:"Q2",m:5,a:"김준우",n:""},
 {id:"MC-8",c:"물산",cat:"로드맵",t:"Spatial Planning 고도화",d:"PCD 층별 Segmentation",s:"진행중",due:"Q2-Q3",m:5,a:"염용주",n:""},
-{id:"MC-11",c:"물산",cat:"기능",t:"관리자 화면 스토리지",d:"잔여 용량, PJT별 사용량",s:"진행중",due:"Q2",m:4,a:"여태기",n:"바로 진행"},
+{id:"MC-11",c:"물산",cat:"기능",t:"관리자 화면 스토리지",d:"잔여 용량, PJT별",s:"진행중",due:"Q2",m:4,a:"여태기",n:"바로 진행"},
 {id:"MC-12",c:"물산",cat:"기능",t:"Grid 표시 기능",d:"층별 그리드 On/Off",s:"계획",due:"Q2",m:5,a:"염용주",n:""},
 {id:"MC-13",c:"물산",cat:"기능",t:"FPL 개편",d:"핸들 없애기, Crop",s:"진행중",due:"Q2",m:4,a:"김행운",n:"핸들 완료"},
 {id:"MC-14",c:"물산",cat:"작은이슈",t:"View Sync 원터치",d:"Tab 한번에 Sync",s:"진행중",due:"3월",m:3,a:"장나겸",n:""},
@@ -135,49 +159,124 @@ const D=[
 {id:"MC-18",c:"물산",cat:"작은이슈",t:"Spavy Dock 개선",d:"탭 통합, Unload",s:"진행중",due:"3~4월",m:4,a:"장나겸",n:""},
 {id:"WS-1",c:"공통",cat:"전략",t:"Spavy Property 분리",d:"Synced vs Added 탭 분리",s:"검토중",due:"4월",m:4,a:"",n:"워크샵 핵심"},
 {id:"WS-2",c:"공통",cat:"전략",t:"간섭 룰 엔진 기획",d:"디자인 리뷰 룰엔진",s:"기획",due:"4월~",m:4,a:"",n:"E&A 4/14 현장회의"},
-{id:"WS-3",c:"공통",cat:"전략",t:"마크업 저장/버블",d:"3D 마크업 저장, 버블 뷰 이동",s:"검토중",due:"미정",m:0,a:"",n:""},
-{id:"WS-4",c:"공통",cat:"전략",t:"동기화 날짜 속성",d:"GUID 부여 날짜 속성화",s:"검토중",due:"미정",m:0,a:"",n:""},
+{id:"WS-3",c:"공통",cat:"전략",t:"마크업 저장/버블",d:"3D 마크업, 버블 뷰 이동",s:"검토중",due:"미정",m:0,a:"",n:""},
+{id:"WS-4",c:"공통",cat:"전략",t:"동기화 날짜 속성",d:"GUID 부여 날짜",s:"검토중",due:"미정",m:0,a:"",n:""},
 {id:"WS-5",c:"E&A",cat:"Clash",t:"비유효간섭 룰 세팅",d:"간섭 기준 정의",s:"기획",due:"4월",m:4,a:"",n:"4/14 이후 제시"},
 {id:"WS-6",c:"E&A",cat:"Clash",t:"간섭 집계/대시보드",d:"공정별 집계 HTML",s:"기획",due:"미정",m:0,a:"",n:"D3 검토"},
-{id:"WS-7",c:"공통",cat:"CAD",t:"DWG 투영 테스트",d:"투영 라인 Spavy 내 확인",s:"검토중",due:"4월",m:4,a:"윤프로",n:"1~2주"},
+{id:"WS-7",c:"공통",cat:"CAD",t:"DWG 투영 테스트",d:"투영 라인 Spavy 내",s:"검토중",due:"4월",m:4,a:"윤프로",n:"1~2주"},
 {id:"WS-8",c:"E&A",cat:"운영",t:"프로젝트 세팅 고도화",d:"커스텀앱 자동생성, 로고",s:"검토중",due:"미정",m:0,a:"",n:""},
 {id:"WS-9",c:"E&A",cat:"Embed",t:"Revit Embed 플러그인",d:"Revit 내 Spavy 임베드",s:"검토중",due:"미정",m:0,a:"",n:"오토데스크 전략"},
-{id:"SE-1",c:"전자",cat:"형상",t:"연결된 배관 선택",d:"Connection 분석, 재귀 탐색",s:"계획",due:"미정",m:0,a:"",n:"0.5MM"},
+{id:"SE-1",c:"전자",cat:"형상",t:"연결된 배관 선택",d:"Connection 재귀 탐색",s:"계획",due:"미정",m:0,a:"",n:"0.5MM"},
 {id:"SE-2",c:"전자",cat:"형상",t:"설비 Connector 정보",d:"외부 데이터 매핑",s:"계획",due:"미정",m:0,a:"",n:""},
-{id:"SE-3",c:"전자",cat:"형상",t:"기둥 번호 Label",d:"속성 기반 Label On/Off",s:"계획",due:"미정",m:0,a:"",n:""},
-{id:"SE-4",c:"전자",cat:"형상",t:"객체 선택 고도화",d:"속성 기반 필터링",s:"계획",due:"미정",m:0,a:"",n:""},
+{id:"SE-3",c:"전자",cat:"형상",t:"기둥 번호 Label",d:"속성 기반 On/Off",s:"계획",due:"미정",m:0,a:"",n:""},
+{id:"SE-4",c:"전자",cat:"형상",t:"객체 선택 고도화",d:"속성 필터링",s:"계획",due:"미정",m:0,a:"",n:""},
 {id:"SE-5",c:"전자",cat:"형상",t:"Top View 설비 Tag",d:"태그 On/Off",s:"계획",due:"미정",m:0,a:"",n:""},
-{id:"SE-6",c:"전자",cat:"형상",t:"Dummy 객체 투명화",d:"RuleSet Color+투명도",s:"계획",due:"미정",m:0,a:"",n:""},
+{id:"SE-6",c:"전자",cat:"형상",t:"Dummy 객체 투명화",d:"RuleSet Color",s:"계획",due:"미정",m:0,a:"",n:""},
 {id:"SE-7",c:"전자",cat:"형상",t:"거리 가시화",d:"치수 On/Off",s:"계획",due:"미정",m:0,a:"",n:""},
-{id:"SE-8",c:"전자",cat:"형상",t:"좌표값 기반 이동",d:"XYZ 입력 카메라",s:"계획",due:"미정",m:0,a:"",n:""},
-{id:"SE-10",c:"전자",cat:"권한",t:"RBAC 권한 제어",d:"Report/카테고리별 권한",s:"계획",due:"미정",m:0,a:"",n:"1MM"},
-{id:"SE-11",c:"전자",cat:"Report",t:"2D CAD 추출",d:"3D→2D, DWG Export",s:"계획",due:"미정",m:0,a:"",n:""},
+{id:"SE-8",c:"전자",cat:"형상",t:"좌표값 기반 이동",d:"XYZ 카메라",s:"계획",due:"미정",m:0,a:"",n:""},
+{id:"SE-10",c:"전자",cat:"권한",t:"RBAC 권한 제어",d:"Report/카테고리별",s:"계획",due:"미정",m:0,a:"",n:"1MM"},
+{id:"SE-11",c:"전자",cat:"Report",t:"2D CAD 추출",d:"3D→2D, DWG",s:"계획",due:"미정",m:0,a:"",n:""},
 {id:"SE-12",c:"전자",cat:"Report",t:"BOM/Connector Report",d:"엑셀 출력",s:"계획",due:"미정",m:0,a:"",n:""},
-{id:"SE-13",c:"전자",cat:"연계",t:"MOSA/OMNIVERSE/AVEVA",d:"DT 시스템 연계",s:"계획",due:"미정",m:0,a:"",n:"1MM"},
-{id:"SE-14",c:"전자",cat:"연계",t:"FDCS/FDM 도면 연계",d:"FDM 훅업 매핑",s:"계획",due:"미정",m:0,a:"",n:"1MM"},
+{id:"SE-13",c:"전자",cat:"연계",t:"MOSA/OMNIVERSE/AVEVA",d:"DT 시스템",s:"계획",due:"미정",m:0,a:"",n:"1MM"},
+{id:"SE-14",c:"전자",cat:"연계",t:"FDCS/FDM 도면 연계",d:"FDM 훅업",s:"계획",due:"미정",m:0,a:"",n:"1MM"},
 {id:"SE-15",c:"전자",cat:"개인화",t:"My Tree",d:"워크스페이스 개인화",s:"계획",due:"미정",m:0,a:"",n:""},
-{id:"SE-16",c:"전자",cat:"보안",t:"DB 암호화",d:"Email, Name 암호화",s:"계획",due:"미정",m:0,a:"",n:""},
+{id:"SE-16",c:"전자",cat:"보안",t:"DB 암호화",d:"Email, Name",s:"계획",due:"미정",m:0,a:"",n:""},
 ];
 
+const STATS=["완료","진행중","대기","요청","검토중","기획","계획","설계중","드랍","상시","확인중","계획없음"];
 const CC={"E&A":"ea","물산":"ms","전자":"se","공통":"cm"};
 const CL={"E&A":"#2563eb","물산":"#dc2626","전자":"#16a34a","공통":"#7c3aed"};
 const MO=["","1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"];
-let curTab="list",curCf="all",curSf="all",curCat="all",curQ="",expanded=null;
+
+let D=JSON.parse(JSON.stringify(INIT_DATA));
+let dirty=false,curTab="list",curCf="all",curSf="all",curCat="all",curQ="",expanded=null;
 
 const $=s=>document.querySelector(s);
-const esc=s=>(s||"").replace(/</g,"&lt;");
+const esc=s=>(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
 const ctag=c=>`<span class="ctag ct-${CC[c]||'cm'}">${esc(c)}</span>`;
 const badge=(l,st)=>`<span class="badge st-${st}">${esc(l)}</span>`;
 
-function init(){
+// Load saved data
+function loadData(){
+  try{
+    const r=new XMLHttpRequest();
+    r.open("GET","data.json?t="+Date.now(),false);
+    r.send();
+    if(r.status===200){D=JSON.parse(r.responseText);return true;}
+  }catch(e){}
+  return false;
+}
+
+function markDirty(){dirty=true;$("#dirty").classList.add("show")}
+function markClean(){dirty=false;$("#dirty").classList.remove("show");$("#lastSave").textContent="✅ 최종 발행: "+new Date().toLocaleString("ko")}
+
+function publish(){
+  const blob=new Blob([JSON.stringify(D,null,2)],{type:"application/json"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="data.json";a.click();
+  markClean();
+  alert("data.json 다운로드 완료!\n\n터미널에서:\ncp ~/Downloads/data.json ~/Desktop/Spavy_VOC/data.json\ncd ~/Desktop/Spavy_VOC\ngit add .\ngit commit -m \"VOC 업데이트\"\ngit push origin main");
+}
+
+function resetData(){
+  if(!confirm("초기 데이터로 복원하시겠습니까?"))return;
+  D=JSON.parse(JSON.stringify(INIT_DATA));dirty=false;$("#dirty").classList.remove("show");render();
+}
+
+function updateItem(id,field,val){
+  const item=D.find(x=>x.id===id);
+  if(item){item[field]=val;markDirty();render();}
+}
+
+// Excel export
+function toExcel(){
+  let csv="\uFEFFID,고객사,카테고리,제목,설명,상태,일정,담당자,비고\n";
+  D.forEach(d=>{csv+=`"${d.id}","${d.c}","${d.cat}","${d.t}","${d.d}","${d.s}","${d.due}","${d.a}","${d.n}"\n`});
+  const blob=new Blob([csv],{type:"text/csv;charset=utf-8"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="Spavy_VOC_"+new Date().toISOString().slice(0,10)+".csv";a.click();
+}
+
+// PDF
+function toPDF(){
+  const w=window.open("","_blank");
+  let h=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Spavy VOC</title><style>
+    body{font-family:'Pretendard',sans-serif;font-size:10px;padding:20px;color:#1f2937}
+    h1{font-size:16px;margin-bottom:4px}
+    .sub{font-size:11px;color:#6b7280;margin-bottom:12px}
+    table{width:100%;border-collapse:collapse;margin-top:8px}
+    th{background:#f1f5f9;padding:5px 6px;text-align:left;font-size:9px;border:1px solid #e2e8f0}
+    td{padding:4px 6px;border:1px solid #e2e8f0;font-size:9px;vertical-align:top}
+    .s{display:inline-block;padding:1px 6px;border-radius:8px;font-size:8px;font-weight:600}
+    .s-완료{background:#dcfce7;color:#166534}.s-진행중{background:#dbeafe;color:#1e40af}
+    .s-대기{background:#fef3c7;color:#92400e}.s-요청{background:#fce7f3;color:#9d174d}
+    .s-검토중{background:#e0e7ff;color:#3730a3}.s-기획{background:#f3e8ff;color:#6b21a8}
+    .s-계획{background:#ecfdf5;color:#065f46}.s-드랍{background:#f3f4f6;color:#6b7280}
+    .ft{margin-top:12px;font-size:8px;color:#9ca3af}
+  </style></head><body>`;
+  h+=`<h1>Spavy VOC 통합 관리</h1><div class="sub">출력일: ${new Date().toLocaleDateString("ko")} | 총 ${D.length}건</div>`;
+  const groups=["E&A","물산","전자","공통"];
+  groups.forEach(g=>{
+    const items=D.filter(x=>x.c===g);if(!items.length)return;
+    h+=`<h2 style="font-size:12px;margin:14px 0 4px;color:${CL[g]}">${g} (${items.length}건)</h2>`;
+    h+=`<table><tr><th>ID</th><th>카테고리</th><th>제목</th><th>상태</th><th>일정</th><th>담당</th><th>비고</th></tr>`;
+    items.forEach(d=>{h+=`<tr><td>${esc(d.id)}</td><td>${esc(d.cat)}</td><td><b>${esc(d.t)}</b><br>${esc(d.d)}</td><td><span class="s s-${d.s}">${d.s}</span></td><td>${esc(d.due)}</td><td>${esc(d.a)}</td><td style="font-size:8px;color:#666">${esc(d.n)}</td></tr>`});
+    h+=`</table>`;
+  });
+  h+=`<div class="ft">Spavy VOC Tracker · ${new Date().toLocaleString("ko")}</div></body></html>`;
+  w.document.write(h);w.document.close();setTimeout(()=>w.print(),500);
+}
+
+function init(){loadData();updateSubtitle();renderTabs();render()}
+
+function updateSubtitle(){
   const done=D.filter(x=>x.s==="완료").length,active=D.filter(x=>x.s==="진행중").length,wait=D.filter(x=>["요청","대기"].includes(x.s)).length;
-  $("#subtitle").textContent=`E&A · 물산 · 전자 — 총 ${D.length}건 | 진행중 ${active} · 완료 ${done} · 요청/대기 ${wait}`;
-  const tabs=["list","assignee","timeline","upcoming","summary"];
-  const labels=["전체 목록","담당자별","타임라인","당면 과제","요약"];
-  let h="";tabs.forEach((t,i)=>h+=`<button data-tab="${t}" class="${t===curTab?'on':''}">${labels[i]}</button>`);
+  $("#subtitle").textContent=`E&A·물산·전자 — 총 ${D.length}건 | 진행중 ${active} · 완료 ${done} · 요청/대기 ${wait}`;
+}
+
+function renderTabs(){
+  const tabs=[["list","전체 목록"],["assignee","담당자별"],["timeline","타임라인"],["upcoming","당면 과제"],["summary","요약"]];
+  let h="";tabs.forEach(([k,l])=>h+=`<button data-tab="${k}" class="${k===curTab?'on':''}">${l}</button>`);
   $("#tabs").innerHTML=h;
   $("#tabs").onclick=e=>{if(e.target.dataset.tab){curTab=e.target.dataset.tab;render();}};
-  render();
 }
 
 function filt(){
@@ -192,6 +291,7 @@ function filt(){
 
 function render(){
   document.querySelectorAll(".tabs button").forEach(b=>b.classList.toggle("on",b.dataset.tab===curTab));
+  updateSubtitle();
   const el=$("#content");
   if(curTab==="list")renderList(el);
   else if(curTab==="assignee")renderAssignee(el);
@@ -214,12 +314,20 @@ function renderList(el){
   f.forEach(d=>{
     const o=expanded===d.id;
     h+=`<div class="card"><div class="card-h" data-id="${d.id}">
-      ${ctag(d.c)}<span class="id">${d.id}</span><span class="cat">${esc(d.cat)}</span>
+      ${ctag(d.c)}<span class="id-col">${d.id}</span><span class="cat-col">${esc(d.cat)}</span>
       <span class="ttl">${esc(d.t)}</span>${badge(d.s,d.s)}
-      ${d.due&&d.due!=="미정"?`<span class="due">${d.due}</span>`:""}
+      ${d.due&&d.due!=="미정"?`<span class="due-tag">${d.due}</span>`:""}
       ${d.a?`<span class="asgn">→${esc(d.a)}</span>`:""}
       <span class="arrow">${o?"▲":"▼"}</span></div>
-      <div class="card-b ${o?"open":""}"><b>설명:</b> ${esc(d.d)}${d.n?`<br><b>비고:</b> ${esc(d.n)}`:""}<br><b>일정:</b> ${d.due} | <b>담당:</b> ${d.a||"미정"}</div></div>`;
+      <div class="card-b ${o?"open":""}">
+        <b>설명:</b> ${esc(d.d)}${d.n?`<br><b>비고:</b> ${esc(d.n)}`:""}<br><b>일정:</b> ${d.due} | <b>담당:</b> ${d.a||"미정"}
+        <div class="edit-row">
+          <label>상태</label><select data-id="${d.id}" data-f="s">${STATS.map(st=>`<option ${d.s===st?"selected":""}>${st}</option>`).join("")}</select>
+          <label>담당</label><input data-id="${d.id}" data-f="a" value="${esc(d.a)}" placeholder="담당자">
+          <label>일정</label><input data-id="${d.id}" data-f="due" value="${esc(d.due)}" placeholder="일정">
+          <label>비고</label><input data-id="${d.id}" data-f="n" value="${esc(d.n)}" placeholder="비고" style="width:200px">
+        </div>
+      </div></div>`;
   });
   el.innerHTML=h;
   $("#cf").onchange=e=>{curCf=e.target.value;render()};
@@ -227,27 +335,30 @@ function renderList(el){
   $("#catf").onchange=e=>{curCat=e.target.value;render()};
   $("#qf").oninput=e=>{curQ=e.target.value;render()};
   el.querySelectorAll(".card-h").forEach(ch=>ch.onclick=()=>{expanded=expanded===ch.dataset.id?null:ch.dataset.id;render()});
+  el.querySelectorAll(".edit-row select, .edit-row input").forEach(inp=>{
+    inp.onchange=()=>updateItem(inp.dataset.id,inp.dataset.f,inp.value);
+  });
 }
 
 function renderAssignee(el){
   const m={};
   D.filter(x=>x.a&&!["완료","드랍","계획없음"].includes(x.s)).forEach(x=>{if(!m[x.a])m[x.a]=[];m[x.a].push(x)});
   const entries=Object.entries(m).sort((a,b)=>b[1].length-a[1].length);
-  const unassigned=D.filter(x=>!x.a&&!["완료","드랍","계획없음"].includes(x.s)).length;
+  const un=D.filter(x=>!x.a&&!["완료","드랍","계획없음"].includes(x.s)).length;
   let h=`<p style="font-size:12px;color:#6b7280;margin-bottom:12px">완료/드랍 제외, 활성 항목 기준</p>`;
   entries.forEach(([name,items])=>{
     h+=`<div class="asgn-sec"><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
       <span class="asgn-name">${esc(name)}</span><span class="asgn-cnt">${items.length}건</span>
-      <div class="asgn-bar">${[...new Set(items.map(i=>i.c))].map(c=>{
+      <div class="asgn-bar-wrap">${[...new Set(items.map(i=>i.c))].map(c=>{
         const pct=items.filter(i=>i.c===c).length/items.length*100;
         return`<div style="height:6px;border-radius:3px;background:${CL[c]};width:${pct}%;min-width:${pct>0?3:0}px"></div>`;
       }).join("")}</div></div>`;
     items.forEach(d=>{
-      h+=`<div class="asgn-row">${ctag(d.c)}<span class="id">${d.id}</span><span class="ttl">${esc(d.t)}</span>${badge(d.s,d.s)}${d.due!=="미정"?`<span class="due">${d.due}</span>`:""}</div>`;
+      h+=`<div class="asgn-row">${ctag(d.c)}<span class="id-col">${d.id}</span><span class="ttl">${esc(d.t)}</span>${badge(d.s,d.s)}${d.due!=="미정"?`<span class="due-tag">${d.due}</span>`:""}</div>`;
     });
     h+="</div>";
   });
-  h+=`<div class="alert alert-y" style="margin-top:8px"><b>미배정:</b> ${unassigned}건</div>`;
+  h+=`<div class="alert alert-y" style="margin-top:8px"><b>미배정:</b> ${un}건</div>`;
   el.innerHTML=h;
 }
 
@@ -261,27 +372,24 @@ function renderTimeline(el){
       [1,2,3,4,5,6,7,8,9,10,11,12].map(m=>`<div class="tl-cell" style="border-left:${m===4?"2px dashed #93c5fd":"1px solid #f3f4f6"}">${
         m===d.m?`<div class="tl-bar" style="background:${CL[d.c]||"#9ca3af"}"></div>`:""}</div>`).join("")}</div></div>`;
   });
-  h+=`<div style="display:flex;margin-top:8px"><div style="width:280px"></div><div style="flex:1;display:flex">${
-    [1,2,3,4,5,6,7,8,9,10,11,12].map(m=>{const cnt=items.filter(x=>x.m===m).length;
-    return`<div style="flex:1;text-align:center;font-size:10px;color:${cnt?"#374151":"#d1d5db"};font-weight:${cnt>3?700:400}">${cnt||""}</div>`}).join("")}</div></div>`;
   el.innerHTML=h;
 }
 
 function renderUpcoming(el){
   const q1=D.filter(x=>!["완료","드랍","계획없음"].includes(x.s)&&(x.due==="Q1"||x.m===3)&&x.s!=="완료");
   const apr=D.filter(x=>x.m===4&&!["완료","드랍","계획없음"].includes(x.s));
-  let h=`<div class="alert alert-y"><b>2026년 4월 첫째주 (4/1~4/5)</b> — Q1 마감 + 4월 시작 항목</div>
+  let h=`<div class="alert alert-y"><b>2026년 4월 첫째주</b> — Q1 마감 + 4월 시작 항목</div>
     <div class="sec">🔴 긴급 — Q1 마감 / 3월 미완료</div>`;
-  q1.forEach(d=>{h+=`<div class="card urgent"><div class="card-h">${ctag(d.c)}<span class="id">${d.id}</span><span class="ttl">${esc(d.t)}</span>${badge(d.s,d.s)}<span class="due" style="background:#fef2f2;color:#dc2626">${d.due}</span>${d.a?`<span class="asgn">→${esc(d.a)}</span>`:""}</div></div>`});
+  q1.forEach(d=>{h+=`<div class="card urgent"><div class="card-h">${ctag(d.c)}<span class="id-col">${d.id}</span><span class="ttl">${esc(d.t)}</span>${badge(d.s,d.s)}<span class="due-tag" style="background:#fef2f2;color:#dc2626">${d.due}</span>${d.a?`<span class="asgn">→${esc(d.a)}</span>`:""}</div></div>`});
   h+=`<div class="sec">🟡 4월 착수/진행</div>`;
-  apr.forEach(d=>{h+=`<div class="card warn"><div class="card-h">${ctag(d.c)}<span class="id">${d.id}</span><span class="ttl">${esc(d.t)}</span>${badge(d.s,d.s)}${d.a?`<span class="asgn">→${esc(d.a)}</span>`:""}</div></div>`});
+  apr.forEach(d=>{h+=`<div class="card warn"><div class="card-h">${ctag(d.c)}<span class="id-col">${d.id}</span><span class="ttl">${esc(d.t)}</span>${badge(d.s,d.s)}${d.a?`<span class="asgn">→${esc(d.a)}</span>`:""}</div></div>`});
   h+=`<div class="alert alert-b note-box" style="margin-top:16px"><b>4월 핵심 마일스톤</b><br>
-    • <b>4/14~</b> E&A 현장회의 — 간섭 룰 1차 제시 (WS-5)<br>
-    • <b>4월</b> DWG 투영 테스트 목검 (WS-7, 윤프로)<br>
-    • <b>4월</b> Spavy Property 분리 착수 (WS-1)<br>
-    • <b>4월</b> 엘라스틱 API 안정성 확보 (RD-13)<br>
-    • <b>4월</b> 시스템 한글화 (MC-17, 장나겸)<br>
-    • <b>4월</b> 관리자 화면 스토리지 (MC-11, 여태기)</div>`;
+    • <b>4/14~</b> E&A 현장회의 — 간섭 룰 1차 제시<br>
+    • <b>4월</b> DWG 투영 테스트 목검 (윤프로)<br>
+    • <b>4월</b> Spavy Property 분리 착수<br>
+    • <b>4월</b> 엘라스틱 API 안정성 확보<br>
+    • <b>4월</b> 시스템 한글화 (장나겸)<br>
+    • <b>4월</b> 관리자 화면 스토리지 (여태기)</div>`;
   el.innerHTML=h;
 }
 
@@ -301,10 +409,10 @@ function renderSummary(el){
     Object.entries(sts).sort((a,b)=>b[1]-a[1]).map(([st,n])=>`<div style="display:flex;align-items:center;gap:4px;padding:3px 8px;border-radius:5px;border:1px solid #e5e7eb;font-size:11px">${badge(st,st)}<b>${n}</b></div>`).join("")}</div>`;
   h+=`<div class="sec">워크샵 핵심 합의사항</div>`;
   D.filter(x=>x.id.startsWith("WS")).forEach(d=>{
-    h+=`<div class="card ws"><div class="card-h"><span style="font-size:10px;color:#7c3aed;font-weight:700">${d.id}</span><span style="font-size:12px;font-weight:600">${esc(d.t)}</span>${badge(d.s,d.s)}<span class="cnt">${esc(d.n)}</span></div></div>`;
+    h+=`<div class="card ws-card"><div class="card-h"><span style="font-size:10px;color:#7c3aed;font-weight:700">${d.id}</span><span style="font-size:12px;font-weight:600">${esc(d.t)}</span>${badge(d.s,d.s)}<span class="cnt">${esc(d.n)}</span></div></div>`;
   });
   h+=`<div class="sec" style="margin-top:20px">고객사 간 중복/연계</div><div class="dup-box">
-    • <b>DWG 내보내기</b>: E&A(RD-24) + 전자(SE-11) — 공통 개발<br>
+    • <b>DWG 내보내기</b>: E&A(RD-24) + 전자(SE-11)<br>
     • <b>My Tree/개인화</b>: 공통(RD-21) + 전자(SE-15) + 물산<br>
     • <b>권한 제어</b>: E&A(SEA-5) + 전자(SE-10) — RBAC 공통<br>
     • <b>DB 암호화</b>: 물산(US-40) + 전자(SE-16)<br>
