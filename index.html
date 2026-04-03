@@ -283,10 +283,11 @@ function render(){
 // ─── TABLE ───
 function renderTable(items,showUrgent){
   if(!items.length) return '<div class="empty">조건에 맞는 항목이 없습니다.</div>';
-  var h='<table><thead><tr><th style="width:75px">ID</th><th>고객</th><th>L1</th><th>L2</th><th>유형</th><th style="max-width:220px">제목</th><th>상태</th><th>일정</th><th>담당</th><th style="width:30px"></th></tr></thead><tbody>';
+  var h='<table><thead><tr><th style="width:30px"></th><th style="width:75px">ID</th><th>고객</th><th>L1</th><th>L2</th><th>유형</th><th style="max-width:220px">제목</th><th>상태</th><th>일정</th><th>담당</th><th style="width:30px"></th></tr></thead><tbody>';
   items.forEach(function(d){
     var cls=showUrgent&&d.urgent?' class="urg-row"':'';
-    h+='<tr'+cls+' ondblclick="openEdit(\''+d.id+'\')" style="cursor:pointer" title="더블클릭하여 편집">';
+    h+='<tr'+cls+' style="cursor:pointer">';
+    h+='<td><button onclick="openEdit(\''+d.id+'\')" style="border:none;background:none;cursor:pointer;font-size:13px;padding:2px 4px;border-radius:4px;transition:.15s" onmouseover="this.style.background=\'#ede9fe\'" onmouseout="this.style.background=\'none\'" title="편집">✏️</button></td>';
     h+='<td style="font-family:monospace;font-size:11px;color:var(--sub)">'+esc(d.id)+'</td>';
     h+='<td><span class="badge" style="background:#dbeafe;color:#1e40af">'+esc(d.customer)+'</span></td>';
     h+='<td><span class="l1-dot" style="background:'+(L1_COLORS[d.l1]||"#888")+'"></span>'+esc(d.l1)+'</td>';
