@@ -4,212 +4,744 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Spavy VOC Dashboard</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
+:root{--p:#7c3aed;--p2:#6d28d9;--bg:#f8fafc;--card:#fff;--brd:#e2e8f0;--txt:#334155;--sub:#94a3b8;--r:10px}
 *{margin:0;box-sizing:border-box}
-body{font-family:system-ui,-apple-system,sans-serif;background:#f8fafc;padding:16px 20px;color:#334155}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);padding:16px 20px;color:var(--txt);font-size:13px}
 .hdr{display:flex;align-items:center;gap:10px;margin-bottom:16px}
-.logo{width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,#7c3aed,#2563eb);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:16px}
-h1{font-size:20px;font-weight:700}
-.sub{font-size:12px;color:#94a3b8}
+.logo{width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,#7c3aed,#2563eb);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:15px}
+h1{font-size:20px;font-weight:700;flex:1}
+.hdr-btns{display:flex;gap:6px}
+.hdr-btns button{padding:6px 12px;border-radius:7px;border:1px solid var(--brd);font-size:11px;cursor:pointer;background:var(--card);font-weight:500;transition:.15s}
+.hdr-btns button:hover{border-color:#a5b4fc;background:#f5f3ff}
+.btn-pub{background:var(--p)!important;color:#fff!important;border-color:var(--p)!important}
+.btn-pub:hover{background:var(--p2)!important}
+.btn-add{background:#059669!important;color:#fff!important;border-color:#059669!important}
+
 .stats{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
-.stat{flex:1;min-width:75px;padding:8px;border-radius:10px;background:#fff;border:1px solid #e2e8f0;text-align:center;cursor:pointer}
-.stat:hover{border-color:#d1d5db}
-.stat-n{font-size:20px;font-weight:700}
-.stat-l{font-size:10px;color:#94a3b8}
-.tabs{display:flex;gap:4px;margin-bottom:12px}
-.tab{padding:6px 14px;border-radius:6px;border:1px solid #e2e8f0;font-size:11px;cursor:pointer;background:transparent;color:#64748b;font-weight:400}
-.tab.active{background:#7c3aed;color:#fff;border-color:#7c3aed;font-weight:600}
-.flt{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;padding:10px 12px;background:#fff;border-radius:10px;border:1px solid #e2e8f0}
-select,input[type=text]{padding:5px 8px;border-radius:6px;border:1px solid #d1d5db;font-size:12px;background:#fff}
-table{width:100%;border-collapse:collapse;font-size:12px;background:#fff;border-radius:10px;overflow:hidden;border:1px solid #e2e8f0}
-th{padding:8px 6px;text-align:left;background:#f8fafc;font-weight:600;color:#64748b;font-size:11px;border-bottom:2px solid #e2e8f0}
-td{padding:7px 6px;border-bottom:1px solid #f1f5f9}
-tr.urg{background:#fef2f2}
-.b{padding:2px 8px;border-radius:10px;font-size:10px;font-weight:600;display:inline-block;white-space:nowrap}
-.gantt-wrap{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;margin-bottom:14px}
-.gantt-hdr{display:flex;border-bottom:1px solid #e2e8f0}
-.gantt-label{width:220px;min-width:220px;padding:8px 12px;font-size:11px;font-weight:600;color:#64748b;border-right:1px solid #e2e8f0}
-.gantt-months{flex:1;display:flex}
-.gantt-mh{flex:1;text-align:center;padding:8px 0;font-size:11px;color:#94a3b8;border-right:1px solid #f1f5f9}
-.gantt-mh.cur{font-weight:700;color:#7c3aed;background:#f5f3ff}
-.gantt-row{display:flex;border-bottom:1px solid #f8fafc;min-height:30px;align-items:center}
-.gantt-row:hover{background:#fafafa}
-.gantt-item{width:220px;min-width:220px;padding:3px 12px;display:flex;align-items:center;gap:6px;border-right:1px solid #e2e8f0;overflow:hidden}
-.gantt-item .cust{font-size:10px;font-weight:700;white-space:nowrap}
-.gantt-item .ttl{font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.gantt-bars{flex:1;position:relative;height:30px;display:flex;align-items:center}
-.gantt-bar{position:absolute;height:16px;border-radius:4px;opacity:.85}
-.gantt-bar.waiting{opacity:.45}
-.gantt-today{position:absolute;top:0;bottom:0;border-left:2px dashed #d1d5db;z-index:1;pointer-events:none}
-.legend{display:flex;gap:12px;margin:8px 0 16px;font-size:11px;color:#94a3b8;flex-wrap:wrap}
-.legend span{display:flex;align-items:center;gap:4px}
-.legend .dot{width:12px;height:8px;border-radius:2px;display:inline-block}
-.group-hdr{font-size:14px;font-weight:700;margin:14px 0 6px;padding:6px 12px;background:#f1f5f9;border-radius:8px;display:inline-block}
-.group-hdr .cnt{font-weight:400;color:#94a3b8;font-size:12px}
-.asgn-miss{background:#fef2f2;color:#dc2626}
-.asgn-ok{background:#f0fdf4;color:#16a34a}
-.urg-banner{padding:8px 12px;background:#fef2f2;border:1px solid #fecaca;border-radius:8px;margin-bottom:10px;font-size:12px;color:#dc2626}
-.empty{text-align:center;padding:24px;color:#94a3b8;font-size:13px}
-.updated{font-size:11px;color:#94a3b8;margin-top:16px;text-align:right}
+.stat{flex:1;min-width:80px;padding:10px;border-radius:var(--r);background:var(--card);border:1px solid var(--brd);text-align:center;cursor:pointer;transition:.15s}
+.stat:hover{border-color:var(--p);transform:translateY(-1px)}
+.stat.active{border-color:var(--p);box-shadow:0 0 0 2px #7c3aed22}
+.stat-n{font-size:22px;font-weight:700}
+.stat-l{font-size:10px;color:var(--sub);text-transform:uppercase;letter-spacing:.5px}
+
+.main-tabs{display:flex;gap:4px;margin-bottom:12px;border-bottom:2px solid var(--brd);padding-bottom:0}
+.main-tab{padding:8px 16px;font-size:12px;cursor:pointer;background:transparent;border:none;color:#64748b;font-weight:500;border-bottom:2px solid transparent;margin-bottom:-2px;transition:.15s}
+.main-tab.active{color:var(--p);border-bottom-color:var(--p);font-weight:700}
+
+.view-tabs{display:flex;gap:4px;margin-bottom:12px}
+.vtab{padding:5px 12px;border-radius:6px;border:1px solid var(--brd);font-size:11px;cursor:pointer;background:transparent;color:#64748b;font-weight:400;transition:.15s}
+.vtab.active{background:var(--p);color:#fff;border-color:var(--p);font-weight:600}
+
+.flt{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;padding:10px 12px;background:var(--card);border-radius:var(--r);border:1px solid var(--brd);align-items:center}
+.flt select,.flt input[type=text]{padding:5px 8px;border-radius:6px;border:1px solid #d1d5db;font-size:12px;background:#fff;min-width:90px}
+.flt input[type=text]{min-width:180px}
+
+table{width:100%;border-collapse:collapse;font-size:12px;background:var(--card);border-radius:var(--r);overflow:hidden;border:1px solid var(--brd)}
+th{padding:8px 6px;text-align:left;background:#f8fafc;font-weight:600;color:#64748b;font-size:11px;border-bottom:2px solid var(--brd);position:sticky;top:0;z-index:2}
+td{padding:7px 6px;border-bottom:1px solid #f1f5f9;vertical-align:middle}
+tr:hover{background:#faf5ff}
+.badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:600;white-space:nowrap}
+.s-신규{background:#ede9fe;color:#7c3aed}
+.s-진행중{background:#fef3c7;color:#d97706}
+.s-완료{background:#d1fae5;color:#059669}
+.s-대기{background:#f1f5f9;color:#64748b}
+.s-보류{background:#fee2e2;color:#dc2626}
+.t-신규{background:#ede9fe;color:#7c3aed}
+.t-개선{background:#dbeafe;color:#2563eb}
+.t-버그{background:#fee2e2;color:#dc2626}
+.t-보안{background:#fef3c7;color:#d97706}
+.t-인프라{background:#ccfbf1;color:#0891b2}
+
+.l1-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px;vertical-align:middle}
+.grp-hdr{font-size:14px;font-weight:700;padding:12px 0 6px;border-bottom:2px solid var(--brd);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.grp-cnt{font-size:11px;color:var(--sub);font-weight:400}
+
+/* Gantt */
+.gantt-wrap{overflow-x:auto;background:var(--card);border-radius:var(--r);border:1px solid var(--brd);padding:12px}
+.gantt-tbl{min-width:800px;border-collapse:collapse;font-size:11px;width:100%}
+.gantt-tbl th{padding:6px 4px;font-size:10px;text-align:center;border-bottom:1px solid var(--brd);background:#f8fafc}
+.gantt-tbl td{padding:4px;border-bottom:1px solid #f8fafc}
+.gantt-bar{height:18px;border-radius:3px;min-width:4px}
+.gantt-now{position:absolute;top:0;bottom:0;width:2px;background:#ef4444;z-index:1}
+
+/* Decision tab */
+.urg-row{background:#fef2f2!important}
+.urg-badge{background:#dc2626;color:#fff;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:700;margin-right:4px}
+
+/* Modal */
+.modal-bg{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.4);z-index:100;display:flex;align-items:center;justify-content:center}
+.modal{background:#fff;border-radius:14px;padding:20px;width:520px;max-width:95vw;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.modal h3{font-size:16px;margin-bottom:14px}
+.modal label{display:block;font-size:11px;font-weight:600;color:#64748b;margin:8px 0 3px}
+.modal input,.modal select,.modal textarea{width:100%;padding:7px 10px;border:1px solid #d1d5db;border-radius:7px;font-size:12px;font-family:inherit}
+.modal textarea{height:60px;resize:vertical}
+.modal-btns{display:flex;gap:8px;margin-top:16px;justify-content:flex-end}
+.modal-btns button{padding:8px 18px;border-radius:7px;font-size:12px;cursor:pointer;font-weight:600;border:1px solid var(--brd)}
+.modal-btns .save{background:var(--p);color:#fff;border-color:var(--p)}
+.modal-btns .del{background:#fee2e2;color:#dc2626;border-color:#fca5a5}
+
+/* Mail tab */
+.mail-area{width:100%;height:200px;border:2px dashed #d1d5db;border-radius:var(--r);padding:12px;font-size:12px;font-family:inherit;resize:vertical}
+.mail-btn{padding:8px 20px;border-radius:7px;background:var(--p);color:#fff;border:none;font-size:12px;cursor:pointer;font-weight:600;margin-top:8px}
+.mail-btn:disabled{opacity:.5}
+.ext-card{border:1px solid var(--brd);border-radius:8px;padding:10px;margin:6px 0;cursor:pointer;transition:.15s}
+.ext-card.sel{border-color:var(--p);background:#faf5ff}
+.ext-card:hover{border-color:#a5b4fc}
+
+/* Excel upload */
+.drop-zone{border:2px dashed #d1d5db;border-radius:var(--r);padding:40px;text-align:center;color:var(--sub);cursor:pointer;transition:.15s;margin-bottom:12px}
+.drop-zone:hover,.drop-zone.drag{border-color:var(--p);background:#faf5ff;color:var(--p)}
+
+.toast{position:fixed;top:20px;right:20px;padding:10px 18px;border-radius:8px;font-size:12px;font-weight:600;z-index:200;animation:fadeIn .3s}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+.toast-ok{background:#d1fae5;color:#059669;border:1px solid #6ee7b7}
+.toast-err{background:#fee2e2;color:#dc2626;border:1px solid #fca5a5}
+
+.empty{text-align:center;padding:40px;color:var(--sub);font-size:13px}
+.info-bar{padding:8px 14px;border-radius:8px;margin-bottom:12px;font-size:11px;display:flex;align-items:center;gap:6px}
+.info-warn{background:#fef3c7;color:#92400e;border:1px solid #fde68a}
+.info-ok{background:#d1fae5;color:#065f46;border:1px solid #6ee7b7}
 </style>
 </head>
 <body>
-<div class="hdr">
-  <div class="logo">V</div>
-  <div><h1>Spavy VOC Dashboard</h1><p class="sub" id="subtitle"></p></div>
-</div>
-<div class="stats" id="stats"></div>
-<div class="tabs" id="tabs"></div>
-<div class="flt" id="filters"></div>
-<div id="content"></div>
-<div class="updated" id="updated"></div>
+
+<div id="app"></div>
 
 <script>
-var D = [
+// ─── CONFIG ───
+var L1_COLORS = {"Data Sync":"#534AB7","Spatial Studio":"#1D9E75","Data Studio":"#378ADD","Browser":"#D85A30","Ontology Sandbox":"#D4537E","BI":"#BA7517","Vizio":"#639922","360":"#85B7EB","Gaussian":"#888780"};
+var L1_LIST = Object.keys(L1_COLORS);
+var L2_MAP = {
+  "Data Sync":[""],
+  "Spatial Studio":["Planning","Data Positioning","PCS","Clash","Space"],
+  "Data Studio":["QuerySet","Tabular","Composite","Custom Tree"],
+  "Browser":["Tree","List","Properties","Property Map","Dimension Editor","Viewer","Contents Viewer","Search Anything","Export CD"],
+  "Ontology Sandbox":[""],
+  "BI":[""],
+  "Vizio":[""],
+  "360":[""],
+  "Gaussian":[""]
+};
+var TYPES = ["신규","개선","버그","보안","인프라"];
+var STATUSES = ["신규","진행중","완료","대기","보류"];
+var QS = ["Q1 2026","Q2 2026","Q3 2026","Q4 2026"];
+var TYPE_C = {"신규":"#7c3aed","개선":"#2563eb","버그":"#dc2626","보안":"#d97706","인프라":"#0891b2"};
+var STATUS_C = {"신규":"#7c3aed","진행중":"#d97706","완료":"#059669","대기":"#64748b","보류":"#dc2626"};
+
+// ─── INITIAL DATA ───
+var INIT_DATA = [
   {id:"VOC-0001",customer:"E&A",l1:"Browser",l2:"Properties",type:"개선",title:"Property+ hovering",desc:"보고서 연동 시 hovering 기능",status:"진행중",due:"Q1 2026",assignee:"",note:"",urgent:false},
-  {id:"VOC-0002",customer:"E&A",l1:"Browser",l2:"System Tree",type:"개선",title:"Project List 순서 변경",desc:"Project Group, Name 순서 변경",status:"완료",due:"Q1 2026",assignee:"",note:"",urgent:false},
-  {id:"VOC-0003",customer:"E&A",l1:"Browser",l2:"Viewer",type:"개선",title:"모듈창 새창/기존Tab 유지",desc:"동일 Project에서 모듈창 오픈 시 새창과 기존 Tab유지",status:"완료",due:"Q1 2026",assignee:"",note:"",urgent:false},
-  {id:"VOC-0004",customer:"E&A",l1:"Browser",l2:"Viewer",type:"버그",title:"Reset visibility 오류",desc:"R키 시 다른 폴더 파일 모두 로드",status:"진행중",due:"Q1 2026",assignee:"",note:"",urgent:true},
-  {id:"VOC-0005",customer:"E&A",l1:"Browser",l2:"Properties",type:"개선",title:"권한관리 상위/하위 자동선택",desc:"상위권한 선택 시 하위 자동선택",status:"진행중",due:"Q1 2026",assignee:"",note:"",urgent:false},
+  {id:"VOC-0002",customer:"E&A",l1:"Browser",l2:"Tree",type:"개선",title:"Project List 순서 변경",desc:"Project Group, Name 순서 변경 가능하도록",status:"완료",due:"Q1 2026",assignee:"",note:"",urgent:false},
+  {id:"VOC-0003",customer:"E&A",l1:"Browser",l2:"Viewer",type:"개선",title:"모듈창 새창/기존Tab 유지",desc:"동일 Project에서 모듈창 오픈 시 새창과 기존 Tab유지 모두 가능",status:"완료",due:"Q1 2026",assignee:"",note:"",urgent:false},
+  {id:"VOC-0004",customer:"E&A",l1:"Browser",l2:"Viewer",type:"버그",title:"Reset visibility 오류",desc:"R키 시 다른 폴더 파일 모두 로드되는 문제",status:"진행중",due:"Q1 2026",assignee:"",note:"",urgent:true},
+  {id:"VOC-0005",customer:"E&A",l1:"Browser",l2:"Properties",type:"개선",title:"권한관리 상위/하위 자동선택",desc:"상위권한 선택 시 하위 자동선택 및 비활성화",status:"진행중",due:"Q1 2026",assignee:"",note:"",urgent:false},
   {id:"VOC-0006",customer:"E&A",l1:"Browser",l2:"Search Anything",type:"신규",title:"Search 다중조건",desc:"Search set 외 다중조건 검색",status:"진행중",due:"Q1 2026",assignee:"",note:"",urgent:false},
   {id:"VOC-0007",customer:"E&A",l1:"Data Studio",l2:"Tabular",type:"개선",title:"Tabular Data Manager 개선",desc:"Column setting 복사, std list, excel 업로드",status:"진행중",due:"Q1 2026",assignee:"",note:"삼인 Q1 가능",urgent:false},
   {id:"VOC-0008",customer:"E&A",l1:"BI",l2:"",type:"신규",title:"Fit World 기능",desc:"view 내에 fit world 추가",status:"진행중",due:"Q1 2026",assignee:"나경",note:"",urgent:false},
-  {id:"VOC-0009",customer:"E&A",l1:"Spatial Studio",l2:"Space",type:"개선",title:"Space RVT Mass 인식",desc:"Revit Room 인식, Space 속성 연동",status:"진행중",due:"Q1 2026",assignee:"유현재",note:"",urgent:true},
-  {id:"VOC-0010",customer:"E&A",l1:"Spatial Studio",l2:"Clash",type:"개선",title:"Clash File Download",desc:"Clash 파일 다운로드",status:"완료",due:"Q1 2026",assignee:"",note:"",urgent:false},
-  {id:"VOC-0011",customer:"E&A",l1:"Browser",l2:"Viewer",type:"인프라",title:"Operation Spec 측정",desc:"최소/권장 인프라 사양 측정",status:"대기",due:"Q2 2026",assignee:"",note:"",urgent:false},
+  {id:"VOC-0009",customer:"E&A",l1:"Spatial Studio",l2:"Space",type:"개선",title:"Space RVT Mass 인식",desc:"Revit Room 인식, Space 속성 연동",status:"진행중",due:"Q1 2026",assignee:"유현재",note:"",urgent:false},
+  {id:"VOC-0010",customer:"E&A",l1:"Spatial Studio",l2:"Clash",type:"개선",title:"Clash File Download",desc:"Clash 파일 다운로드 기능",status:"완료",due:"Q1 2026",assignee:"",note:"",urgent:false},
+  {id:"VOC-0011",customer:"E&A",l1:"Browser",l2:"Viewer",type:"인프라",title:"Operation Spec 측정",desc:"최소/권장 인프라 사양 측정 및 제안",status:"대기",due:"Q2 2026",assignee:"",note:"",urgent:false},
   {id:"VOC-0012",customer:"E&A",l1:"Data Sync",l2:"",type:"개선",title:"SPAVY Manual URL 공유",desc:"사용자가 상시 MANUAL LINK에 접근",status:"대기",due:"Q1 2026",assignee:"",note:"",urgent:false},
   {id:"VOC-0013",customer:"삼성물산",l1:"Browser",l2:"Viewer",type:"보안",title:"DB 암호화",desc:"Database 암호화 적용",status:"대기",due:"Q2 2026",assignee:"",note:"",urgent:true},
   {id:"VOC-0014",customer:"삼성전자",l1:"Browser",l2:"Export CD",type:"신규",title:"DWG 내보내기",desc:"DWG 파일 내보내기 기능",status:"대기",due:"Q2 2026",assignee:"",note:"E&A와 공통",urgent:false},
-  {id:"VOC-0015",customer:"삼성전자",l1:"Browser",l2:"Properties",type:"개선",title:"권한 제어 RBAC",desc:"Role-Based Access Control",status:"대기",due:"Q2 2026",assignee:"",note:"",urgent:true}
+  {id:"VOC-0015",customer:"삼성전자",l1:"Browser",l2:"Properties",type:"개선",title:"권한 제어 RBAC",desc:"Role-Based Access Control 적용",status:"대기",due:"Q2 2026",assignee:"",note:"E&A SEA-5 연관",urgent:false}
 ];
 
-var SC={"신규":"#8b5cf6","진행중":"#f59e0b","완료":"#22c55e","대기":"#94a3b8","보류":"#ef4444"};
-var TC={"신규":"#7c3aed","개선":"#2563eb","버그":"#dc2626","보안":"#d946ef","인프라":"#0891b2"};
-var LC={"Data Sync":"#534AB7","Spatial Studio":"#1D9E75","Data Studio":"#378ADD","Browser":"#D85A30","Ontology Sandbox":"#D4537E","BI":"#BA7517","Vizio":"#639922","360":"#85B7EB","Gaussian":"#888780"};
-var CC={"E&A":"#3b82f6","삼성물산":"#ef4444","삼성전자":"#8b5cf6","기타":"#f59e0b","공통":"#a855f7"};
-var CUSTS=["E&A","삼성물산","삼성전자","기타"];
-var L1S=["Data Sync","Spatial Studio","Data Studio","Browser","Ontology Sandbox","BI","Vizio","360","Gaussian"];
-var TYPES=["신규","개선","버그","보안","인프라"];
-var STATS2=["신규","진행중","완료","대기","보류"];
-var MONTHS=["1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"];
-var Q2M={"Q1 2026":[0,2],"Q2 2026":[3,5],"Q3 2026":[6,8],"Q4 2026":[9,11],"Q1 2027":[12,14]};
-var curM=new Date().getMonth();
-var curView="all";
-var fC="",fL="",fT="",fS="",fQ="";
+// ─── STATE ───
+var data = JSON.parse(JSON.stringify(INIT_DATA));
+var mainTab = "dashboard"; // dashboard | excel | mail
+var viewTab = "all"; // all | timeline | assignee | decision
+var filterStatus = "";
+var filterCust = "";
+var filterL1 = "";
+var filterType = "";
+var searchQ = "";
+var editItem = null;
+var showAddModal = false;
+var dirty = false;
+var toastMsg = "";
+var toastType = "";
+var toastTimer = null;
+var mailText = "";
+var mailResults = [];
+var mailSelected = new Set();
+var mailLoading = false;
 
-function badge(t,bg,c){return '<span class="b" style="background:'+bg+';color:'+c+'">'+t+'</span>';}
-
-function init(){
-  document.getElementById("subtitle").textContent=D.length+"건 · L1 9개 · Published "+new Date().toLocaleDateString("ko");
-  document.getElementById("updated").textContent="Last updated: "+new Date().toLocaleString("ko");
-  renderStats();renderFilters();renderTabs();render();
+// ─── HELPERS ───
+function esc(s){return s?String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"):""}
+function nextId(){
+  var max=0;
+  data.forEach(function(d){var n=parseInt(d.id.replace("VOC-",""),10);if(n>max)max=n;});
+  return "VOC-"+String(max+1).padStart(4,"0");
 }
-
-function renderStats(){
-  var counts={total:D.length,urgent:0};STATS2.forEach(function(s){counts[s]=0;});
-  D.forEach(function(i){if(counts[i.status]!==undefined)counts[i.status]++;if(i.urgent)counts.urgent++;});
-  var items=[["전체",counts.total,"#334155"],["신규",counts["신규"],"#8b5cf6"],["진행중",counts["진행중"],"#f59e0b"],["완료",counts["완료"],"#22c55e"],["대기",counts["대기"],"#94a3b8"]];
-  document.getElementById("stats").innerHTML=items.map(function(a){return '<div class="stat" onclick="filterStat(\''+a[0]+'\')"><div class="stat-n" style="color:'+a[2]+'">'+a[1]+'</div><div class="stat-l">'+a[0]+'</div></div>';}).join("");
+function toast(msg,type){
+  toastMsg=msg;toastType=type||"ok";render();
+  if(toastTimer)clearTimeout(toastTimer);
+  toastTimer=setTimeout(function(){toastMsg="";render();},3000);
 }
-
-function filterStat(l){if(l==="전체"){fS="";curView="all";}else if(l==="긴급"){curView="urgent";fS="";}else{fS=l;curView="all";}syncFilters();render();}
-
-function renderFilters(){
-  var h='<input type="text" id="fq" placeholder="검색" oninput="fQ=this.value;render()">';
-  h+='<select id="fc" onchange="fC=this.value;render()"><option value="">고객사</option>'+CUSTS.map(function(c){return '<option>'+c+'</option>';}).join("")+'</select>';
-  h+='<select id="fl" onchange="fL=this.value;render()"><option value="">L1</option>'+L1S.map(function(c){return '<option>'+c+'</option>';}).join("")+'</select>';
-  h+='<select id="ft" onchange="fT=this.value;render()"><option value="">유형</option>'+TYPES.map(function(c){return '<option>'+c+'</option>';}).join("")+'</select>';
-  h+='<select id="fs" onchange="fS=this.value;render()"><option value="">상태</option>'+STATS2.map(function(c){return '<option>'+c+'</option>';}).join("")+'</select>';
-  document.getElementById("filters").innerHTML=h;
-}
-
-function syncFilters(){var e=document.getElementById("fs");if(e)e.value=fS;}
-
-function renderTabs(){
-  var views=[["all","전체 목록"],["timeline","타임라인"],["assignee","담당자별"],["urgent","긴급/결정필요"]];
-  document.getElementById("tabs").innerHTML=views.map(function(v){return '<div class="tab'+(curView===v[0]?" active":"")+'" onclick="curView=\''+v[0]+'\';renderTabs();render()">'+v[1]+'</div>';}).join("");
-}
-
 function getFiltered(){
-  return D.filter(function(i){
-    if(fC&&i.customer!==fC)return false;if(fL&&i.l1!==fL)return false;if(fT&&i.type!==fT)return false;if(fS&&i.status!==fS)return false;
-    if(fQ&&(i.id+" "+i.title+" "+i.desc).toLowerCase().indexOf(fQ.toLowerCase())<0)return false;return true;
+  return data.filter(function(d){
+    if(filterStatus&&d.status!==filterStatus)return false;
+    if(filterCust&&d.customer!==filterCust)return false;
+    if(filterL1&&d.l1!==filterL1)return false;
+    if(filterType&&d.type!==filterType)return false;
+    if(searchQ){var q=searchQ.toLowerCase();if((d.title+d.desc+d.customer+d.id+d.assignee+d.note).toLowerCase().indexOf(q)<0)return false;}
+    return true;
   });
 }
+function getCustomers(){var s=new Set();data.forEach(function(d){if(d.customer)s.add(d.customer);});return Array.from(s).sort();}
+function groupBy(arr,key){var m={};arr.forEach(function(d){var k=d[key]||"미배정";if(!m[k])m[k]=[];m[k].push(d);});return m;}
 
-function makeTable(data, showUrgent){
-  if(!data.length)return '<div class="empty">결과 없음</div>';
-  var h='<table><thead><tr><th>ID</th><th>고객</th><th>L1</th><th>L2</th><th>유형</th><th>제목</th><th>상태</th><th>목표</th><th>담당</th></tr></thead><tbody>';
-  data.forEach(function(i){
-    h+='<tr'+(showUrgent&&i.urgent?' class="urg"':'')+'>';
-    h+='<td style="font-weight:700;color:#7c3aed;font-size:11px">'+i.id+'</td>';
-    h+='<td>'+badge(i.customer,"#dbeafe","#1e40af")+'</td>';
-    h+='<td>'+badge(i.l1,(LC[i.l1]||"#888")+"18",LC[i.l1]||"#888")+'</td>';
-    h+='<td style="font-size:11px;color:#64748b">'+(i.l2||"")+'</td>';
-    h+='<td>'+badge(i.type,(TC[i.type]||"#888")+"20",TC[i.type]||"#888")+'</td>';
-    h+='<td style="font-weight:500">'+(showUrgent&&i.urgent?"🔴 ":"")+i.title+'</td>';
-    h+='<td>'+badge(i.status,SC[i.status]||"#888","#fff")+'</td>';
-    h+='<td style="font-size:11px">'+(i.due||"")+'</td>';
-    h+='<td style="font-size:11px">'+(i.assignee||"")+'</td>';
-    h+='</tr>';
-  });
-  return h+'</tbody></table>';
-}
+// ─── RENDER ───
+function render(){
+  var app=document.getElementById("app");
+  var items=getFiltered();
+  var custs=getCustomers();
+  var counts={total:data.length,신규:0,진행중:0,완료:0,대기:0};
+  data.forEach(function(d){if(counts[d.status]!==undefined)counts[d.status]++;});
 
-function makeGantt(data){
-  var items=data.filter(function(i){return i.status!=="완료"&&i.status!=="보류"&&i.due;}).sort(function(a,b){
-    var aS=Q2M[a.due]?Q2M[a.due][0]:99,bS=Q2M[b.due]?Q2M[b.due][0]:99;
-    return aS!==bS?aS-bS:a.customer.localeCompare(b.customer);
-  });
-  if(!items.length)return '<div class="empty">표시할 항목 없음</div>';
-  var h='<div class="gantt-wrap"><div class="gantt-hdr"><div class="gantt-label">항목</div><div class="gantt-months">';
-  MONTHS.forEach(function(m,idx){h+='<div class="gantt-mh'+(idx===curM?" cur":"")+'">'+m+'</div>';});
+  var h="";
+
+  // Toast
+  if(toastMsg)h+='<div class="toast toast-'+toastType+'">'+esc(toastMsg)+'</div>';
+
+  // Header
+  h+='<div class="hdr">';
+  h+='<div class="logo">S</div>';
+  h+='<div><h1>Spavy VOC Dashboard</h1><div class="sub">Voice of Customer · 통합 관리</div></div>';
+  h+='<div class="hdr-btns">';
+  h+='<button class="btn-add" onclick="openAdd()">＋ 추가</button>';
+  h+='<button class="btn-pub" onclick="doPublish()">🚀 발행</button>';
+  h+='<button onclick="dlExcel()">📥 Excel</button>';
+  h+='<button onclick="dlPdf()">📄 PDF</button>';
   h+='</div></div>';
-  items.forEach(function(i){
-    var range=Q2M[i.due];var sM=range?range[0]:0;var eM=range?Math.min(range[1],11):0;
-    var left=(sM/12*100)+"%";var width=((eM-sM+1)/12*100)+"%";
-    var clr=CC[i.customer]||"#94a3b8";if(i.status==="대기")clr="#94a3b8";
-    var cls="gantt-bar"+(i.status==="대기"?" waiting":"");
-    h+='<div class="gantt-row"><div class="gantt-item"><span class="cust" style="color:'+(CC[i.customer]||"#64748b")+'">'+i.customer+'</span><span class="ttl">'+(i.urgent?"🔴 ":"")+i.title+'</span></div>';
-    h+='<div class="gantt-bars"><div class="gantt-today" style="left:'+((curM+.5)/12*100)+'%"></div>';
-    h+='<div class="'+cls+'" style="left:'+left+';width:'+width+';background:'+clr+'" title="'+i.id+' · '+i.title+' · '+i.due+' · '+i.status+'"></div></div></div>';
+
+  // Dirty bar
+  if(dirty)h+='<div class="info-bar info-warn">⚠️ 수정사항이 있습니다. [발행] 버튼을 눌러 data.json을 다운로드하고 git push 하세요.</div>';
+
+  // Stats
+  h+='<div class="stats">';
+  var statKeys=[["total","전체","#334155"],["신규","신규","#7c3aed"],["진행중","진행중","#d97706"],["완료","완료","#059669"],["대기","대기","#64748b"]];
+  statKeys.forEach(function(sk){
+    var active=(sk[0]==="total"&&!filterStatus)||(sk[0]!=="total"&&filterStatus===sk[0]);
+    h+='<div class="stat'+(active?" active":"")+'" onclick="clickStat(\''+sk[0]+'\')">';
+    h+='<div class="stat-n" style="color:'+sk[2]+'">'+counts[sk[0]]+'</div>';
+    h+='<div class="stat-l">'+sk[1]+'</div></div>';
   });
   h+='</div>';
-  h+='<div class="legend">';
-  Object.keys(CC).forEach(function(k){h+='<span><span class="dot" style="background:'+CC[k]+'"></span>'+k+'</span>';});
-  h+='<span><span class="dot" style="background:#94a3b8;opacity:.45"></span>대기</span>';
-  h+='<span><span style="width:0;height:12px;border-left:2px dashed #d1d5db;display:inline-block"></span> 현재 ('+MONTHS[curM]+')</span></div>';
+
+  // Main tabs
+  h+='<div class="main-tabs">';
+  [["dashboard","📊 대시보드"],["excel","📁 Excel 가져오기"],["mail","✉️ 메일에서 추출"]].forEach(function(t){
+    h+='<button class="main-tab'+(mainTab===t[0]?" active":"")+'" onclick="setMainTab(\''+t[0]+'\')">'+t[1]+'</button>';
+  });
+  h+='</div>';
+
+  if(mainTab==="dashboard"){
+    // View tabs
+    h+='<div class="view-tabs">';
+    [["all","전체 목록"],["timeline","타임라인"],["assignee","담당자별"],["decision","결정필요"]].forEach(function(v){
+      h+='<button class="vtab'+(viewTab===v[0]?" active":"")+'" onclick="setView(\''+v[0]+'\')">'+v[1]+'</button>';
+    });
+    h+='</div>';
+
+    // Filters
+    h+='<div class="flt">';
+    h+='<input type="text" placeholder="🔍 검색..." value="'+esc(searchQ)+'" oninput="searchQ=this.value;render()">';
+    h+='<select onchange="filterCust=this.value;render()"><option value="">고객사 전체</option>';
+    custs.forEach(function(c){h+='<option'+(filterCust===c?' selected':'')+'>'+esc(c)+'</option>';});
+    h+='</select>';
+    h+='<select onchange="filterL1=this.value;render()"><option value="">L1 전체</option>';
+    L1_LIST.forEach(function(l){h+='<option'+(filterL1===l?' selected':'')+'>'+esc(l)+'</option>';});
+    h+='</select>';
+    h+='<select onchange="filterType=this.value;render()"><option value="">유형 전체</option>';
+    TYPES.forEach(function(t){h+='<option'+(filterType===t?' selected':'')+'>'+esc(t)+'</option>';});
+    h+='</select>';
+    if(filterStatus||filterCust||filterL1||filterType||searchQ)h+='<button onclick="clearFilters()" style="padding:4px 10px;border-radius:5px;border:1px solid #fca5a5;background:#fee2e2;color:#dc2626;font-size:11px;cursor:pointer">✕ 초기화</button>';
+    h+='</div>';
+
+    // Views
+    if(viewTab==="all") h+=renderTable(items,false);
+    else if(viewTab==="timeline") h+=renderTimeline(items);
+    else if(viewTab==="assignee") h+=renderAssignee(items);
+    else if(viewTab==="decision") h+=renderDecision();
+  } else if(mainTab==="excel"){
+    h+=renderExcelTab();
+  } else if(mainTab==="mail"){
+    h+=renderMailTab();
+  }
+
+  // Edit modal
+  if(editItem) h+=renderEditModal(editItem);
+  if(showAddModal) h+=renderAddModal();
+
+  app.innerHTML=h;
+}
+
+// ─── TABLE ───
+function renderTable(items,showUrgent){
+  if(!items.length) return '<div class="empty">조건에 맞는 항목이 없습니다.</div>';
+  var h='<table><thead><tr><th style="width:75px">ID</th><th>고객</th><th>L1</th><th>L2</th><th>유형</th><th style="max-width:220px">제목</th><th>상태</th><th>일정</th><th>담당</th><th style="width:30px"></th></tr></thead><tbody>';
+  items.forEach(function(d){
+    var cls=showUrgent&&d.urgent?' class="urg-row"':'';
+    h+='<tr'+cls+' ondblclick="openEdit(\''+d.id+'\')" style="cursor:pointer" title="더블클릭하여 편집">';
+    h+='<td style="font-family:monospace;font-size:11px;color:var(--sub)">'+esc(d.id)+'</td>';
+    h+='<td><span class="badge" style="background:#dbeafe;color:#1e40af">'+esc(d.customer)+'</span></td>';
+    h+='<td><span class="l1-dot" style="background:'+(L1_COLORS[d.l1]||"#888")+'"></span>'+esc(d.l1)+'</td>';
+    h+='<td style="color:var(--sub);font-size:11px">'+esc(d.l2)+'</td>';
+    h+='<td><span class="badge t-'+d.type+'">'+esc(d.type)+'</span></td>';
+    h+='<td style="font-weight:500;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="'+esc(d.desc)+'">';
+    if(showUrgent&&d.urgent)h+='<span class="urg-badge">🔴 긴급</span>';
+    h+=esc(d.title)+'</td>';
+    h+='<td><span class="badge s-'+d.status+'">'+esc(d.status)+'</span></td>';
+    h+='<td style="font-size:11px">'+esc(d.due)+'</td>';
+    h+='<td style="font-size:11px">'+esc(d.assignee||"-")+'</td>';
+    h+='<td><button onclick="toggleUrgent(\''+d.id+'\')" style="border:none;background:none;cursor:pointer;font-size:10px" title="긴급 토글">'+(d.urgent?'🔴':'⚪')+'</button></td>';
+    h+='</tr>';
+  });
+  h+='</tbody></table>';
+  h+='<div style="text-align:right;padding:6px;font-size:11px;color:var(--sub)">'+items.length+'건 표시</div>';
   return h;
 }
 
-function render(){
-  var f=getFiltered();var el=document.getElementById("content");
-  if(curView==="all"){el.innerHTML=makeTable(f);}
-  else if(curView==="timeline"){
-    var h=makeGantt(f);
-    var quarters=["Q1 2026","Q2 2026","Q3 2026","Q4 2026","Q1 2027","기타"];
-    quarters.forEach(function(q){
-      var qItems=q==="기타"?f.filter(function(i){return !Q2M[i.due];}):f.filter(function(i){return i.due===q;});
-      if(qItems.length){h+='<div class="group-hdr">'+q+' <span class="cnt">('+qItems.length+'건)</span></div>'+makeTable(qItems);}
+// ─── TIMELINE (Gantt) ───
+function renderTimeline(items){
+  var months=["1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"];
+  var now=new Date();var curM=now.getMonth();var curY=now.getFullYear();
+  var qMap={"Q1 2026":[2026,0,2],"Q2 2026":[2026,3,5],"Q3 2026":[2026,6,8],"Q4 2026":[2026,9,11]};
+  var dispMonths=[];
+  for(var m=0;m<=11;m++){dispMonths.push({y:2026,m:m,label:(m+1)+"월"});}
+
+  var ganttItems=items.filter(function(d){return d.due&&qMap[d.due];}).sort(function(a,b){
+    var am=qMap[a.due],bm=qMap[b.due];return (am[0]*12+am[1])-(bm[0]*12+bm[1]);
+  });
+
+  var h='<div class="gantt-wrap"><table class="gantt-tbl"><thead><tr>';
+  h+='<th style="min-width:60px;text-align:left">ID</th><th style="min-width:100px;text-align:left">제목</th><th style="min-width:40px">상태</th>';
+  dispMonths.forEach(function(dm){
+    var isCur=dm.y===curY&&dm.m===curM;
+    h+='<th style="min-width:28px;font-size:9px;'+(isCur?'background:#fef2f2;color:#dc2626;font-weight:700':'')+'">'+dm.label+'</th>';
+  });
+  h+='</tr></thead><tbody>';
+
+  ganttItems.forEach(function(d){
+    var q=qMap[d.due];if(!q)return;
+    var sc={"완료":"#22c55e","진행중":"#f59e0b","신규":"#8b5cf6","대기":"#94a3b8","보류":"#ef4444"};
+    h+='<tr ondblclick="openEdit(\''+d.id+'\')" style="cursor:pointer">';
+    h+='<td style="font-family:monospace;font-size:10px;color:var(--sub)">'+esc(d.id)+'</td>';
+    h+='<td style="font-size:11px;font-weight:500;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="'+esc(d.desc)+'">'+esc(d.title)+'</td>';
+    h+='<td style="text-align:center"><span class="badge s-'+d.status+'" style="font-size:9px">'+esc(d.status)+'</span></td>';
+    dispMonths.forEach(function(dm){
+      var inRange=dm.y===q[0]&&dm.m>=q[1]&&dm.m<=q[2];
+      var isCur=dm.y===curY&&dm.m===curM;
+      if(inRange){
+        h+='<td style="padding:2px"><div class="gantt-bar" style="background:'+(sc[d.status]||"#94a3b8")+'"></div></td>';
+      } else {
+        h+='<td style="'+(isCur?'background:#fef2f2':'')+'"></td>';
+      }
     });
-    el.innerHTML=h;
-  }
-  else if(curView==="assignee"){
-    var groups={};f.forEach(function(i){var k=i.assignee||"미배정";if(!groups[k])groups[k]=[];groups[k].push(i);});
-    var keys=Object.keys(groups).sort(function(a,b){return a==="미배정"?1:b==="미배정"?-1:a.localeCompare(b);});
-    var h2="";keys.forEach(function(k){
-      var cls=k==="미배정"?"asgn-miss":"asgn-ok";
-      h2+='<div class="group-hdr '+cls+'">'+k+' <span class="cnt">('+groups[k].length+'건)</span></div>'+makeTable(groups[k]);
-    });
-    el.innerHTML=h2||'<div class="empty">결과 없음</div>';
-  }
-  else if(curView==="urgent"){
-    var urg=f.filter(function(i){return i.urgent||(i.status==="진행중"&&i.due==="Q1 2026");});
-    var h3='<div class="urg-banner">🔴 긴급 플래그 또는 Q1 2026 진행중 항목 — 즉시 결정/조치 필요</div>';
-    el.innerHTML=urg.length?h3+makeTable(urg,true):'<div class="empty">긴급 항목 없음</div>';
-  }
+    h+='</tr>';
+  });
+  h+='</tbody></table></div>';
+  if(!ganttItems.length)h='<div class="empty">타임라인에 표시할 항목이 없습니다.</div>';
+  return h;
 }
-init();
+
+// ─── ASSIGNEE ───
+function renderAssignee(items){
+  var g=groupBy(items,"assignee");
+  var keys=Object.keys(g).sort(function(a,b){return a==="미배정"?-1:b==="미배정"?1:a.localeCompare(b);});
+  var h="";
+  keys.forEach(function(k){
+    var isNone=k==="미배정";
+    h+='<div class="grp-hdr" style="'+(isNone?"color:#dc2626":"")+'">👤 '+esc(k)+' <span class="grp-cnt">'+g[k].length+'건</span></div>';
+    h+=renderTable(g[k],false);
+  });
+  return h||'<div class="empty">표시할 항목이 없습니다.</div>';
+}
+
+// ─── DECISION ───
+function renderDecision(){
+  var urgentItems=data.filter(function(d){return d.urgent;});
+  var pendingQ1=data.filter(function(d){return !d.urgent&&d.status==="진행중"&&d.due&&d.due.indexOf("Q1")===0;});
+  var h='<div class="grp-hdr" style="color:#dc2626">🔴 긴급 결정 필요 <span class="grp-cnt">'+urgentItems.length+'건</span></div>';
+  if(urgentItems.length)h+=renderTable(urgentItems,true);
+  else h+='<div class="empty">긴급 항목이 없습니다.</div>';
+  h+='<div class="grp-hdr" style="margin-top:16px">⏳ Q1 진행중 항목 <span class="grp-cnt">'+pendingQ1.length+'건</span></div>';
+  if(pendingQ1.length)h+=renderTable(pendingQ1,false);
+  else h+='<div class="empty">Q1 진행중 항목이 없습니다.</div>';
+  return h;
+}
+
+// ─── EDIT MODAL ───
+function renderEditModal(item){
+  var l2s=L2_MAP[item.l1]||[""];
+  var h='<div class="modal-bg" onclick="closeModal(event)">';
+  h+='<div class="modal" onclick="event.stopPropagation()">';
+  h+='<h3>📝 VOC 편집 — '+esc(item.id)+'</h3>';
+  h+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">';
+  h+='<div><label>고객사</label><input id="e-cust" value="'+esc(item.customer)+'"></div>';
+  h+='<div><label>L1 제품</label><select id="e-l1" onchange="onL1Change()">';
+  L1_LIST.forEach(function(l){h+='<option'+(item.l1===l?" selected":"")+'>'+esc(l)+'</option>';});
+  h+='</select></div>';
+  h+='<div><label>L2 기능</label><select id="e-l2">';
+  l2s.forEach(function(l){h+='<option'+(item.l2===l?" selected":"")+'>'+esc(l)+'</option>';});
+  h+='</select></div>';
+  h+='<div><label>유형</label><select id="e-type">';
+  TYPES.forEach(function(t){h+='<option'+(item.type===t?" selected":"")+'>'+esc(t)+'</option>';});
+  h+='</select></div>';
+  h+='</div>';
+  h+='<label>제목</label><input id="e-title" value="'+esc(item.title)+'">';
+  h+='<label>설명</label><textarea id="e-desc">'+esc(item.desc)+'</textarea>';
+  h+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">';
+  h+='<div><label>상태</label><select id="e-status">';
+  STATUSES.forEach(function(s){h+='<option'+(item.status===s?" selected":"")+'>'+esc(s)+'</option>';});
+  h+='</select></div>';
+  h+='<div><label>일정</label><select id="e-due"><option value="">미정</option>';
+  QS.forEach(function(q){h+='<option'+(item.due===q?" selected":"")+'>'+esc(q)+'</option>';});
+  h+='</select></div>';
+  h+='<div><label>담당자</label><input id="e-assignee" value="'+esc(item.assignee)+'"></div>';
+  h+='</div>';
+  h+='<label>비고</label><input id="e-note" value="'+esc(item.note)+'">';
+  h+='<label style="margin-top:8px"><input type="checkbox" id="e-urgent"'+(item.urgent?" checked":"")+' style="width:auto;margin-right:6px">🔴 긴급 항목으로 지정</label>';
+  h+='<div class="modal-btns">';
+  h+='<button class="del" onclick="delItem(\''+item.id+'\')">삭제</button>';
+  h+='<button onclick="editItem=null;showAddModal=false;render()">취소</button>';
+  h+='<button class="save" onclick="saveEdit(\''+item.id+'\')">저장</button>';
+  h+='</div></div></div>';
+  return h;
+}
+
+function renderAddModal(){
+  var h='<div class="modal-bg" onclick="closeModal(event)">';
+  h+='<div class="modal" onclick="event.stopPropagation()">';
+  h+='<h3>➕ 새 VOC 추가</h3>';
+  h+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">';
+  h+='<div><label>고객사</label><input id="a-cust" placeholder="예: E&A"></div>';
+  h+='<div><label>L1 제품</label><select id="a-l1" onchange="onAddL1Change()">';
+  L1_LIST.forEach(function(l){h+='<option>'+esc(l)+'</option>';});
+  h+='</select></div>';
+  h+='<div><label>L2 기능</label><select id="a-l2">';
+  (L2_MAP[L1_LIST[0]]||[""]).forEach(function(l){h+='<option>'+esc(l)+'</option>';});
+  h+='</select></div>';
+  h+='<div><label>유형</label><select id="a-type">';
+  TYPES.forEach(function(t){h+='<option>'+esc(t)+'</option>';});
+  h+='</select></div>';
+  h+='</div>';
+  h+='<label>제목</label><input id="a-title" placeholder="VOC 제목">';
+  h+='<label>설명</label><textarea id="a-desc" placeholder="상세 설명"></textarea>';
+  h+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">';
+  h+='<div><label>상태</label><select id="a-status">';
+  STATUSES.forEach(function(s){h+='<option>'+esc(s)+'</option>';});
+  h+='</select></div>';
+  h+='<div><label>일정</label><select id="a-due"><option value="">미정</option>';
+  QS.forEach(function(q){h+='<option>'+esc(q)+'</option>';});
+  h+='</select></div>';
+  h+='<div><label>담당자</label><input id="a-assignee" placeholder="담당자"></div>';
+  h+='</div>';
+  h+='<label>비고</label><input id="a-note" placeholder="비고">';
+  h+='<div class="modal-btns">';
+  h+='<button onclick="editItem=null;showAddModal=false;render()">취소</button>';
+  h+='<button class="save" onclick="saveAdd()">추가</button>';
+  h+='</div></div></div>';
+  return h;
+}
+
+// ─── EXCEL TAB ───
+function renderExcelTab(){
+  var h='<div style="max-width:600px;margin:20px auto">';
+  h+='<h3 style="margin-bottom:12px">📁 Excel 파일로 VOC 가져오기</h3>';
+  h+='<div class="drop-zone" id="dropZone" onclick="document.getElementById(\'xlFile\').click()" ondrop="handleDrop(event)" ondragover="event.preventDefault();this.classList.add(\'drag\')" ondragleave="this.classList.remove(\'drag\')">';
+  h+='📂 Excel 파일을 드래그하거나 클릭하여 업로드<br><span style="font-size:11px;color:var(--sub)">.xlsx, .xls 지원</span>';
+  h+='<input type="file" id="xlFile" accept=".xlsx,.xls" style="display:none" onchange="handleXlFile(this)">';
+  h+='</div>';
+  h+='<div style="background:#f8fafc;border-radius:8px;padding:12px;font-size:11px;color:var(--sub)">';
+  h+='<b>Excel 형식 안내:</b><br>';
+  h+='열 순서: ID | 고객사 | L1 | L2 | 유형 | 제목 | 설명 | 상태 | 일정 | 담당자 | 비고<br>';
+  h+='첫 번째 행은 헤더로 인식합니다.';
+  h+='</div></div>';
+  return h;
+}
+
+// ─── MAIL TAB ───
+function renderMailTab(){
+  var h='<div style="max-width:600px;margin:20px auto">';
+  h+='<h3 style="margin-bottom:12px">✉️ 메일에서 VOC 추출</h3>';
+  h+='<p style="font-size:12px;color:var(--sub);margin-bottom:10px">메일 본문을 붙여넣으면 AI가 VOC 항목을 자동 추출합니다.</p>';
+  h+='<textarea class="mail-area" id="mailInput" placeholder="메일 내용을 여기에 붙여넣으세요...">'+esc(mailText)+'</textarea>';
+  h+='<button class="mail-btn" onclick="runMailAI()" '+(mailLoading?"disabled":"")+'>'+( mailLoading?"⏳ 분석 중...":"🤖 AI로 VOC 추출")+'</button>';
+
+  if(mailResults.length>0){
+    h+='<div style="margin-top:16px">';
+    h+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">';
+    h+='<span style="font-size:13px;font-weight:700">추출 결과 ('+mailSelected.size+'/'+mailResults.length+')</span>';
+    h+='<button class="mail-btn" onclick="importMailResults()" style="margin:0;padding:6px 14px"'+(mailSelected.size===0?' disabled':'')+'>대시보드에 추가</button>';
+    h+='</div>';
+    mailResults.forEach(function(v,i){
+      var sel=mailSelected.has(i);
+      h+='<div class="ext-card'+(sel?" sel":"")+'" onclick="toggleMailSel('+i+')">';
+      h+='<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">';
+      h+='<input type="checkbox" '+(sel?"checked":"")+'>';
+      h+='<span class="badge" style="background:#dbeafe;color:#1e40af">'+esc(v.customer||"미정")+'</span>';
+      h+='<span class="badge" style="background:#f1f5f9;color:#475569">'+esc(v.l1||"미정")+'</span>';
+      h+='<span style="font-size:12px;font-weight:600;flex:1">'+esc(v.title)+'</span>';
+      h+='</div>';
+      if(v.desc)h+='<div style="font-size:11px;color:#6b7280;margin-top:4px;margin-left:24px">'+esc(v.desc)+'</div>';
+      h+='</div>';
+    });
+    h+='</div>';
+  }
+  h+='</div>';
+  return h;
+}
+
+// ─── ACTIONS ───
+function clickStat(key){
+  if(key==="total"){filterStatus="";}
+  else{filterStatus=filterStatus===key?"":key;}
+  render();
+}
+function setMainTab(t){mainTab=t;render();}
+function setView(v){viewTab=v;render();}
+function clearFilters(){filterStatus="";filterCust="";filterL1="";filterType="";searchQ="";render();}
+
+function openEdit(id){
+  var item=data.find(function(d){return d.id===id;});
+  if(item){editItem=JSON.parse(JSON.stringify(item));render();}
+}
+function openAdd(){showAddModal=true;editItem=null;render();}
+function closeModal(e){if(e.target.classList.contains("modal-bg")){editItem=null;showAddModal=false;render();}}
+
+function onL1Change(){
+  var l1=document.getElementById("e-l1").value;
+  var sel=document.getElementById("e-l2");
+  var opts=L2_MAP[l1]||[""];
+  sel.innerHTML=opts.map(function(o){return '<option>'+esc(o)+'</option>';}).join("");
+}
+function onAddL1Change(){
+  var l1=document.getElementById("a-l1").value;
+  var sel=document.getElementById("a-l2");
+  var opts=L2_MAP[l1]||[""];
+  sel.innerHTML=opts.map(function(o){return '<option>'+esc(o)+'</option>';}).join("");
+}
+
+function saveEdit(id){
+  var idx=data.findIndex(function(d){return d.id===id;});
+  if(idx<0)return;
+  data[idx].customer=document.getElementById("e-cust").value.trim();
+  data[idx].l1=document.getElementById("e-l1").value;
+  data[idx].l2=document.getElementById("e-l2").value;
+  data[idx].type=document.getElementById("e-type").value;
+  data[idx].title=document.getElementById("e-title").value.trim();
+  data[idx].desc=document.getElementById("e-desc").value.trim();
+  data[idx].status=document.getElementById("e-status").value;
+  data[idx].due=document.getElementById("e-due").value;
+  data[idx].assignee=document.getElementById("e-assignee").value.trim();
+  data[idx].note=document.getElementById("e-note").value.trim();
+  data[idx].urgent=document.getElementById("e-urgent").checked;
+  editItem=null;dirty=true;
+  toast("✅ "+id+" 저장됨","ok");
+  render();
+}
+
+function saveAdd(){
+  var item={
+    id:nextId(),
+    customer:document.getElementById("a-cust").value.trim()||"미정",
+    l1:document.getElementById("a-l1").value,
+    l2:document.getElementById("a-l2").value,
+    type:document.getElementById("a-type").value,
+    title:document.getElementById("a-title").value.trim()||"제목 없음",
+    desc:document.getElementById("a-desc").value.trim(),
+    status:document.getElementById("a-status").value,
+    due:document.getElementById("a-due").value,
+    assignee:document.getElementById("a-assignee").value.trim(),
+    note:document.getElementById("a-note").value.trim(),
+    urgent:false
+  };
+  data.push(item);showAddModal=false;dirty=true;
+  toast("✅ "+item.id+" 추가됨","ok");
+  render();
+}
+
+function delItem(id){
+  if(!confirm(id+" 항목을 삭제하시겠습니까?"))return;
+  data=data.filter(function(d){return d.id!==id;});
+  editItem=null;dirty=true;
+  toast("🗑️ "+id+" 삭제됨","ok");
+  render();
+}
+
+function toggleUrgent(id){
+  var item=data.find(function(d){return d.id===id;});
+  if(item){item.urgent=!item.urgent;dirty=true;render();}
+}
+
+// ─── PUBLISH ───
+function doPublish(){
+  var json=JSON.stringify(data,null,2);
+  var blob=new Blob([json],{type:"application/json"});
+  var a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);a.download="data.json";
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+  dirty=false;
+  toast("📦 data.json 다운로드 완료! git push 하세요.","ok");
+  render();
+}
+
+// ─── EXCEL DOWNLOAD ───
+function dlExcel(){
+  var rows=[["ID","고객사","L1","L2","유형","제목","설명","상태","일정","담당자","비고","긴급"]];
+  data.forEach(function(d){
+    rows.push([d.id,d.customer,d.l1,d.l2,d.type,d.title,d.desc,d.status,d.due,d.assignee,d.note,d.urgent?"Y":""]);
+  });
+  var ws=XLSX.utils.aoa_to_sheet(rows);
+  ws["!cols"]=[{wch:10},{wch:10},{wch:14},{wch:14},{wch:6},{wch:25},{wch:35},{wch:7},{wch:9},{wch:8},{wch:20},{wch:5}];
+  var wb=XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb,ws,"VOC");
+  XLSX.writeFile(wb,"Spavy_VOC_"+new Date().toISOString().slice(0,10)+".xlsx");
+  toast("📥 Excel 다운로드 완료","ok");
+}
+
+// ─── PDF ───
+function dlPdf(){
+  var w=window.open("","","width=1000,height=700");
+  var h='<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Spavy VOC Report</title><style>';
+  h+='body{font-family:system-ui,sans-serif;padding:20px;font-size:11px;color:#334155}';
+  h+='h1{font-size:16px;margin-bottom:4px}';
+  h+='table{width:100%;border-collapse:collapse;margin-top:12px}';
+  h+='th{background:#f8fafc;padding:6px 4px;text-align:left;font-size:10px;border-bottom:2px solid #e2e8f0}';
+  h+='td{padding:5px 4px;border-bottom:1px solid #f1f5f9;font-size:10px}';
+  h+='</style></head><body>';
+  h+='<h1>Spavy VOC Report</h1><div style="color:#94a3b8;font-size:10px;margin-bottom:8px">생성: '+new Date().toLocaleString("ko-KR")+' · 총 '+data.length+'건</div>';
+  h+='<table><tr><th>ID</th><th>고객</th><th>L1</th><th>L2</th><th>유형</th><th>제목</th><th>상태</th><th>일정</th><th>담당</th></tr>';
+  data.forEach(function(d){
+    h+='<tr><td>'+esc(d.id)+'</td><td>'+esc(d.customer)+'</td><td>'+esc(d.l1)+'</td><td>'+esc(d.l2)+'</td><td>'+esc(d.type)+'</td><td>'+esc(d.title)+'</td><td>'+esc(d.status)+'</td><td>'+esc(d.due)+'</td><td>'+esc(d.assignee||"-")+'</td></tr>';
+  });
+  h+='</table></body></html>';
+  w.document.write(h);w.document.close();
+  setTimeout(function(){w.print();},500);
+}
+
+// ─── EXCEL UPLOAD ───
+function handleDrop(e){
+  e.preventDefault();e.target.classList.remove("drag");
+  var file=e.dataTransfer.files[0];
+  if(file)parseXl(file);
+}
+function handleXlFile(input){
+  if(input.files[0])parseXl(input.files[0]);
+}
+function parseXl(file){
+  var reader=new FileReader();
+  reader.onload=function(e){
+    try{
+      var wb=XLSX.read(e.target.result,{type:"array"});
+      var ws=wb.Sheets[wb.SheetNames[0]];
+      var rows=XLSX.utils.sheet_to_json(ws,{header:1});
+      if(rows.length<2){toast("❌ 데이터가 없습니다","err");return;}
+      var added=0;
+      for(var i=1;i<rows.length;i++){
+        var r=rows[i];if(!r||!r[5])continue;
+        data.push({
+          id:r[0]||nextId(),
+          customer:String(r[1]||"미정").trim(),
+          l1:String(r[2]||"Browser").trim(),
+          l2:String(r[3]||"").trim(),
+          type:String(r[4]||"신규").trim(),
+          title:String(r[5]||"").trim(),
+          desc:String(r[6]||"").trim(),
+          status:String(r[7]||"신규").trim(),
+          due:String(r[8]||"").trim(),
+          assignee:String(r[9]||"").trim(),
+          note:String(r[10]||"").trim(),
+          urgent:String(r[11]||"").toUpperCase()==="Y"
+        });
+        added++;
+      }
+      dirty=true;mainTab="dashboard";
+      toast("✅ "+added+"건 추가됨","ok");
+      render();
+    }catch(err){toast("❌ 파일 파싱 오류: "+err.message,"err");}
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+// ─── MAIL AI ───
+function runMailAI(){
+  var txt=document.getElementById("mailInput").value.trim();
+  if(!txt){toast("❌ 메일 내용을 붙여넣어 주세요","err");return;}
+  mailText=txt;mailLoading=true;mailResults=[];mailSelected=new Set();render();
+
+  var sysPrompt='You extract VOC items for Spavy (BIM/construction software). L1 products: '+L1_LIST.join(",")+'. Types: '+TYPES.join(",")+'. Return ONLY a JSON array, no markdown. Each item: {"customer":"","l1":"","l2":"","type":"","title":"Korean","desc":"Korean","status":"신규","due":"Q? 20??"}. If none found return [].';
+
+  fetch("https://api.anthropic.com/v1/messages",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:2000,system:sysPrompt,messages:[{role:"user",content:"다음 메일에서 VOC 항목을 추출해주세요:\n\n"+txt}]})
+  }).then(function(r){return r.json();}).then(function(d){
+    mailLoading=false;
+    try{
+      var text=d.content.map(function(c){return c.text||"";}).join("");
+      text=text.replace(/```json|```/g,"").trim();
+      mailResults=JSON.parse(text);
+      if(!Array.isArray(mailResults))mailResults=[];
+      mailResults.forEach(function(_,i){mailSelected.add(i);});
+      toast("✅ "+mailResults.length+"건 추출됨","ok");
+    }catch(e){toast("❌ AI 응답 파싱 실패","err");}
+    render();
+  }).catch(function(e){
+    mailLoading=false;toast("❌ API 오류: "+e.message,"err");render();
+  });
+}
+
+function toggleMailSel(i){
+  if(mailSelected.has(i))mailSelected.delete(i);else mailSelected.add(i);
+  render();
+}
+
+function importMailResults(){
+  var added=0;
+  mailResults.forEach(function(v,i){
+    if(!mailSelected.has(i))return;
+    data.push({
+      id:nextId(),
+      customer:v.customer||"미정",
+      l1:v.l1||"Browser",
+      l2:v.l2||"",
+      type:v.type||"신규",
+      title:v.title||"제목 없음",
+      desc:v.desc||"",
+      status:v.status||"신규",
+      due:v.due||"",
+      assignee:v.assignee||"",
+      note:v.note||"메일에서 추출",
+      urgent:false
+    });
+    added++;
+  });
+  mailResults=[];mailSelected=new Set();mainTab="dashboard";dirty=true;
+  toast("✅ "+added+"건 대시보드에 추가됨","ok");
+  render();
+}
+
+// ─── LOAD data.json ───
+function loadData(){
+  fetch("data.json").then(function(r){
+    if(!r.ok)throw new Error("no file");
+    return r.json();
+  }).then(function(d){
+    if(Array.isArray(d)&&d.length>0){
+      data=d.map(function(item){item.urgent=item.urgent||false;return item;});
+      render();
+    }
+  }).catch(function(){render();});
+}
+
+// ─── INIT ───
+loadData();
 </script>
 </body>
 </html>
