@@ -128,6 +128,7 @@ var L2_MAP = {
 var TYPES = ["신규","개선","버그","보안","인프라"];
 var STATUSES = ["신규","진행중","완료","대기","보류"];
 var QS = ["Q1 2026","Q2 2026","Q3 2026","Q4 2026","4월","5월","6월","7월","8월","9월","10월","11월","12월"];
+var CUSTOMERS = ["E&A","삼성물산","삼성전자","기타"];
 var TYPE_C = {"신규":"#7c3aed","개선":"#2563eb","버그":"#dc2626","보안":"#d97706","인프라":"#0891b2"};
 var STATUS_C = {"신규":"#7c3aed","진행중":"#d97706","완료":"#059669","대기":"#64748b","보류":"#dc2626"};
 
@@ -169,6 +170,8 @@ var mailText = "";
 var mailResults = [];
 var mailSelected = new Set();
 var mailLoading = false;
+
+var selectedIds = new Set();
 
 // ─── HELPERS ───
 function esc(s){return s?String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"):""}
@@ -252,7 +255,7 @@ function render(){
     h+='<div class="flt">';
     h+='<input type="text" placeholder="🔍 검색..." value="'+esc(searchQ)+'" oninput="searchQ=this.value;render()">';
     h+='<select onchange="filterCust=this.value;render()"><option value="">고객사 전체</option>';
-    custs.forEach(function(c){h+='<option'+(filterCust===c?' selected':'')+'>'+esc(c)+'</option>';});
+    CUSTOMERS.forEach(function(c){h+='<option'+(filterCust===c?' selected':'')+'>'+esc(c)+'</option>';});
     h+='</select>';
     h+='<select onchange="filterL1=this.value;render()"><option value="">L1 전체</option>';
     L1_LIST.forEach(function(l){h+='<option'+(filterL1===l?' selected':'')+'>'+esc(l)+'</option>';});
@@ -284,10 +287,13 @@ function render(){
 // ─── TABLE ───
 function renderTable(items,showUrgent){
   if(!items.length) return '<div class="empty">조건에 맞는 항목이 없습니다.</div>';
-  var h='<table><thead><tr><th style="width:30px"></th><th style="width:75px">ID</th><th>고객</th><th>L1</th><th>L2</th><th>유형</th><th style="max-width:220px">제목</th><th>상태</th><th>일정</th><th>담당</th><th style="width:30px"></th></tr></thead><tbody>';
+  var h='';
+  if(selectedIds.size>0)h+='<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;padding:8px 12px;background:#fee2e2;border-radius:8px;border:1px solid #fca5a5"><span style="font-size:12px;font-weight:600;color:#dc2626">'+selectedIds.size+'건 선택됨</span><button onclick="delSelected()" style="padding:4px 12px;border-radius:6px;border:1px solid #dc2626;background:#dc2626;color:#fff;font-size:11px;cursor:pointer;font-weight:600">🗑️ 선택 삭제</button><button onclick="selectedIds.clear();render()" style="padding:4px 10px;border-radius:6px;border:1px solid #d1d5db;background:#fff;font-size:11px;cursor:pointer">취소</button></div>';
+  h+='<table><thead><tr><th style="width:30px"><input type="checkbox" onchange="toggleAll(this.checked,\''+items.map(function(d){return d.id}).join(",")+'\')" '+( items.length>0&&items.every(function(d){return selectedIds.has(d.id)})?"checked":"")+'></th><th style="width:30px"></th><th style="width:75px">ID</th><th>고객</th><th>L1</th><th>L2</th><th>유형</th><th style="max-width:220px">제목</th><th>상태</th><th>일정</th><th>담당</th><th style="width:30px"></th></tr></thead><tbody>';
   items.forEach(function(d){
     var cls=showUrgent&&d.urgent?' class="urg-row"':'';
-    h+='<tr'+cls+' style="cursor:pointer">';
+    h+='<tr'+cls+' style="cursor:pointer;'+(selectedIds.has(d.id)?'background:#faf5ff':'')+'">';
+    h+='<td><input type="checkbox" '+(selectedIds.has(d.id)?'checked':'')+' onchange="toggleSel(\''+d.id+'\',this.checked)"></td>';
     h+='<td><button onclick="openEdit(\''+d.id+'\')" style="border:none;background:none;cursor:pointer;font-size:13px;padding:2px 4px;border-radius:4px;transition:.15s" onmouseover="this.style.background=\'#ede9fe\'" onmouseout="this.style.background=\'none\'" title="편집">✏️</button></td>';
     h+='<td style="font-family:monospace;font-size:11px;color:var(--sub)">'+esc(d.id)+'</td>';
     h+='<td><span class="badge" style="background:#dbeafe;color:#1e40af">'+esc(d.customer)+'</span></td>';
@@ -384,7 +390,9 @@ function renderEditModal(item){
   h+='<div class="modal" onclick="event.stopPropagation()">';
   h+='<h3>📝 VOC 편집 — '+esc(item.id)+'</h3>';
   h+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">';
-  h+='<div><label>고객사</label><input id="e-cust" value="'+esc(item.customer)+'"></div>';
+  h+='<div><label>고객사</label><select id="e-cust">';
+  CUSTOMERS.forEach(function(c){h+='<option'+(item.customer===c?" selected":"")+'>'+esc(c)+'</option>';});
+  h+='</select></div>';
   h+='<div><label>L1 제품</label><select id="e-l1" onchange="onL1Change()">';
   L1_LIST.forEach(function(l){h+='<option'+(item.l1===l?" selected":"")+'>'+esc(l)+'</option>';});
   h+='</select></div>';
@@ -421,7 +429,9 @@ function renderAddModal(){
   h+='<div class="modal" onclick="event.stopPropagation()">';
   h+='<h3>➕ 새 VOC 추가</h3>';
   h+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">';
-  h+='<div><label>고객사</label><input id="a-cust" placeholder="예: E&A"></div>';
+  h+='<div><label>고객사</label><select id="a-cust">';
+  CUSTOMERS.forEach(function(c){h+='<option>'+esc(c)+'</option>';});
+  h+='</select></div>';
   h+='<div><label>L1 제품</label><select id="a-l1" onchange="onAddL1Change()">';
   L1_LIST.forEach(function(l){h+='<option>'+esc(l)+'</option>';});
   h+='</select></div>';
@@ -551,7 +561,7 @@ function saveEdit(id){
 function saveAdd(){
   var item={
     id:nextId(),
-    customer:document.getElementById("a-cust").value.trim()||"미정",
+    customer:document.getElementById("a-cust").value,
     l1:document.getElementById("a-l1").value,
     l2:document.getElementById("a-l2").value,
     type:document.getElementById("a-type").value,
@@ -579,6 +589,22 @@ function delItem(id){
 function toggleUrgent(id){
   var item=data.find(function(d){return d.id===id;});
   if(item){item.urgent=!item.urgent;dirty=true;render();}
+}
+
+function toggleSel(id,checked){
+  if(checked)selectedIds.add(id);else selectedIds.delete(id);
+  render();
+}
+function toggleAll(checked,ids){
+  ids.split(",").forEach(function(id){if(checked)selectedIds.add(id);else selectedIds.delete(id);});
+  render();
+}
+function delSelected(){
+  if(!confirm(selectedIds.size+"건을 삭제하시겠습니까?"))return;
+  data=data.filter(function(d){return !selectedIds.has(d.id);});
+  var cnt=selectedIds.size;selectedIds.clear();dirty=true;
+  toast("🗑️ "+cnt+"건 삭제됨","ok");
+  render();
 }
 
 // ─── PUBLISH ───
