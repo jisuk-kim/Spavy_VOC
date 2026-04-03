@@ -111,7 +111,7 @@ tr:hover{background:#faf5ff}
 
 <script>
 // ─── CONFIG ───
-var L1_COLORS = {"Data Sync":"#534AB7","Spatial Studio":"#1D9E75","Data Studio":"#378ADD","Browser":"#D85A30","Ontology Sandbox":"#D4537E","BI":"#BA7517","Vizio":"#639922","360":"#85B7EB","Gaussian":"#888780"};
+var L1_COLORS = {"Data Sync":"#534AB7","Spatial Studio":"#1D9E75","Data Studio":"#378ADD","Browser":"#D85A30","Ontology Sandbox":"#D4537E","BI":"#BA7517","Vizio":"#639922","360":"#85B7EB","Gaussian":"#888780","API":"#E05D44"};
 var L1_LIST = Object.keys(L1_COLORS);
 var L2_MAP = {
   "Data Sync":[""],
@@ -122,11 +122,12 @@ var L2_MAP = {
   "BI":[""],
   "Vizio":[""],
   "360":[""],
-  "Gaussian":[""]
+  "Gaussian":[""],
+  "API":[""]
 };
 var TYPES = ["신규","개선","버그","보안","인프라"];
 var STATUSES = ["신규","진행중","완료","대기","보류"];
-var QS = ["Q1 2026","Q2 2026","Q3 2026","Q4 2026"];
+var QS = ["Q1 2026","Q2 2026","Q3 2026","Q4 2026","4월","5월","6월","7월","8월","9월","10월","11월","12월"];
 var TYPE_C = {"신규":"#7c3aed","개선":"#2563eb","버그":"#dc2626","보안":"#d97706","인프라":"#0891b2"};
 var STATUS_C = {"신규":"#7c3aed","진행중":"#d97706","완료":"#059669","대기":"#64748b","보류":"#dc2626"};
 
@@ -311,7 +312,7 @@ function renderTable(items,showUrgent){
 function renderTimeline(items){
   var months=["1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"];
   var now=new Date();var curM=now.getMonth();var curY=now.getFullYear();
-  var qMap={"Q1 2026":[2026,0,2],"Q2 2026":[2026,3,5],"Q3 2026":[2026,6,8],"Q4 2026":[2026,9,11]};
+  var qMap={"Q1 2026":[2026,0,2],"Q2 2026":[2026,3,5],"Q3 2026":[2026,6,8],"Q4 2026":[2026,9,11],"4월":[2026,3,3],"5월":[2026,4,4],"6월":[2026,5,5],"7월":[2026,6,6],"8월":[2026,7,7],"9월":[2026,8,8],"10월":[2026,9,9],"11월":[2026,10,10],"12월":[2026,11,11]};
   var dispMonths=[];
   for(var m=0;m<=11;m++){dispMonths.push({y:2026,m:m,label:(m+1)+"월"});}
 
