@@ -111,13 +111,13 @@ tr:hover{background:#faf5ff}
 
 <script>
 // ─── CONFIG ───
-var L1_COLORS = {"Data Sync":"#534AB7","Spatial Studio":"#1D9E75","Data Studio":"#378ADD","Browser":"#D85A30","Ontology Sandbox":"#D4537E","BI":"#BA7517","Vizio":"#639922","360":"#85B7EB","Gaussian":"#888780","API":"#E05D44","Infra":"#4A6FA5","Designer":"#C75DAB"};
+var L1_COLORS = {"Data Sync":"#534AB7","Spatial Studio":"#1D9E75","Data Studio":"#378ADD","Browser":"#D85A30","Ontology Sandbox":"#D4537E","BI":"#BA7517","Vizio":"#639922","360":"#85B7EB","Gaussian":"#888780","API":"#E05D44","Infra":"#4A6FA5","Designer":"#C75DAB","Admin":"#8B5E3C","PJT":"#2D9CDB","User":"#6C5CE7","Auth":"#E17055","Portal":"#00B894"};
 var L1_LIST = Object.keys(L1_COLORS);
 var L2_MAP = {
   "Data Sync":[""],
   "Spatial Studio":["Spatial Planning","Spatial Data Positioning","Point Cloud Segmentation","Clash","Space"],
   "Data Studio":["QuerySet","Tabular","Composite","Custom Tree"],
-  "Browser":["System Tree","Spatial Tree","Custom Tree","Spatial Data Tree","Export CD","Quick Space","Camera View","Saved Tab","Search Set","Camera Track","Text 3D","Scene","Dynamic Properties","Pin","Issue List","File List","Package List","Properties","Property Map","Dimension Editor","Viewer","Contents Viewer","Search Anything"],
+  "Browser":["System Tree","Spatial Tree","Custom Tree","Spatial Data Tree","Export CD","Quick Space","Camera View","Saved Tab","Search Set","Camera Track","Text 3D","Scene","Dynamic Properties","Pin","Issue List","File List","Package List","Properties","Property Map","Dimension Editor","Viewer","Contents Viewer","Search Anything","Spavy Dock","FPL"],
   "Ontology Sandbox":[""],
   "BI":[""],
   "Vizio":[""],
@@ -125,7 +125,12 @@ var L2_MAP = {
   "Gaussian":[""],
   "API":[""],
   "Infra":["서버","DB","네트워크","배포","보안","모니터링"],
-  "Designer":[""]
+  "Designer":[""],
+  "Admin":["권한관리","시스템설정","라이선스","로그관리","백업"],
+  "PJT":["프로젝트 생성","프로젝트 설정","템플릿","마이그레이션"],
+  "User":["사용자관리","그룹관리","프로필","알림설정"],
+  "Auth":["로그인","SSO","MFA","세션"],
+  "Portal":["대시보드","공지","가이드","FAQ"]
 };
 var TYPES = ["신규","개선","버그","보안","인프라"];
 var STATUSES = ["신규","진행중","완료","대기","보류"];
