@@ -481,9 +481,9 @@ function renderExcelTab(){
 function renderMailTab(){
   var h='<div style="max-width:600px;margin:20px auto">';
   h+='<h3 style="margin-bottom:12px">✉️ 메일에서 VOC 추출</h3>';
-  h+='<p style="font-size:12px;color:var(--sub);margin-bottom:10px">메일 본문을 붙여넣으면 AI가 VOC 항목을 자동 추출합니다.</p>';
+  h+='<p style="font-size:12px;color:var(--sub);margin-bottom:10px">메일 본문을 붙여넣으면 자동으로 VOC 항목을 추출합니다. (고객사·제품·유형 자동 감지)</p>';
   h+='<textarea class="mail-area" id="mailInput" placeholder="메일 내용을 여기에 붙여넣으세요...">'+esc(mailText)+'</textarea>';
-  h+='<button class="mail-btn" onclick="runMailAI()" '+(mailLoading?"disabled":"")+'>'+( mailLoading?"⏳ 분석 중...":"🤖 AI로 VOC 추출")+'</button>';
+  h+='<button class="mail-btn" onclick="runMailAI()">🔍 VOC 추출</button>';
 
   if(mailResults.length>0){
     h+='<div style="margin-top:16px">';
@@ -697,32 +697,91 @@ function parseXl(file){
   reader.readAsArrayBuffer(file);
 }
 
-// ─── MAIL AI ───
+// ─── MAIL AI (로컬 파싱) ───
 function runMailAI(){
   var txt=document.getElementById("mailInput").value.trim();
   if(!txt){toast("❌ 메일 내용을 붙여넣어 주세요","err");return;}
-  mailText=txt;mailLoading=true;mailResults=[];mailSelected=new Set();render();
+  mailText=txt;mailResults=[];mailSelected=new Set();
 
-  var sysPrompt='You extract VOC items for Spavy (BIM/construction software). L1 products: '+L1_LIST.join(",")+'. Types: '+TYPES.join(",")+'. Return ONLY a JSON array, no markdown. Each item: {"customer":"","l1":"","l2":"","type":"","title":"Korean","desc":"Korean","status":"신규","due":"Q? 20??"}. If none found return [].';
+  // 고객사 감지
+  var detCust="기타";
+  if(/e&a|이앤에이|E&A|ea /i.test(txt))detCust="E&A";
+  else if(/삼성물산|물산/i.test(txt))detCust="삼성물산";
+  else if(/삼성전자|전자/i.test(txt))detCust="삼성전자";
 
-  fetch("https://api.anthropic.com/v1/messages",{
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:2000,system:sysPrompt,messages:[{role:"user",content:"다음 메일에서 VOC 항목을 추출해주세요:\n\n"+txt}]})
-  }).then(function(r){return r.json();}).then(function(d){
-    mailLoading=false;
-    try{
-      var text=d.content.map(function(c){return c.text||"";}).join("");
-      text=text.replace(/```json|```/g,"").trim();
-      mailResults=JSON.parse(text);
-      if(!Array.isArray(mailResults))mailResults=[];
-      mailResults.forEach(function(_,i){mailSelected.add(i);});
-      toast("✅ "+mailResults.length+"건 추출됨","ok");
-    }catch(e){toast("❌ AI 응답 파싱 실패","err");}
-    render();
-  }).catch(function(e){
-    mailLoading=false;toast("❌ API 오류: "+e.message,"err");render();
+  // L1 감지 맵
+  var l1Keys=[
+    {re:/data\s*sync|동기화|sync/i,l1:"Data Sync"},
+    {re:/spatial\s*studio|planning|positioning|pcs|clash|space/i,l1:"Spatial Studio"},
+    {re:/data\s*studio|queryset|tabular|composite/i,l1:"Data Studio"},
+    {re:/ontology|sandbox/i,l1:"Ontology Sandbox"},
+    {re:/\bBI\b|PBI|리포트|report|대시보드/i,l1:"BI"},
+    {re:/vizio|비지오/i,l1:"Vizio"},
+    {re:/\b360\b/i,l1:"360"},
+    {re:/gaussian|가우시안/i,l1:"Gaussian"},
+    {re:/\bAPI\b|api\b/i,l1:"API"}
+  ];
+
+  // 유형 감지
+  function detType(s){
+    if(/버그|bug|오류|에러|error|문제|안됨|안 됨|작동.*않|crash/i.test(s))return "버그";
+    if(/보안|security|암호화|인증|권한/i.test(s))return "보안";
+    if(/인프라|infra|서버|성능|속도|배포/i.test(s))return "인프라";
+    if(/신규|new|추가|생성|만들어|새로운|새 기능/i.test(s))return "신규";
+    return "개선";
+  }
+
+  // 줄 단위 파싱 — 각 줄/문장을 VOC 후보로
+  var lines=txt.split(/[\n\r]+/).map(function(l){return l.trim();}).filter(function(l){
+    return l.length>5 && !/^(from|to|cc|bcc|subject|date|sent|받는|보내는|보낸|참조|날짜|제목)[\s:：]/i.test(l)
+      && !/^[-=_]{3,}/.test(l) && !/^(안녕|감사|수고|확인|부탁|드립니다|합니다)/.test(l)
+      && !/^(hi|hello|dear|thanks|regards|best|sincerely)/i.test(l);
   });
+
+  // 번호 매기기 패턴 감지 (1. 또는 - 또는 · 등)
+  var numbered=lines.filter(function(l){return /^[\d]+[\.\)]\s|^[-·•]\s|^[①②③④⑤⑥⑦⑧⑨⑩]/.test(l);});
+  var candidates=numbered.length>=2?numbered:lines;
+
+  // 중복 제거 및 의미 있는 항목만
+  var seen=new Set();
+  candidates.forEach(function(line){
+    var clean=line.replace(/^[\d]+[\.\)]\s*|^[-·•]\s*|^[①②③④⑤⑥⑦⑧⑨⑩]\s*/,"").trim();
+    if(clean.length<4||seen.has(clean.substring(0,20)))return;
+    seen.add(clean.substring(0,20));
+
+    // L1 감지
+    var detL1="Browser";
+    for(var i=0;i<l1Keys.length;i++){if(l1Keys[i].re.test(clean)){detL1=l1Keys[i].l1;break;}}
+
+    var title=clean.length>40?clean.substring(0,40)+"...":clean;
+    var desc=clean.length>40?clean:""  ;
+
+    mailResults.push({
+      customer:detCust,
+      l1:detL1,
+      l2:"",
+      type:detType(clean),
+      title:title,
+      desc:desc,
+      status:"신규",
+      due:""
+    });
+  });
+
+  if(mailResults.length===0){
+    // 전체 텍스트를 하나의 VOC로
+    var allText=lines.join(" ").substring(0,200);
+    if(allText.length>4){
+      mailResults.push({
+        customer:detCust,l1:"Browser",l2:"",type:detType(allText),
+        title:allText.substring(0,40),desc:allText,status:"신규",due:""
+      });
+    }
+  }
+
+  mailResults.forEach(function(_,i){mailSelected.add(i);});
+  toast("✅ "+mailResults.length+"건 추출됨 — 확인 후 선택하세요","ok");
+  render();
 }
 
 function toggleMailSel(i){
