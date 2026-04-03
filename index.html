@@ -111,7 +111,7 @@ tr:hover{background:#faf5ff}
 
 <script>
 // ─── CONFIG ───
-var L1_COLORS = {"Data Sync":"#534AB7","Spatial Studio":"#1D9E75","Data Studio":"#378ADD","Browser":"#D85A30","Ontology Sandbox":"#D4537E","BI":"#BA7517","Vizio":"#639922","360":"#85B7EB","Gaussian":"#888780","API":"#E05D44"};
+var L1_COLORS = {"Data Sync":"#534AB7","Spatial Studio":"#1D9E75","Data Studio":"#378ADD","Browser":"#D85A30","Ontology Sandbox":"#D4537E","BI":"#BA7517","Vizio":"#639922","360":"#85B7EB","Gaussian":"#888780","API":"#E05D44","Infra":"#4A6FA5"};
 var L1_LIST = Object.keys(L1_COLORS);
 var L2_MAP = {
   "Data Sync":[""],
@@ -123,7 +123,8 @@ var L2_MAP = {
   "Vizio":[""],
   "360":[""],
   "Gaussian":[""],
-  "API":[""]
+  "API":[""],
+  "Infra":["서버","DB","네트워크","배포","보안","모니터링"]
 };
 var TYPES = ["신규","개선","버그","보안","인프라"];
 var STATUSES = ["신규","진행중","완료","대기","보류"];
@@ -161,6 +162,7 @@ var filterL1 = "";
 var filterType = "";
 var searchQ = "";
 var editItem = null;
+var expandedId = null;
 var showAddModal = false;
 var dirty = false;
 var toastMsg = "";
@@ -277,8 +279,7 @@ function render(){
     h+=renderMailTab();
   }
 
-  // Edit modal
-  if(editItem) h+=renderEditModal(editItem);
+  // Add modal only
   if(showAddModal) h+=renderAddModal();
 
   app.innerHTML=h;
@@ -519,12 +520,36 @@ function setMainTab(t){mainTab=t;render();}
 function setView(v){viewTab=v;render();}
 function clearFilters(){filterStatus="";filterCust="";filterL1="";filterType="";searchQ="";render();}
 
-function openEdit(id){
-  var item=data.find(function(d){return d.id===id;});
-  if(item){editItem=JSON.parse(JSON.stringify(item));render();}
+function openEdit(id){expandedId=expandedId===id?null:id;render();}
+function toggleExpand(id){expandedId=expandedId===id?null:id;render();}
+function openAdd(){showAddModal=true;expandedId=null;render();}
+function closeModal(e){if(e.target.classList.contains("modal-bg")){expandedId=null;showAddModal=false;render();}}
+
+function onExpandL1Change(){
+  var l1=document.getElementById("x-l1").value;
+  var sel=document.getElementById("x-l2");
+  var opts=L2_MAP[l1]||[""];
+  sel.innerHTML='<option value="">(없음)</option>'+opts.filter(function(o){return o;}).map(function(o){return '<option>'+esc(o)+'</option>';}).join("");
 }
-function openAdd(){showAddModal=true;editItem=null;render();}
-function closeModal(e){if(e.target.classList.contains("modal-bg")){editItem=null;showAddModal=false;render();}}
+
+function saveExpand(id){
+  var idx=data.findIndex(function(d){return d.id===id;});
+  if(idx<0)return;
+  data[idx].title=document.getElementById("x-title").value.trim();
+  data[idx].customer=document.getElementById("x-cust").value;
+  data[idx].desc=document.getElementById("x-desc").value.trim();
+  data[idx].l1=document.getElementById("x-l1").value;
+  data[idx].l2=document.getElementById("x-l2").value;
+  data[idx].type=document.getElementById("x-type").value;
+  data[idx].status=document.getElementById("x-status").value;
+  data[idx].due=document.getElementById("x-due").value;
+  data[idx].assignee=document.getElementById("x-assignee").value.trim();
+  data[idx].note=document.getElementById("x-note").value.trim();
+  data[idx].urgent=document.getElementById("x-urgent").checked;
+  expandedId=null;dirty=true;
+  toast("✅ "+id+" 저장됨","ok");
+  render();
+}
 
 function onL1Change(){
   var l1=document.getElementById("e-l1").value;
