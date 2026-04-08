@@ -179,7 +179,7 @@
     "due": "Q2 2026",
     "assignee": "",
     "note": "",
-    "urgent": true
+    "urgent": false
   },
   {
     "id": "VOC-0014",
@@ -511,10 +511,10 @@
     "type": "개선",
     "title": "Quick Space Top/Bottom 선택 개선",
     "desc": "- Crop Control처럼 눈으로 보면서 조정하는 기능 추가",
-    "status": "대기",
+    "status": "완료",
     "due": "4월",
     "assignee": "염용주",
-    "note": "3월 내",
+    "note": "4월6일배포",
     "urgent": false
   },
   {
@@ -597,7 +597,7 @@
     "desc": "보여주는 이름 부여(Alias)",
     "status": "대기",
     "due": "",
-    "assignee": "",
+    "assignee": "김준우",
     "note": "스페셜 플래닝 적용 후 재협의 필요",
     "urgent": false
   },
@@ -662,13 +662,69 @@
     "customer": "삼성물산",
     "l1": "Data Sync",
     "l2": "",
-    "type": "신규",
+    "type": "개선",
     "title": "컬럼 순서 개선 요청",
     "desc": "Progress → File Name → Revision → File Size → Acquisition Date 순으로 정렬",
     "status": "진행중",
     "due": "4월",
-    "assignee": "?",
+    "assignee": "김세희",
+    "note": "4/10 개발완료 계획",
+    "urgent": false
+  },
+  {
+    "id": "VOC-0034",
+    "customer": "삼성물산",
+    "l1": "Data Sync",
+    "l2": "",
+    "type": "개선",
+    "title": "Sync 시 필요정보 일괄 입력/수정",
+    "desc": "- Transform Set, Acquisition Date 등 입력값 일괄 입력/수정 기능 필요\n- 수정 가능한 항목을 좌측으로 배치 → Acquisition Date를 Transformation 다음 위치로 이동\n- Revit 파일의 경우, 뷰어에 \"Set Revit Position\" 기능 추가",
+    "status": "진행중",
+    "due": "4월",
+    "assignee": "김세희",
+    "note": "메일로 요청",
+    "urgent": false
+  },
+  {
+    "id": "VOC-0035",
+    "customer": "삼성물산",
+    "l1": "Spatial Studio",
+    "l2": "Spatial Data Positioning",
+    "type": "신규",
+    "title": "Revit Position 변경",
+    "desc": "Revit Position 변경 \n → 좌측 Tree에서 Base Point 메뉴를 부르고 \n → 해당 Tree(또는 폴더) 전체 rvt 파일을 일괄 변경 가능하도록 수정",
+    "status": "신규",
+    "due": "4월",
+    "assignee": "김행운",
+    "note": "메일로 요청",
+    "urgent": false
+  },
+  {
+    "id": "VOC-0036",
+    "customer": "삼성물산",
+    "l1": "Spatial Studio",
+    "l2": "",
+    "type": "개선",
+    "title": "Transform Set 접근방법 및 내부값 수정 가능하도록 요청",
+    "desc": "별도의 Transform Set 관리화면으로 접근하는 방법 추가\nTransform 내부 값 Key-in 방식 수정 기능 필요 (예: 수치 직접 변경) + Duplicate 기능",
+    "status": "대기",
+    "due": "4월",
+    "assignee": "김행운",
     "note": "",
+    "urgent": false
+  },
+  {
+    "id": "VOC-0037",
+    "customer": "삼성물산",
+    "l1": "360",
+    "l2": "",
+    "type": "버그",
+    "title": "360 이미지 버블이 사라짐",
+    "desc": "현상 : 아래와 같이 형태(PCD 좌, 360이미지 우) 로 Scene 저장 후 Scene을 로드하면 360 이미지 버블이 사라짐",
+    "status": "대기",
+    "due": "4월",
+    "assignee": "윤덕현",
+    "note": "메일에서 추출",
     "urgent": false
   }
 ]
