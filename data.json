@@ -53,7 +53,7 @@
     "due": "Q1 2026",
     "assignee": "",
     "note": "",
-    "urgent": true
+    "urgent": false
   },
   {
     "id": "VOC-0005",
@@ -594,12 +594,12 @@
     "l2": "",
     "type": "개선",
     "title": "파일명 외 보여주는 이름 정의 필요",
-    "desc": "보여주는 이름 부여(Alias)",
+    "desc": "보여주는 이름 부여(Alias)\nAlias Name 기능 개선 필요 \n → File List의 추가 항목들이 Sync 입력 컬럼과 연동되도록 구조 개선 필요",
     "status": "대기",
     "due": "",
     "assignee": "김준우",
     "note": "스페셜 플래닝 적용 후 재협의 필요",
-    "urgent": false
+    "urgent": true
   },
   {
     "id": "VOC-0029",
