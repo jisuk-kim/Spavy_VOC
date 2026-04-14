@@ -148,7 +148,7 @@
     "title": "PJT 데이터 Export",
     "desc": "- PJT 데이터 Export, 백업, Import, Offline 뷰어 제공 등 - 프로젝트 데이터 Export - 배포완료 (피드백 확인 필요)- Offline 뷰어 하반기 진행",
     "status": "완료",
-    "due": "Q1 2026",
+    "due": "3월",
     "assignee": "여태기",
     "note": "",
     "urgent": false
@@ -176,7 +176,7 @@
     "title": "DB 암호화",
     "desc": "Database 암호화 적용",
     "status": "대기",
-    "due": "Q2 2026",
+    "due": "6월",
     "assignee": "",
     "note": "",
     "urgent": false
@@ -246,7 +246,7 @@
     "title": "장비배치기능",
     "desc": "- Browser에서 장비(오브젝트)를 움직여보고, 측정 - 사전에 오브젝트의 크기, 방향, 회전 방향을 정의하거나, 한데 묶인 모델들을 분리하여 1개 객체로 분리하는 등 사전에 오브젝트를 편집, 관리할 수 있는 기능(Catalog Management 개편)",
     "status": "대기",
-    "due": "Q2 2026",
+    "due": "6월",
     "assignee": "김행운",
     "note": "- 2분기 - 1차 구현 (객체의 회전 반경 및 가동 범위 제어를 위한 중심점(Origin) 및 관절(Joint) 구조 제외) - 3분기 - 완료",
     "urgent": false
@@ -302,7 +302,7 @@
     "title": "데이터 수용 고도화 - 360",
     "desc": "- 360 이미지 가시화 관련 UX 적인 이슈 해결 . Bubble 클릭시 360 이미지가 별도 질문 없이 바로 변경 . FOV 불일치 문제 (PCD, 3DGS 공통 이슈)",
     "status": "진행중",
-    "due": "Q2 2026",
+    "due": "4월",
     "assignee": "윤덕현",
     "note": "- Bubble 클릭 동작 옵션 제공: 이미지 즉시 변경 또는 사용자 선택 변경 설정 (매뉴얼 하단 참조- https://samin.gitbook.io/spavy/tutorial/browser/contents-view/spavy-dock) - FOV 불일치 이슈 해결을 위해 Z축 고정 및 카메라 이동 기준 적용(3월) - 기타 오류 사항 점검 및 부자연스러",
     "urgent": false
@@ -330,7 +330,7 @@
     "title": "Spatial Planning",
     "desc": "- 층별 기준정보 세팅의 중요한 부분으로 판단하고 있으며, 특히 PCD 데이터를 층별로 사전 Segmentation 하는 부분을 꼭 포함 시켜 주시기 바랍니다. . 목적1 : 해당 층의 RC데이터 유무를 메타데이터로 갖고 있음 . 목적2 : PCD를 층별로 가시화함으로써 로딩 속도 개선 및 PCD 면 뒤쪽의 멀리있는 Point를 스냅하는 문제 해결 - 층",
     "status": "진행중",
-    "due": "Q2 2026",
+    "due": "6월",
     "assignee": "염용주",
     "note": "- [3월 3~4주] Spatial Planning 개편안 1차 배포 및 피드백 수집 - [2분기 완료] 목적 1, 목적 2 관련 내용 구현 - [3분기 완료] 층 기준 정보 적용 목표",
     "urgent": false
@@ -358,8 +358,8 @@
     "title": "Scene을 템플릿으로 활용하여 동적 서비스 화면 구성",
     "desc": "- URL 파라미터로 Scene Loading 및 객체 Selection - 사용예 : 좌측 3D Model, 우측 RC 데이터 형태로 계획대비 실적을 비교하는 기능 구현. . 좌측 3D 모델 : 대상 3D 객체가 Selection 되어 X-Ray & Zoom . 우측 RC : 화면이 Sync되어 해당 객체에 대한 RC데이터 가시화 (추후 Spatial P",
     "status": "대기",
-    "due": "Q2 2026",
-    "assignee": "",
+    "due": "6월",
+    "assignee": "김준우",
     "note": "- 구현 검토: 기술적 문제 없음 (2분기) - 향후 계획: 프로토타입 정의 필요. 물산의 구체적 일정 요청시 작업 착수",
     "urgent": false
   },
@@ -386,7 +386,7 @@
     "title": "동적 메타데이터",
     "desc": "- 최신 RC 데이터라는 Metadata - Spatial Planning과 엮여서 해당 위치에서의 최신 RC 데이터를 찾는 로직",
     "status": "대기",
-    "due": "Q2 2026",
+    "due": "6월",
     "assignee": "",
     "note": "스페셜 플래닝 자료구조를 활용한 다양한 기능 개발 에정 - 2분기",
     "urgent": false
@@ -400,7 +400,7 @@
     "title": "Grid 표시",
     "desc": "- 층별 그리드를 정의하고, 표시하는 기능 (On/Off 가능 - Spavy Dock에 넣으면? - Grid 번호는 화면 줌인/줌아웃시 항상 화면 안에서 표시되도록 자동 조정",
     "status": "대기",
-    "due": "Q2 2026",
+    "due": "6월",
     "assignee": "염용주",
     "note": "2분기 내 적용",
     "urgent": false
@@ -456,7 +456,7 @@
     "title": "PBI 컬러 코드에 투명도 포함",
     "desc": "- '3D 모델에서 내부 객체의 색상 변경시 확인이 불가함 - 가시성을 높이도록 색상이 적용되지 않거나 사용자가 의도적으로 선택한 객체를 투명하게 변경하도록 함",
     "status": "완료",
-    "due": "Q3 2026",
+    "due": "3월",
     "assignee": "장나겸",
     "note": "3월 내",
     "urgent": false
@@ -526,7 +526,7 @@
     "title": "View Sync 기능 추가",
     "desc": "화면 내 Tab 들을 한번에 Sync 하는 기능 추가(별도 질문 없이 원터치로)",
     "status": "완료",
-    "due": "Q1 2026",
+    "due": "3월",
     "assignee": "장나겸",
     "note": "테스트 후 배포 예정(3월)",
     "urgent": false
@@ -554,7 +554,7 @@
     "title": "PBI 전용 Data List Tree 필요",
     "desc": "",
     "status": "대기",
-    "due": "Q2 2026",
+    "due": "6월",
     "assignee": "장나겸, 강경완",
     "note": "마이트리 기능 추가 후 재협의 필요",
     "urgent": false
@@ -624,7 +624,7 @@
     "title": "Revit 2026 연동",
     "desc": "",
     "status": "신규",
-    "due": "Q2 2026",
+    "due": "6월",
     "assignee": "하남국",
     "note": "",
     "urgent": false
