@@ -49,6 +49,9 @@ body{font-family:'IBM Plex Sans KR','Segoe UI',sans-serif;background:var(--bg);c
 .filter-chips{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
 .filter-group{display:flex;gap:4px;align-items:center;flex-wrap:wrap}
 .filter-group-label{font-size:10px;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-right:2px}
+.filter-select{padding:6px 28px 6px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg-card);color:var(--text);font-size:12px;font-family:inherit;cursor:pointer;outline:none;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%239ca3b4'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;transition:border-color .15s}
+.filter-select:focus{border-color:var(--border-focus)}
+.filter-select:hover{border-color:var(--text-dim)}
 .chip{font-size:11px;font-weight:500;padding:5px 10px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--text-dim);cursor:pointer;transition:all .15s;white-space:nowrap}
 .chip:hover{border-color:var(--text-dim);color:var(--text)}
 .chip.active{border-color:var(--accent);background:var(--accent-glow);color:var(--accent)}
@@ -311,7 +314,13 @@ var INIT_DATA=[
 
 var data=JSON.parse(JSON.stringify(INIT_DATA)),mainTab="dashboard",searchText="",filterStatus="",filterType="",filterL1="",filterCustomer="",qfDelayed=false,qfProgress=false,qfUrgent=false,sortCol="",sortDir="asc",editItem=null,mailText="",extractedItems=[],isComposing=false,ganttColorBy="status";
 function today(){return new Date().toISOString().slice(0,10)}
-function isDelayed(i){return i.status!=="완료"&&i.due&&i.due<today()}
+function isDelayed(i){
+  if(i.status==="완료"||!i.due)return false;
+  var dp=pM(i.due);if(!dp)return false;
+  var now=new Date(),endM=dp.me!==undefined?dp.me:dp.m;
+  var dueEnd=new Date(dp.y,endM+1,0);// last day of end month
+  return now>dueEnd;
+}
 function isIP(i){return i.status==="진행중"}
 function cntS(s){return data.filter(function(d){return d.status===s}).length}
 function cntT(t){return data.filter(function(d){return d.type===t}).length}
@@ -331,7 +340,22 @@ function clearAll(){searchText="";filterStatus="";filterType="";filterL1="";filt
 var MN=["1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"];
 var SBC={"신규":"#7c3aed","진행중":"#d97706","완료":"#16a34a","대기":"#4b6584","보류":"#dc2626"};
 var CBC={"E&A":"#2563eb","삼성물산":"#dc2626","삼성전자":"#7c3aed","기타":"#d97706"};
-function pM(d){if(!d)return null;var p=d.split("-");return p.length<2?null:{y:+p[0],m:+p[1]-1}}
+function pM(d){
+  if(!d)return null;
+  d=d.trim();
+  // "YYYY-MM-DD" or "YYYY-MM"
+  if(/^\d{4}-\d{2}/.test(d)){var p=d.split("-");return{y:+p[0],m:+p[1]-1,ms:+p[1]-1,me:+p[1]-1}}
+  // "Q1 2026" or "Q1"
+  var qm=d.match(/Q(\d)\s*(\d{4})?/i);
+  if(qm){var q=+qm[1],yr=qm[2]?+qm[2]:new Date().getFullYear();var s=(q-1)*3;return{y:yr,m:s+1,ms:s,me:s+2}}
+  // "1분기" or "2분기"
+  var bm=d.match(/(\d)분기/);
+  if(bm){var q2=+bm[1],yr2=new Date().getFullYear();var s2=(q2-1)*3;return{y:yr2,m:s2+1,ms:s2,me:s2+2}}
+  // "4월" or "12월"
+  var mm=d.match(/(\d{1,2})월/);
+  if(mm){return{y:new Date().getFullYear(),m:+mm[1]-1,ms:+mm[1]-1,me:+mm[1]-1}}
+  return null;
+}
 function renderTL(items){
   var now=new Date(),sY=now.getFullYear(),tot=18,tMI=now.getMonth(),tDF=now.getDate()/new Date(now.getFullYear(),now.getMonth()+1,0).getDate();
   var ti=items.filter(function(d){return d.due}).slice().sort(function(a,b){return a.due<b.due?-1:a.due>b.due?1:0});
@@ -351,7 +375,7 @@ function renderTL(items){
     h+='<tr class="gg"><td class="lc" colspan="'+(tot+1)+'"><span class="gn">'+eH(l1)+'</span><span class="gnc">'+gi.length+'건</span></td></tr>';
     gi.forEach(function(item){
       var dp=pM(item.due);if(!dp)return;
-      var dmi=(dp.y-sY)*12+dp.m,bs=Math.max(0,dmi-2),be=Math.min(tot-1,dmi),dl=isDelayed(item);
+      var dms=(dp.y-sY)*12+dp.ms,dme=(dp.y-sY)*12+dp.me,bs=Math.max(0,dms),be=Math.min(tot-1,dme),dl=isDelayed(item);
       var bc=ganttColorBy==="status"?(SBC[item.status]||"#6b7280"):(CBC[item.customer]||"#6b7280");
       h+='<tr><td class="lc"><span class="gi">'+item.id+'</span><span class="gti">'+eH(item.title)+'</span>';
       if(dl)h+='<span class="delay-tag">지연</span>';if(item.urgent)h+='<span class="urgent-flag">🔥</span>';
@@ -408,13 +432,23 @@ function renderBody(){
   h+='<button class="qf-btn qf-progress'+(qfProgress?" active":"")+'" onclick="qfProgress=!qfProgress;if(qfProgress){qfDelayed=qfUrgent=false}renderBody()">🟡 진행중 <strong>'+ipCnt+'</strong></button>';
   h+='<button class="qf-btn qf-urgent'+(qfUrgent?" active":"")+'" onclick="qfUrgent=!qfUrgent;if(qfUrgent){qfDelayed=qfProgress=false}renderBody()">🔥 긴급 <strong>'+ugCnt+'</strong></button>';
   if(qfDelayed||qfProgress||qfUrgent||filterStatus||filterType||filterL1||filterCustomer||searchText)h+='<button class="qf-btn" onclick="clearAll()" style="border-color:var(--red);color:var(--red)">✕ 초기화</button>';
-  h+='</div><div class="filter-chips" style="margin-bottom:14px"><div class="filter-group"><span class="filter-group-label">유형</span>';
-  TYPES.forEach(function(t){h+='<button class="chip'+(filterType===t?" active":"")+'" onclick="filterType=filterType===\''+t+'\'?\'\':\''+t+'\';renderBody()">'+t+'<span class="chip-cnt">'+cntT(t)+'</span></button>'});
-  h+='</div><div class="divider"></div><div class="filter-group"><span class="filter-group-label">제품</span>';
-  L1S.forEach(function(l){var c=data.filter(function(d){return d.l1===l}).length;if(c)h+='<button class="chip'+(filterL1===l?" active":"")+'" onclick="filterL1=filterL1===\''+eA(l)+'\'?\'\':\''+eA(l)+'\';renderBody()">'+l+'<span class="chip-cnt">'+c+'</span></button>'});
-  h+='</div><div class="divider"></div><div class="filter-group"><span class="filter-group-label">고객</span>';
-  CUSTS.forEach(function(c){var n=data.filter(function(d){return d.customer===c}).length;if(n)h+='<button class="chip'+(filterCustomer===c?" active":"")+'" onclick="filterCustomer=filterCustomer===\''+eA(c)+'\'?\'\':\''+eA(c)+'\';renderBody()">'+c+'<span class="chip-cnt">'+n+'</span></button>'});
-  h+='</div></div>';
+  h+='</div><div class="filter-chips" style="margin-bottom:14px">';
+  // Type dropdown
+  h+='<div class="filter-group"><span class="filter-group-label">유형</span>';
+  h+='<select class="filter-select" onchange="filterType=this.value;renderBody()"><option value="">전체</option>';
+  TYPES.forEach(function(t){h+='<option value="'+t+'"'+(filterType===t?' selected':'')+'>'+t+' ('+cntT(t)+')</option>'});
+  h+='</select></div>';
+  // L1 dropdown
+  h+='<div class="filter-group"><span class="filter-group-label">제품</span>';
+  h+='<select class="filter-select" onchange="filterL1=this.value;renderBody()"><option value="">전체</option>';
+  L1S.forEach(function(l){var c=data.filter(function(d){return d.l1===l}).length;if(c)h+='<option value="'+eA(l)+'"'+(filterL1===l?' selected':'')+'>'+l+' ('+c+')</option>'});
+  h+='</select></div>';
+  // Customer dropdown
+  h+='<div class="filter-group"><span class="filter-group-label">고객</span>';
+  h+='<select class="filter-select" onchange="filterCustomer=this.value;renderBody()"><option value="">전체</option>';
+  CUSTS.forEach(function(c){var n=data.filter(function(d){return d.customer===c}).length;if(n)h+='<option value="'+eA(c)+'"'+(filterCustomer===c?' selected':'')+'>'+c+' ('+n+')</option>'});
+  h+='</select></div>';
+  h+='</div>';
   h+='<div class="table-wrap"><div class="table-header"><span class="count">결과 <strong>'+filtered.length+'</strong>/'+data.length+'건</span></div>';
   if(!filtered.length)h+='<div class="empty-state"><div class="icon">📭</div><div class="msg">조건에 맞는 VOC 없음</div></div>';
   else{h+='<div style="overflow-x:auto"><table><thead><tr>';
