@@ -700,6 +700,7 @@
     "urgent": false
   },
   {
+    "id": "VOC-0051",
     "customer": "기타",
     "l1": "Project List",
     "l2": "",
@@ -710,10 +711,10 @@
     "due": "1분기",
     "assignee": "",
     "note": "",
-    "urgent": false,
-    "id": "VOC-0051"
+    "urgent": false
   },
   {
+    "id": "VOC-0052",
     "customer": "기타",
     "l1": "Spavy 2.0",
     "l2": "",
@@ -724,10 +725,10 @@
     "due": "",
     "assignee": "",
     "note": "",
-    "urgent": false,
-    "id": "VOC-0052"
+    "urgent": false
   },
   {
+    "id": "VOC-0053",
     "customer": "기타",
     "l1": "Spavy 2.0",
     "l2": "",
@@ -738,10 +739,10 @@
     "due": "1분기",
     "assignee": "",
     "note": "",
-    "urgent": false,
-    "id": "VOC-0053"
+    "urgent": false
   },
   {
+    "id": "VOC-0054",
     "customer": "기타",
     "l1": "Spavy Apps",
     "l2": "",
@@ -752,10 +753,10 @@
     "due": "1분기",
     "assignee": "",
     "note": "2026.03.23 : 작업완료",
-    "urgent": false,
-    "id": "VOC-0054"
+    "urgent": false
   },
   {
+    "id": "VOC-0055",
     "customer": "기타",
     "l1": "User Management",
     "l2": "",
@@ -766,10 +767,10 @@
     "due": "완료",
     "assignee": "",
     "note": "",
-    "urgent": false,
-    "id": "VOC-0055"
+    "urgent": false
   },
   {
+    "id": "VOC-0056",
     "customer": "기타",
     "l1": "User Management",
     "l2": "",
@@ -780,10 +781,10 @@
     "due": "생략",
     "assignee": "",
     "note": "",
-    "urgent": false,
-    "id": "VOC-0056"
+    "urgent": false
   },
   {
+    "id": "VOC-0057",
     "customer": "기타",
     "l1": "Space",
     "l2": "",
@@ -794,10 +795,10 @@
     "due": "space연동 1분기",
     "assignee": "",
     "note": "2026.03.23 : 테스트 할 파일 요청 후 대기중",
-    "urgent": false,
-    "id": "VOC-0057"
+    "urgent": false
   },
   {
+    "id": "VOC-0058",
     "customer": "기타",
     "l1": "Clash Set",
     "l2": "",
@@ -808,10 +809,10 @@
     "due": "완료",
     "assignee": "",
     "note": "",
-    "urgent": false,
-    "id": "VOC-0058"
+    "urgent": false
   },
   {
+    "id": "VOC-0059",
     "customer": "기타",
     "l1": "Browser",
     "l2": "",
@@ -822,10 +823,10 @@
     "due": "재확인필요",
     "assignee": "",
     "note": "염프로 확인해서 듀데이트 정하기",
-    "urgent": false,
-    "id": "VOC-0059"
+    "urgent": false
   },
   {
+    "id": "VOC-0060",
     "customer": "기타",
     "l1": "3D viewer",
     "l2": "",
@@ -836,10 +837,10 @@
     "due": "1분기",
     "assignee": "",
     "note": "",
-    "urgent": false,
-    "id": "VOC-0060"
+    "urgent": false
   },
   {
+    "id": "VOC-0061",
     "customer": "기타",
     "l1": "Browser",
     "l2": "",
@@ -850,10 +851,10 @@
     "due": "완료",
     "assignee": "",
     "note": "",
-    "urgent": false,
-    "id": "VOC-0061"
+    "urgent": false
   },
   {
+    "id": "VOC-0062",
     "customer": "기타",
     "l1": "Tabular Data Manager",
     "l2": "",
@@ -864,10 +865,10 @@
     "due": "1분기",
     "assignee": "",
     "note": "2026.03.23 : 개발 계획 있습니다",
-    "urgent": false,
-    "id": "VOC-0062"
+    "urgent": false
   },
   {
+    "id": "VOC-0063",
     "customer": "기타",
     "l1": "Browser",
     "l2": "",
@@ -878,10 +879,10 @@
     "due": "기능버그 수정은 바로 1분기",
     "assignee": "",
     "note": "",
-    "urgent": false,
-    "id": "VOC-0063"
+    "urgent": false
   },
   {
+    "id": "VOC-0064",
     "customer": "기타",
     "l1": "SPAVY - PDF",
     "l2": "",
@@ -892,10 +893,10 @@
     "due": "한프로님 요청에 따라 협의 후",
     "assignee": "",
     "note": "",
-    "urgent": false,
-    "id": "VOC-0064"
+    "urgent": false
   },
   {
+    "id": "VOC-0065",
     "customer": "기타",
     "l1": "SPAVY - MANUAL",
     "l2": "",
@@ -906,10 +907,10 @@
     "due": "불가능으로 판단",
     "assignee": "",
     "note": "2026.03.23 : 바로 가기 버튼 구현 가능",
-    "urgent": false,
-    "id": "VOC-0065"
+    "urgent": false
   },
   {
+    "id": "VOC-0066",
     "customer": "기타",
     "l1": "SPAVY - BROWSER",
     "l2": "",
@@ -920,10 +921,10 @@
     "due": "완료",
     "assignee": "",
     "note": "",
-    "urgent": false,
-    "id": "VOC-0066"
+    "urgent": false
   },
   {
+    "id": "VOC-0067",
     "customer": "기타",
     "l1": "SPAVY - PBI 시각화 객체",
     "l2": "",
@@ -934,10 +935,10 @@
     "due": "확인중",
     "assignee": "",
     "note": "",
-    "urgent": false,
-    "id": "VOC-0067"
+    "urgent": false
   },
   {
+    "id": "VOC-0068",
     "customer": "기타",
     "l1": "SPAVY - PBI 시각화 객체",
     "l2": "",
@@ -948,10 +949,10 @@
     "due": "확인중",
     "assignee": "",
     "note": "단축키 자체 테스트중",
-    "urgent": false,
-    "id": "VOC-0068"
+    "urgent": false
   },
   {
+    "id": "VOC-0069",
     "customer": "기타",
     "l1": "SPAVY - PBI 시각화 객체",
     "l2": "",
@@ -962,10 +963,10 @@
     "due": "1분기",
     "assignee": "",
     "note": "",
-    "urgent": false,
-    "id": "VOC-0069"
+    "urgent": false
   },
   {
+    "id": "VOC-0070",
     "customer": "기타",
     "l1": "모바일에서 SPAVY",
     "l2": "",
@@ -976,10 +977,10 @@
     "due": "계획은 없습니다.",
     "assignee": "",
     "note": "",
-    "urgent": false,
-    "id": "VOC-0070"
+    "urgent": false
   },
   {
+    "id": "VOC-0071",
     "customer": "기타",
     "l1": "SPAVY - Operation Spec",
     "l2": "",
@@ -990,10 +991,10 @@
     "due": "2분기",
     "assignee": "",
     "note": "",
-    "urgent": false,
-    "id": "VOC-0071"
+    "urgent": false
   },
   {
+    "id": "VOC-0072",
     "customer": "기타",
     "l1": "UI",
     "l2": "",
@@ -1004,10 +1005,10 @@
     "due": "CustomApp 기능(계약개발건)",
     "assignee": "",
     "note": "",
-    "urgent": false,
-    "id": "VOC-0072"
+    "urgent": false
   },
   {
+    "id": "VOC-0073",
     "customer": "기타",
     "l1": "Composite Table Relation",
     "l2": "",
@@ -1018,10 +1019,10 @@
     "due": "완료",
     "assignee": "",
     "note": "",
-    "urgent": false,
-    "id": "VOC-0073"
+    "urgent": false
   },
   {
+    "id": "VOC-0074",
     "customer": "기타",
     "l1": "SPAVY",
     "l2": "",
@@ -1032,10 +1033,10 @@
     "due": "",
     "assignee": "",
     "note": "2026.03.23 : 작업완료",
-    "urgent": false,
-    "id": "VOC-0074"
+    "urgent": false
   },
   {
+    "id": "VOC-0075",
     "customer": "기타",
     "l1": "Tabular Data Manager",
     "l2": "",
@@ -1046,10 +1047,10 @@
     "due": "",
     "assignee": "",
     "note": "",
-    "urgent": false,
-    "id": "VOC-0075"
+    "urgent": false
   },
   {
+    "id": "VOC-0076",
     "customer": "기타",
     "l1": "SPAVY",
     "l2": "",
@@ -1060,10 +1061,10 @@
     "due": "",
     "assignee": "",
     "note": "",
-    "urgent": false,
-    "id": "VOC-0076"
+    "urgent": false
   },
   {
+    "id": "VOC-0077",
     "customer": "기타",
     "l1": "공통",
     "l2": "",
@@ -1074,10 +1075,10 @@
     "due": "",
     "assignee": "",
     "note": "",
-    "urgent": false,
-    "id": "VOC-0077"
+    "urgent": false
   },
   {
+    "id": "VOC-0078",
     "customer": "기타",
     "l1": "",
     "l2": "",
@@ -1088,10 +1089,10 @@
     "due": "",
     "assignee": "",
     "note": "",
-    "urgent": false,
-    "id": "VOC-0078"
+    "urgent": false
   },
   {
+    "id": "VOC-0079",
     "customer": "기타",
     "l1": "SPAVY - PBI 시각화 객체",
     "l2": "",
@@ -1102,10 +1103,10 @@
     "due": "",
     "assignee": "",
     "note": "",
-    "urgent": false,
-    "id": "VOC-0079"
+    "urgent": false
   },
   {
+    "id": "VOC-0080",
     "customer": "기타",
     "l1": "Space 3D",
     "l2": "",
@@ -1116,10 +1117,10 @@
     "due": "",
     "assignee": "",
     "note": "",
-    "urgent": false,
-    "id": "VOC-0080"
+    "urgent": false
   },
   {
+    "id": "VOC-0081",
     "customer": "기타",
     "l1": "Directory List",
     "l2": "",
@@ -1130,10 +1131,10 @@
     "due": "",
     "assignee": "",
     "note": "",
-    "urgent": false,
-    "id": "VOC-0081"
+    "urgent": false
   },
   {
+    "id": "VOC-0082",
     "customer": "기타",
     "l1": "Project Management",
     "l2": "",
@@ -1144,10 +1145,10 @@
     "due": "",
     "assignee": "",
     "note": "2026.03.23 : 1번 가능 2번 필드명 맞습니다 3번 이미 복수 삭제 가능합니다. 체크박스 누르면 멀티 삭제 버튼 나타 남",
-    "urgent": false,
-    "id": "VOC-0082"
+    "urgent": false
   },
   {
+    "id": "VOC-0083",
     "customer": "기타",
     "l1": "Drawing - DWG",
     "l2": "",
@@ -1158,10 +1159,10 @@
     "due": "",
     "assignee": "",
     "note": "2026.03.23 : 확인",
-    "urgent": false,
-    "id": "VOC-0083"
+    "urgent": false
   },
   {
+    "id": "VOC-0084",
     "customer": "기타",
     "l1": "Space 3D",
     "l2": "",
@@ -1172,10 +1173,10 @@
     "due": "",
     "assignee": "",
     "note": "",
-    "urgent": false,
-    "id": "VOC-0084"
+    "urgent": false
   },
   {
+    "id": "VOC-0085",
     "customer": "기타",
     "l1": "Space 3D",
     "l2": "",
@@ -1186,10 +1187,10 @@
     "due": "",
     "assignee": "",
     "note": "",
-    "urgent": false,
-    "id": "VOC-0085"
+    "urgent": false
   },
   {
+    "id": "VOC-0086",
     "customer": "기타",
     "l1": "Space 3D",
     "l2": "",
@@ -1200,10 +1201,10 @@
     "due": "",
     "assignee": "",
     "note": "",
-    "urgent": false,
-    "id": "VOC-0086"
+    "urgent": false
   },
   {
+    "id": "VOC-0087",
     "customer": "기타",
     "l1": "공통",
     "l2": "",
@@ -1214,10 +1215,10 @@
     "due": "",
     "assignee": "",
     "note": "",
-    "urgent": false,
-    "id": "VOC-0087"
+    "urgent": false
   },
   {
+    "id": "VOC-0088",
     "customer": "기타",
     "l1": "New Spatial Planning",
     "l2": "",
@@ -1228,10 +1229,10 @@
     "due": "",
     "assignee": "",
     "note": "",
-    "urgent": false,
-    "id": "VOC-0088"
+    "urgent": false
   },
   {
+    "id": "VOC-0089",
     "customer": "기타",
     "l1": "Dynamic Properties",
     "l2": "",
@@ -1242,10 +1243,10 @@
     "due": "",
     "assignee": "",
     "note": "",
-    "urgent": false,
-    "id": "VOC-0089"
+    "urgent": false
   },
   {
+    "id": "VOC-0090",
     "customer": "기타",
     "l1": "Dimension Tree",
     "l2": "",
@@ -1256,10 +1257,10 @@
     "due": "",
     "assignee": "",
     "note": "",
-    "urgent": false,
-    "id": "VOC-0090"
+    "urgent": false
   },
   {
+    "id": "VOC-0091",
     "customer": "기타",
     "l1": "Browser",
     "l2": "",
@@ -1270,10 +1271,10 @@
     "due": "",
     "assignee": "",
     "note": "",
-    "urgent": false,
-    "id": "VOC-0091"
+    "urgent": false
   },
   {
+    "id": "VOC-0092",
     "customer": "기타",
     "l1": "Space 3D",
     "l2": "",
@@ -1284,10 +1285,10 @@
     "due": "",
     "assignee": "",
     "note": "",
-    "urgent": false,
-    "id": "VOC-0092"
+    "urgent": false
   },
   {
+    "id": "VOC-0093",
     "customer": "E&A",
     "l1": "Sync",
     "l2": "UI",
@@ -1298,10 +1299,10 @@
     "due": "Q3 2026",
     "assignee": "하남국",
     "note": "Seamless Data Pipeline - Visio",
-    "urgent": false,
-    "id": "VOC-0093"
+    "urgent": false
   },
   {
+    "id": "VOC-0094",
     "customer": "E&A",
     "l1": "Sync",
     "l2": "UI",
@@ -1312,10 +1313,10 @@
     "due": "Q3 2026",
     "assignee": "하남국",
     "note": "Seamless Data Pipeline - Visio",
-    "urgent": false,
-    "id": "VOC-0094"
+    "urgent": false
   },
   {
+    "id": "VOC-0095",
     "customer": "E&A",
     "l1": "Sync",
     "l2": "Backend",
@@ -1326,10 +1327,10 @@
     "due": "Q3 2026",
     "assignee": "하남국",
     "note": "Seamless Data Pipeline - Visio",
-    "urgent": false,
-    "id": "VOC-0095"
+    "urgent": false
   },
   {
+    "id": "VOC-0096",
     "customer": "E&A",
     "l1": "Sync",
     "l2": "Sync",
@@ -1340,10 +1341,10 @@
     "due": "Q3 2026",
     "assignee": "하남국",
     "note": "Seamless Data Pipeline - Visio",
-    "urgent": false,
-    "id": "VOC-0096"
+    "urgent": false
   },
   {
+    "id": "VOC-0097",
     "customer": "E&A",
     "l1": "Sync",
     "l2": "Sync",
@@ -1354,10 +1355,10 @@
     "due": "Q3 2026",
     "assignee": "하남국",
     "note": "Seamless Data Pipeline - Visio",
-    "urgent": false,
-    "id": "VOC-0097"
+    "urgent": false
   },
   {
+    "id": "VOC-0098",
     "customer": "E&A",
     "l1": "Sync",
     "l2": "Sync",
@@ -1368,10 +1369,10 @@
     "due": "Q3 2026",
     "assignee": "하남국",
     "note": "Seamless Data Pipeline - Visio",
-    "urgent": false,
-    "id": "VOC-0098"
+    "urgent": false
   },
   {
+    "id": "VOC-0099",
     "customer": "E&A",
     "l1": "Sync",
     "l2": "Sync",
@@ -1382,10 +1383,10 @@
     "due": "Q3 2026",
     "assignee": "하남국",
     "note": "Seamless Data Pipeline - Visio",
-    "urgent": false,
-    "id": "VOC-0099"
+    "urgent": false
   },
   {
+    "id": "VOC-0100",
     "customer": "E&A",
     "l1": "Sync",
     "l2": "Sync",
@@ -1396,10 +1397,10 @@
     "due": "Q3 2026",
     "assignee": "하남국",
     "note": "Seamless Data Pipeline - Visio",
-    "urgent": false,
-    "id": "VOC-0100"
+    "urgent": false
   },
   {
+    "id": "VOC-0101",
     "customer": "E&A",
     "l1": "Sync",
     "l2": "Visio View",
@@ -1410,10 +1411,10 @@
     "due": "Q3 2026",
     "assignee": "하남국",
     "note": "Seamless Data Pipeline - Visio",
-    "urgent": false,
-    "id": "VOC-0101"
+    "urgent": false
   },
   {
+    "id": "VOC-0102",
     "customer": "E&A",
     "l1": "Sync",
     "l2": "Visio View",
@@ -1424,10 +1425,10 @@
     "due": "Q3 2026",
     "assignee": "하남국",
     "note": "Seamless Data Pipeline - Visio",
-    "urgent": false,
-    "id": "VOC-0102"
+    "urgent": false
   },
   {
+    "id": "VOC-0103",
     "customer": "E&A",
     "l1": "Sync",
     "l2": "Visio View",
@@ -1438,10 +1439,10 @@
     "due": "Q3 2026",
     "assignee": "하남국",
     "note": "Seamless Data Pipeline - Visio",
-    "urgent": false,
-    "id": "VOC-0103"
+    "urgent": false
   },
   {
+    "id": "VOC-0104",
     "customer": "E&A",
     "l1": "Sync",
     "l2": "Visio View",
@@ -1452,10 +1453,10 @@
     "due": "Q3 2026",
     "assignee": "하남국",
     "note": "Seamless Data Pipeline - Visio",
-    "urgent": false,
-    "id": "VOC-0104"
+    "urgent": false
   },
   {
+    "id": "VOC-0105",
     "customer": "E&A",
     "l1": "Sync",
     "l2": "Visio View",
@@ -1466,10 +1467,10 @@
     "due": "Q3 2026",
     "assignee": "하남국",
     "note": "Seamless Data Pipeline - Visio",
-    "urgent": false,
-    "id": "VOC-0105"
+    "urgent": false
   },
   {
+    "id": "VOC-0106",
     "customer": "E&A",
     "l1": "Sync",
     "l2": "QuerySet",
@@ -1480,10 +1481,10 @@
     "due": "Q3 2026",
     "assignee": "하남국",
     "note": "Seamless Data Pipeline - Visio",
-    "urgent": false,
-    "id": "VOC-0106"
+    "urgent": false
   },
   {
+    "id": "VOC-0107",
     "customer": "E&A",
     "l1": "Sync",
     "l2": "QuerySet",
@@ -1494,10 +1495,10 @@
     "due": "Q3 2026",
     "assignee": "하남국",
     "note": "Seamless Data Pipeline - Visio",
-    "urgent": false,
-    "id": "VOC-0107"
+    "urgent": false
   },
   {
+    "id": "VOC-0108",
     "customer": "E&A",
     "l1": "Sync",
     "l2": "Table",
@@ -1508,10 +1509,10 @@
     "due": "Q3 2026",
     "assignee": "하남국",
     "note": "Seamless Data Pipeline - Visio",
-    "urgent": false,
-    "id": "VOC-0108"
+    "urgent": false
   },
   {
+    "id": "VOC-0109",
     "customer": "E&A",
     "l1": "Sync",
     "l2": "Table",
@@ -1522,10 +1523,10 @@
     "due": "Q3 2026",
     "assignee": "하남국",
     "note": "Seamless Data Pipeline - Visio",
-    "urgent": false,
-    "id": "VOC-0109"
+    "urgent": false
   },
   {
+    "id": "VOC-0110",
     "customer": "E&A",
     "l1": "Sync",
     "l2": "Recipe",
@@ -1536,10 +1537,10 @@
     "due": "Q3 2026",
     "assignee": "하남국",
     "note": "Seamless Data Pipeline - Visio",
-    "urgent": false,
-    "id": "VOC-0110"
+    "urgent": false
   },
   {
+    "id": "VOC-0111",
     "customer": "E&A",
     "l1": "Sync",
     "l2": "Recipe",
@@ -1550,13 +1551,13 @@
     "due": "Q3 2026",
     "assignee": "하남국",
     "note": "Seamless Data Pipeline - Visio",
-    "urgent": false,
-    "id": "VOC-0111"
+    "urgent": false
   },
   {
+    "id": "VOC-0112",
     "customer": "E&A",
     "l1": "Sync",
-    "l2": "Interface",
+    "l2": "",
     "type": "신규",
     "title": "Visio-3DModel 연계 View Sync",
     "desc": "Visio Node 속성과 3D Model Part 매핑, 양방향 Highlight/Zoom 연계",
@@ -1564,10 +1565,10 @@
     "due": "Q3 2026",
     "assignee": "하남국",
     "note": "Seamless Data Pipeline - Visio",
-    "urgent": false,
-    "id": "VOC-0112"
+    "urgent": false
   },
   {
+    "id": "VOC-0113",
     "customer": "E&A",
     "l1": "Sync",
     "l2": "PBI",
@@ -1578,10 +1579,10 @@
     "due": "Q3 2026",
     "assignee": "하남국",
     "note": "Seamless Data Pipeline - Visio",
-    "urgent": false,
-    "id": "VOC-0113"
+    "urgent": false
   },
   {
+    "id": "VOC-0114",
     "customer": "E&A",
     "l1": "Sync",
     "l2": "PBI",
@@ -1592,10 +1593,10 @@
     "due": "Q3 2026",
     "assignee": "하남국",
     "note": "Seamless Data Pipeline - Visio",
-    "urgent": false,
-    "id": "VOC-0114"
+    "urgent": false
   },
   {
+    "id": "VOC-0115",
     "customer": "E&A",
     "l1": "Sync",
     "l2": "PBI",
@@ -1606,10 +1607,10 @@
     "due": "Q3 2026",
     "assignee": "하남국",
     "note": "Seamless Data Pipeline - Visio",
-    "urgent": false,
-    "id": "VOC-0115"
+    "urgent": false
   },
   {
+    "id": "VOC-0116",
     "customer": "E&A",
     "l1": "Sync",
     "l2": "PBI",
@@ -1620,10 +1621,10 @@
     "due": "Q3 2026",
     "assignee": "하남국",
     "note": "Seamless Data Pipeline - Visio",
-    "urgent": false,
-    "id": "VOC-0116"
+    "urgent": false
   },
   {
+    "id": "VOC-0117",
     "customer": "E&A",
     "l1": "Sync",
     "l2": "PBI",
@@ -1634,13 +1635,13 @@
     "due": "Q3 2026",
     "assignee": "하남국",
     "note": "Seamless Data Pipeline - Visio",
-    "urgent": false,
-    "id": "VOC-0117"
+    "urgent": false
   },
   {
+    "id": "VOC-0118",
     "customer": "E&A",
     "l1": "Sync",
-    "l2": "PBI",
+    "l2": "",
     "type": "신규",
     "title": "다른 시각화 객체 필터링",
     "desc": "Visio Viewer 노드 선택 시 다른 PBI 시각화에 필터 전달",
@@ -1648,10 +1649,10 @@
     "due": "Q3 2026",
     "assignee": "하남국",
     "note": "Seamless Data Pipeline - Visio",
-    "urgent": false,
-    "id": "VOC-0118"
+    "urgent": false
   },
   {
+    "id": "VOC-0119",
     "customer": "E&A",
     "l1": "Sync",
     "l2": "Web SDK",
@@ -1662,10 +1663,10 @@
     "due": "Q3 2026",
     "assignee": "하남국",
     "note": "Seamless Data Pipeline - Visio",
-    "urgent": false,
-    "id": "VOC-0119"
+    "urgent": false
   },
   {
+    "id": "VOC-0120",
     "customer": "E&A",
     "l1": "Sync",
     "l2": "Web SDK",
@@ -1676,10 +1677,10 @@
     "due": "Q3 2026",
     "assignee": "하남국",
     "note": "Seamless Data Pipeline - Visio",
-    "urgent": false,
-    "id": "VOC-0120"
+    "urgent": false
   },
   {
+    "id": "VOC-0121",
     "customer": "E&A",
     "l1": "Sync",
     "l2": "Web SDK",
@@ -1690,10 +1691,10 @@
     "due": "Q3 2026",
     "assignee": "하남국",
     "note": "Seamless Data Pipeline - Visio",
-    "urgent": false,
-    "id": "VOC-0121"
+    "urgent": false
   },
   {
+    "id": "VOC-0122",
     "customer": "E&A",
     "l1": "Sync",
     "l2": "Web SDK",
@@ -1704,10 +1705,10 @@
     "due": "Q3 2026",
     "assignee": "하남국",
     "note": "Seamless Data Pipeline - Visio",
-    "urgent": false,
-    "id": "VOC-0122"
+    "urgent": false
   },
   {
+    "id": "VOC-0123",
     "customer": "E&A",
     "l1": "Sync",
     "l2": "Web SDK",
@@ -1718,10 +1719,10 @@
     "due": "Q3 2026",
     "assignee": "하남국",
     "note": "Seamless Data Pipeline - Visio",
-    "urgent": false,
-    "id": "VOC-0123"
+    "urgent": false
   },
   {
+    "id": "VOC-0124",
     "customer": "E&A",
     "l1": "Sync",
     "l2": "Web SDK",
@@ -1732,10 +1733,10 @@
     "due": "Q3 2026",
     "assignee": "하남국",
     "note": "Seamless Data Pipeline - Visio",
-    "urgent": false,
-    "id": "VOC-0124"
+    "urgent": false
   },
   {
+    "id": "VOC-0125",
     "customer": "E&A",
     "l1": "Sync",
     "l2": "Web SDK",
@@ -1746,10 +1747,10 @@
     "due": "Q3 2026",
     "assignee": "하남국",
     "note": "Seamless Data Pipeline - Visio",
-    "urgent": false,
-    "id": "VOC-0125"
+    "urgent": false
   },
   {
+    "id": "VOC-0126",
     "customer": "E&A",
     "l1": "Sync",
     "l2": "Web SDK",
@@ -1760,217 +1761,216 @@
     "due": "Q3 2026",
     "assignee": "하남국",
     "note": "Seamless Data Pipeline - Visio",
-    "urgent": false,
-    "id": "VOC-0126"
+    "urgent": false
   },
   {
-    "customer": "삼성물산",
+    "id": "VOC-0127",
+    "customer": "E&A",
     "l1": "BI",
     "l2": "Refresh",
     "type": "신규",
     "title": "새로고침 시각화 객체 설정",
     "desc": "PBI 보고서 새로고침 시각화 객체 동작 설정",
     "status": "신규",
-    "due": "Q3 2026",
+    "due": "7월",
     "assignee": "윤덕현",
     "note": "Seamless Data Pipeline - BI",
-    "urgent": false,
-    "id": "VOC-0127"
+    "urgent": false
   },
   {
-    "customer": "삼성물산",
+    "id": "VOC-0128",
+    "customer": "E&A",
     "l1": "BI",
     "l2": "Refresh",
     "type": "신규",
     "title": "새로고침 시각화 객체 Refresh",
     "desc": "사용자 클릭 시 PBI API 호출하여 보고서 데이터 즉시 새로고침",
     "status": "신규",
-    "due": "Q3 2026",
+    "due": "7월",
     "assignee": "윤덕현",
     "note": "Seamless Data Pipeline - BI",
-    "urgent": false,
-    "id": "VOC-0128"
+    "urgent": false
   },
   {
-    "customer": "삼성물산",
+    "id": "VOC-0129",
+    "customer": "E&A",
     "l1": "BI",
     "l2": "Web Server",
     "type": "신규",
     "title": "API Server 구성",
     "desc": "PBI Data Pipeline용 Web Service Backend 기본 구성",
     "status": "신규",
-    "due": "Q3 2026",
+    "due": "7월",
     "assignee": "윤덕현",
     "note": "Seamless Data Pipeline - BI",
-    "urgent": false,
-    "id": "VOC-0129"
+    "urgent": false
   },
   {
-    "customer": "삼성물산",
+    "id": "VOC-0130",
+    "customer": "E&A",
     "l1": "BI",
     "l2": "Web Server",
     "type": "신규",
     "title": "PBI 연결 관련 설정",
     "desc": "PBI Report Server 연동용 서버 주소/계정/토큰 연결 설정",
     "status": "신규",
-    "due": "Q3 2026",
+    "due": "7월",
     "assignee": "윤덕현",
     "note": "Seamless Data Pipeline - BI",
-    "urgent": false,
-    "id": "VOC-0130"
+    "urgent": false
   },
   {
-    "customer": "삼성물산",
+    "id": "VOC-0131",
+    "customer": "E&A",
     "l1": "BI",
     "l2": "Web API",
     "type": "신규",
     "title": "게시된 Report 조회",
     "desc": "PBI API로 게시된 Report 목록 조회, 메타데이터 반환",
     "status": "신규",
-    "due": "Q3 2026",
+    "due": "7월",
     "assignee": "윤덕현",
     "note": "Seamless Data Pipeline - BI",
-    "urgent": false,
-    "id": "VOC-0131"
+    "urgent": false
   },
   {
-    "customer": "삼성물산",
+    "id": "VOC-0132",
+    "customer": "E&A",
     "l1": "BI",
     "l2": "Web API",
     "type": "신규",
     "title": "Report Refresh",
     "desc": "ReportID 기반 PBI API 호출하여 예약된 새로고침 실행",
     "status": "신규",
-    "due": "Q3 2026",
+    "due": "7월",
     "assignee": "윤덕현",
     "note": "Seamless Data Pipeline - BI",
-    "urgent": false,
-    "id": "VOC-0132"
+    "urgent": false
   },
   {
-    "customer": "삼성물산",
+    "id": "VOC-0133",
+    "customer": "E&A",
     "l1": "BI",
     "l2": "Web API",
     "type": "신규",
     "title": "PBI Data Extract & CSV Export",
     "desc": "PBI Data Extract Module 실행, CSV 파일/스트림 반환",
     "status": "신규",
-    "due": "Q3 2026",
+    "due": "7월",
     "assignee": "윤덕현",
     "note": "Seamless Data Pipeline - BI",
-    "urgent": false,
-    "id": "VOC-0133"
+    "urgent": false
   },
   {
-    "customer": "삼성물산",
+    "id": "VOC-0134",
+    "customer": "E&A",
     "l1": "BI",
     "l2": "Extract Module",
     "type": "신규",
     "title": "PBI Report 조회 (Command)",
     "desc": "PBI RS 게시 Report 목록 내부 조회, 메타 정보 수집",
     "status": "신규",
-    "due": "Q3 2026",
+    "due": "7월",
     "assignee": "윤덕현",
     "note": "Seamless Data Pipeline - BI",
-    "urgent": false,
-    "id": "VOC-0134"
+    "urgent": false
   },
   {
-    "customer": "삼성물산",
+    "id": "VOC-0135",
+    "customer": "E&A",
     "l1": "BI",
     "l2": "Extract Module",
     "type": "신규",
     "title": "PBI Report 다운로드",
     "desc": "선택 PBI Report 다운로드, 패키지 Uncompress",
     "status": "신규",
-    "due": "Q3 2026",
+    "due": "7월",
     "assignee": "윤덕현",
     "note": "Seamless Data Pipeline - BI",
-    "urgent": false,
-    "id": "VOC-0135"
+    "urgent": false
   },
   {
-    "customer": "삼성물산",
+    "id": "VOC-0136",
+    "customer": "E&A",
     "l1": "BI",
     "l2": "Extract Module",
     "type": "신규",
     "title": "PBI Table Data DAX Query",
     "desc": "Report 내부 구조 분석, Table Data 추출용 DAX 쿼리 자동 생성",
     "status": "신규",
-    "due": "Q3 2026",
+    "due": "7월",
     "assignee": "윤덕현",
     "note": "Seamless Data Pipeline - BI",
-    "urgent": false,
-    "id": "VOC-0136"
+    "urgent": false
   },
   {
-    "customer": "삼성물산",
+    "id": "VOC-0137",
+    "customer": "E&A",
     "l1": "BI",
     "l2": "Extract Module",
     "type": "신규",
     "title": "PBI Table Data Extraction",
     "desc": "DAX 쿼리 실행하여 Table Data 추출",
     "status": "신규",
-    "due": "Q3 2026",
+    "due": "7월",
     "assignee": "윤덕현",
     "note": "Seamless Data Pipeline - BI",
-    "urgent": false,
-    "id": "VOC-0137"
+    "urgent": false
   },
   {
-    "customer": "삼성물산",
+    "id": "VOC-0138",
+    "customer": "E&A",
     "l1": "BI",
     "l2": "Extract Module",
     "type": "신규",
     "title": "PBI Table Data Export",
     "desc": "추출된 Table Data를 CSV 형식으로 Export",
     "status": "신규",
-    "due": "Q3 2026",
+    "due": "7월",
     "assignee": "윤덕현",
     "note": "Seamless Data Pipeline - BI",
-    "urgent": false,
-    "id": "VOC-0138"
+    "urgent": false
   },
   {
-    "customer": "삼성물산",
+    "id": "VOC-0139",
+    "customer": "E&A",
     "l1": "BI",
     "l2": "Extract Module",
     "type": "신규",
     "title": "PBI Visual Data DAX Query",
     "desc": "Visual 단위 집계 결과 추출용 DAX 쿼리 자동 생성",
     "status": "신규",
-    "due": "Q3 2026",
+    "due": "7월",
     "assignee": "윤덕현",
     "note": "Seamless Data Pipeline - BI",
-    "urgent": false,
-    "id": "VOC-0139"
+    "urgent": false
   },
   {
-    "customer": "삼성물산",
+    "id": "VOC-0140",
+    "customer": "E&A",
     "l1": "BI",
     "l2": "Extract Module",
     "type": "신규",
     "title": "PBI Visual Data Extraction",
     "desc": "Visual용 DAX 쿼리 실행, Visual 데이터 추출/수집",
     "status": "신규",
-    "due": "Q3 2026",
+    "due": "7월",
     "assignee": "윤덕현",
     "note": "Seamless Data Pipeline - BI",
-    "urgent": false,
-    "id": "VOC-0140"
+    "urgent": false
   },
   {
-    "customer": "삼성물산",
+    "id": "VOC-0141",
+    "customer": "E&A",
     "l1": "BI",
     "l2": "Extract Module",
     "type": "신규",
     "title": "PBI Visual Data Export",
     "desc": "추출된 Visual Data를 CSV 형식으로 Export",
     "status": "신규",
-    "due": "Q3 2026",
+    "due": "7월",
     "assignee": "윤덕현",
     "note": "Seamless Data Pipeline - BI",
-    "urgent": false,
-    "id": "VOC-0141"
+    "urgent": false
   }
 ]
