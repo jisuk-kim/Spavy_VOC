@@ -105,10 +105,10 @@
     "type": "신규",
     "title": "Fit World 기능",
     "desc": "view 내에 fit world 추가",
-    "status": "진행중",
-    "due": "Q1 2026",
-    "assignee": "나경",
-    "note": "",
+    "status": "완료",
+    "due": "3월",
+    "assignee": "장나겸",
+    "note": "단축키로 구현-좌표로는 X",
     "urgent": false
   },
   {
@@ -120,7 +120,7 @@
     "title": "CRT",
     "desc": "진행사항 주기적으로 공유 부탁드립니다.",
     "status": "진행중",
-    "due": "Q2 2026",
+    "due": "6월",
     "assignee": "하남국, 여태기, 김준우",
     "note": "2분기 내 적용",
     "urgent": false
@@ -414,7 +414,7 @@
     "title": "Floor Plan Locator(FPL) 개편",
     "desc": "- 도면 핸들 버튼을 없애고 동일한 기능을 수행하는 별도 아이콘을 화면 내에 배치 - Crop 된 상태에서 FPL 작동시 Crop이 풀리는 문제 있음",
     "status": "진행중",
-    "due": "Q2 2026",
+    "due": "4월",
     "assignee": "김행운",
     "note": "- 1차 기능 구현 완료 - Crop 기능 풀리는 문제는 검토 중, 2분기 내 수정 완료 예정",
     "urgent": false
