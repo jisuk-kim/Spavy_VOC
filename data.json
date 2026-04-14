@@ -328,7 +328,7 @@
     "l2": "Spatial Planning",
     "type": "삼인 로드맵관련",
     "title": "Spatial Planning",
-    "desc": "- 층별 기준정보 세팅의 중요한 부분으로 판단하고 있으며, 특히 PCD 데이터를 층별로 사전 Segmentation 하는 부분을 꼭 포함 시켜 주시기 바랍니다. . 목적1 : 해당 층의 RC데이터 유무를 메타데이터로 갖고 있음 . 목적2 : PCD를 층별로 가시화함으로써 로딩 속도 개선 및 PCD 면 뒤쪽의 멀리있는 Point를 스냅하는 문제 해결 - 층 ",
+    "desc": "- 층별 기준정보 세팅의 중요한 부분으로 판단하고 있으며, 특히 PCD 데이터를 층별로 사전 Segmentation 하는 부분을 꼭 포함 시켜 주시기 바랍니다. . 목적1 : 해당 층의 RC데이터 유무를 메타데이터로 갖고 있음 . 목적2 : PCD를 층별로 가시화함으로써 로딩 속도 개선 및 PCD 면 뒤쪽의 멀리있는 Point를 스냅하는 문제 해결 - 층",
     "status": "진행중",
     "due": "Q2 2026",
     "assignee": "염용주",
@@ -875,7 +875,7 @@
     "title": "Browser에서 Grid을 On/off할수있는 기능(Spatial Planning에서 설정한 Grid를 활용) - 하단바에 Grid 버튼을 추",
     "desc": "Browser에서 Grid을 On/off할수있는 기능(Spatial Planning에서 설정한 Grid를 활용) - 하단바에 Grid 버튼을 추가 -> 팝업(Grid on/off토글과 Grid 선택하는 UI) -> 설정한 Grid에서 사용자가 선택 -> 선택한 Grid에서 Show Level을 선택 (팝업을 한 개로 해서 Grid를 선택하면 Show lev",
     "status": "신규",
-    "due": "기능버그 수정은 바로_x000d_\n1분기",
+    "due": "기능버그 수정은 바로 1분기",
     "assignee": "",
     "note": "",
     "urgent": false,
@@ -900,7 +900,7 @@
     "l1": "SPAVY - MANUAL",
     "l2": "",
     "type": "신규",
-    "title": "준비중인 URL 공유 요청, 사용자가 상시 MANUAL LINK( 에 접근할 수 있으면 좋겠음 (상단바 등..) - 해당메뉴에서 link 선택 ",
+    "title": "준비중인 URL 공유 요청, 사용자가 상시 MANUAL LINK( 에 접근할 수 있으면 좋겠음 (상단바 등..) - 해당메뉴에서 link 선택",
     "desc": "준비중인 URL 공유 요청, 사용자가 상시 MANUAL LINK( 에 접근할 수 있으면 좋겠음 (상단바 등..) - 해당메뉴에서 link 선택 시 매뉴얼의 해당 페이지로 바로 이동?? 이런건 불가능한지? (옵션…)",
     "status": "신규",
     "due": "불가능으로 판단",
@@ -1069,7 +1069,7 @@
     "l2": "",
     "type": "개선",
     "title": "페이지별 List정렬순서 수동변경 또는 정렬기준 지정 * 수동변경은 Query Set기능의 Directory List변경방식과 동일 1) Pro",
-    "desc": "페이지별 List정렬순서 수동변경 또는 정렬기준 지정 * 수동변경은 Query Set기능의 Directory List변경방식과 동일 1) Project List(Project선택화면), Table : 수동변경 2) CAD Model, Point Cloud, Drawing, Image, General Files - Directory List : 수동변경 / ",
+    "desc": "페이지별 List정렬순서 수동변경 또는 정렬기준 지정 * 수동변경은 Query Set기능의 Directory List변경방식과 동일 1) Project List(Project선택화면), Table : 수동변경 2) CAD Model, Point Cloud, Drawing, Image, General Files - Directory List : 수동변경 /",
     "status": "신규",
     "due": "",
     "assignee": "",
@@ -1138,8 +1138,8 @@
     "l1": "Project Management",
     "l2": "",
     "type": "개선",
-    "title": "1) Project의 Add Member시 UI 개선 - 현황 : 이름 검색 > Enter(또는 Search) > List의 체크박스 클릭 > ",
-    "desc": "1) Project의 Add Member시 UI 개선 - 현황 : 이름 검색 > Enter(또는 Search) > List의 체크박스 클릭 > Inviation List 앞 화살표 클릭 - 개선요청 : List에서 Row를 더블클릭하면 Invitation List로 추가되도록 2) Access Control List : \"Action\" 필드명이 맞는지?? ",
+    "title": "1) Project의 Add Member시 UI 개선 - 현황 : 이름 검색 > Enter(또는 Search) > List의 체크박스 클릭 >",
+    "desc": "1) Project의 Add Member시 UI 개선 - 현황 : 이름 검색 > Enter(또는 Search) > List의 체크박스 클릭 > Inviation List 앞 화살표 클릭 - 개선요청 : List에서 Row를 더블클릭하면 Invitation List로 추가되도록 2) Access Control List : \"Action\" 필드명이 맞는지??",
     "status": "신규",
     "due": "",
     "assignee": "",
@@ -1250,7 +1250,7 @@
     "l1": "Dimension Tree",
     "l2": "",
     "type": "개선",
-    "title": "(Instant Dimension기능이 없다는 가정) List에 있는 Dimension Item을 삭제하려면 각각 하나씩 삭제작업을 해야함 - ",
+    "title": "(Instant Dimension기능이 없다는 가정) List에 있는 Dimension Item을 삭제하려면 각각 하나씩 삭제작업을 해야함 -",
     "desc": "(Instant Dimension기능이 없다는 가정) List에 있는 Dimension Item을 삭제하려면 각각 하나씩 삭제작업을 해야함 - 중복선택 기능 추가 : 중복선택 후 우클릭>삭제(중복선택 후 우클릭 시 Delete, Show 정도만 활성화)",
     "status": "신규",
     "due": "",
@@ -1288,7 +1288,7 @@
     "id": "VOC-0092"
   },
   {
-    "customer": "삼성물산",
+    "customer": "E&A",
     "l1": "Sync",
     "l2": "UI",
     "type": "신규",
@@ -1302,7 +1302,7 @@
     "id": "VOC-0093"
   },
   {
-    "customer": "삼성물산",
+    "customer": "E&A",
     "l1": "Sync",
     "l2": "UI",
     "type": "신규",
@@ -1316,7 +1316,7 @@
     "id": "VOC-0094"
   },
   {
-    "customer": "삼성물산",
+    "customer": "E&A",
     "l1": "Sync",
     "l2": "Backend",
     "type": "신규",
@@ -1330,7 +1330,7 @@
     "id": "VOC-0095"
   },
   {
-    "customer": "삼성물산",
+    "customer": "E&A",
     "l1": "Sync",
     "l2": "Sync",
     "type": "신규",
@@ -1344,7 +1344,7 @@
     "id": "VOC-0096"
   },
   {
-    "customer": "삼성물산",
+    "customer": "E&A",
     "l1": "Sync",
     "l2": "Sync",
     "type": "신규",
@@ -1358,7 +1358,7 @@
     "id": "VOC-0097"
   },
   {
-    "customer": "삼성물산",
+    "customer": "E&A",
     "l1": "Sync",
     "l2": "Sync",
     "type": "신규",
@@ -1372,7 +1372,7 @@
     "id": "VOC-0098"
   },
   {
-    "customer": "삼성물산",
+    "customer": "E&A",
     "l1": "Sync",
     "l2": "Sync",
     "type": "신규",
@@ -1386,7 +1386,7 @@
     "id": "VOC-0099"
   },
   {
-    "customer": "삼성물산",
+    "customer": "E&A",
     "l1": "Sync",
     "l2": "Sync",
     "type": "신규",
@@ -1400,7 +1400,7 @@
     "id": "VOC-0100"
   },
   {
-    "customer": "삼성물산",
+    "customer": "E&A",
     "l1": "Sync",
     "l2": "Visio View",
     "type": "신규",
@@ -1414,7 +1414,7 @@
     "id": "VOC-0101"
   },
   {
-    "customer": "삼성물산",
+    "customer": "E&A",
     "l1": "Sync",
     "l2": "Visio View",
     "type": "신규",
@@ -1428,7 +1428,7 @@
     "id": "VOC-0102"
   },
   {
-    "customer": "삼성물산",
+    "customer": "E&A",
     "l1": "Sync",
     "l2": "Visio View",
     "type": "신규",
@@ -1442,7 +1442,7 @@
     "id": "VOC-0103"
   },
   {
-    "customer": "삼성물산",
+    "customer": "E&A",
     "l1": "Sync",
     "l2": "Visio View",
     "type": "신규",
@@ -1456,7 +1456,7 @@
     "id": "VOC-0104"
   },
   {
-    "customer": "삼성물산",
+    "customer": "E&A",
     "l1": "Sync",
     "l2": "Visio View",
     "type": "신규",
@@ -1470,7 +1470,7 @@
     "id": "VOC-0105"
   },
   {
-    "customer": "삼성물산",
+    "customer": "E&A",
     "l1": "Sync",
     "l2": "QuerySet",
     "type": "신규",
@@ -1484,7 +1484,7 @@
     "id": "VOC-0106"
   },
   {
-    "customer": "삼성물산",
+    "customer": "E&A",
     "l1": "Sync",
     "l2": "QuerySet",
     "type": "신규",
@@ -1498,7 +1498,7 @@
     "id": "VOC-0107"
   },
   {
-    "customer": "삼성물산",
+    "customer": "E&A",
     "l1": "Sync",
     "l2": "Table",
     "type": "신규",
@@ -1512,7 +1512,7 @@
     "id": "VOC-0108"
   },
   {
-    "customer": "삼성물산",
+    "customer": "E&A",
     "l1": "Sync",
     "l2": "Table",
     "type": "신규",
@@ -1526,7 +1526,7 @@
     "id": "VOC-0109"
   },
   {
-    "customer": "삼성물산",
+    "customer": "E&A",
     "l1": "Sync",
     "l2": "Recipe",
     "type": "신규",
@@ -1540,7 +1540,7 @@
     "id": "VOC-0110"
   },
   {
-    "customer": "삼성물산",
+    "customer": "E&A",
     "l1": "Sync",
     "l2": "Recipe",
     "type": "신규",
@@ -1554,7 +1554,7 @@
     "id": "VOC-0111"
   },
   {
-    "customer": "삼성물산",
+    "customer": "E&A",
     "l1": "Sync",
     "l2": "Interface",
     "type": "신규",
@@ -1568,7 +1568,7 @@
     "id": "VOC-0112"
   },
   {
-    "customer": "삼성물산",
+    "customer": "E&A",
     "l1": "Sync",
     "l2": "PBI",
     "type": "신규",
@@ -1582,7 +1582,7 @@
     "id": "VOC-0113"
   },
   {
-    "customer": "삼성물산",
+    "customer": "E&A",
     "l1": "Sync",
     "l2": "PBI",
     "type": "신규",
@@ -1596,7 +1596,7 @@
     "id": "VOC-0114"
   },
   {
-    "customer": "삼성물산",
+    "customer": "E&A",
     "l1": "Sync",
     "l2": "PBI",
     "type": "신규",
@@ -1610,7 +1610,7 @@
     "id": "VOC-0115"
   },
   {
-    "customer": "삼성물산",
+    "customer": "E&A",
     "l1": "Sync",
     "l2": "PBI",
     "type": "신규",
@@ -1624,7 +1624,7 @@
     "id": "VOC-0116"
   },
   {
-    "customer": "삼성물산",
+    "customer": "E&A",
     "l1": "Sync",
     "l2": "PBI",
     "type": "신규",
@@ -1638,7 +1638,7 @@
     "id": "VOC-0117"
   },
   {
-    "customer": "삼성물산",
+    "customer": "E&A",
     "l1": "Sync",
     "l2": "PBI",
     "type": "신규",
@@ -1652,7 +1652,7 @@
     "id": "VOC-0118"
   },
   {
-    "customer": "삼성물산",
+    "customer": "E&A",
     "l1": "Sync",
     "l2": "Web SDK",
     "type": "신규",
@@ -1666,7 +1666,7 @@
     "id": "VOC-0119"
   },
   {
-    "customer": "삼성물산",
+    "customer": "E&A",
     "l1": "Sync",
     "l2": "Web SDK",
     "type": "신규",
@@ -1680,7 +1680,7 @@
     "id": "VOC-0120"
   },
   {
-    "customer": "삼성물산",
+    "customer": "E&A",
     "l1": "Sync",
     "l2": "Web SDK",
     "type": "신규",
@@ -1694,7 +1694,7 @@
     "id": "VOC-0121"
   },
   {
-    "customer": "삼성물산",
+    "customer": "E&A",
     "l1": "Sync",
     "l2": "Web SDK",
     "type": "신규",
@@ -1708,7 +1708,7 @@
     "id": "VOC-0122"
   },
   {
-    "customer": "삼성물산",
+    "customer": "E&A",
     "l1": "Sync",
     "l2": "Web SDK",
     "type": "신규",
@@ -1722,7 +1722,7 @@
     "id": "VOC-0123"
   },
   {
-    "customer": "삼성물산",
+    "customer": "E&A",
     "l1": "Sync",
     "l2": "Web SDK",
     "type": "신규",
@@ -1736,7 +1736,7 @@
     "id": "VOC-0124"
   },
   {
-    "customer": "삼성물산",
+    "customer": "E&A",
     "l1": "Sync",
     "l2": "Web SDK",
     "type": "신규",
@@ -1750,7 +1750,7 @@
     "id": "VOC-0125"
   },
   {
-    "customer": "삼성물산",
+    "customer": "E&A",
     "l1": "Sync",
     "l2": "Web SDK",
     "type": "신규",
