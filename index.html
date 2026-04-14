@@ -406,12 +406,97 @@ function renderTL(items){
 // RENDER — split: Fixed (header/search) + Body
 // Search input in Fixed → never destroyed by Body updates → Korean IME works
 // ═══════════════════════════════════════════════
+// ─── ASSIGNEE VIEW ───
+var ASGN_COLORS=["#2563eb","#7c3aed","#d97706","#dc2626","#16a34a","#0891b2","#c026d3","#ea580c","#4f46e5","#059669","#9333ea","#b91c1c"];
+function renderAssignee(items){
+  // Group by assignee
+  var groups={},unassigned=[];
+  items.forEach(function(item){
+    var a=(item.assignee||"").trim();
+    if(!a){unassigned.push(item);return}
+    // Handle multiple assignees like "하남국, 여태기"
+    var names=a.split(/[,，]/);
+    names.forEach(function(n){
+      n=n.trim();if(!n)return;
+      if(!groups[n])groups[n]=[];
+      groups[n].push(item);
+    });
+  });
+
+  var sortedNames=Object.keys(groups).sort(function(a,b){return groups[b].length-groups[a].length});
+  var h='<div style="margin-bottom:14px"><h3 style="font-size:15px;font-weight:700">👤 담당자별 VOC 현황</h3><p style="font-size:12px;color:var(--text-dim)">담당자 '+sortedNames.length+'명 · 미배정 '+unassigned.length+'건</p></div>';
+
+  // Cards grid
+  h+='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px">';
+  sortedNames.forEach(function(name,idx){
+    var gi=groups[name];
+    var ip=gi.filter(isIP).length,dl=gi.filter(isDelayed).length,done=gi.filter(function(x){return x.status==="완료"}).length;
+    var wait=gi.filter(function(x){return x.status==="대기"||x.status==="신규"}).length;
+    var color=ASGN_COLORS[idx%ASGN_COLORS.length];
+
+    h+='<div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);border-top:3px solid '+color+'">';
+    // Name + counts
+    h+='<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">';
+    h+='<div style="width:36px;height:36px;border-radius:50%;background:'+color+';color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px">'+eH(name.charAt(0))+'</div>';
+    h+='<div><div style="font-size:14px;font-weight:700">'+eH(name)+'</div>';
+    h+='<div style="font-size:11px;color:var(--text-dim)">총 '+gi.length+'건</div></div>';
+    h+='<div style="margin-left:auto;display:flex;gap:6px">';
+    if(dl)h+='<span style="background:var(--red-bg);color:var(--red);padding:3px 8px;border-radius:10px;font-size:10px;font-weight:600">지연 '+dl+'</span>';
+    if(ip)h+='<span style="background:var(--yellow-bg);color:var(--yellow);padding:3px 8px;border-radius:10px;font-size:10px;font-weight:600">진행 '+ip+'</span>';
+    h+='</div></div>';
+
+    // Mini bar
+    var total=gi.length;
+    h+='<div style="display:flex;height:6px;border-radius:3px;overflow:hidden;margin-bottom:10px;background:var(--border)">';
+    if(done)h+='<div style="width:'+(done/total*100)+'%;background:var(--green)"></div>';
+    if(ip)h+='<div style="width:'+(ip/total*100)+'%;background:var(--yellow)"></div>';
+    if(dl)h+='<div style="width:'+(dl/total*100)+'%;background:var(--red)"></div>';
+    if(wait)h+='<div style="width:'+(wait/total*100)+'%;background:var(--slate)"></div>';
+    h+='</div>';
+
+    // Item list
+    h+='<div style="max-height:200px;overflow-y:auto">';
+    gi.forEach(function(item){
+      var d=isDelayed(item);
+      h+='<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--border);font-size:12px">';
+      h+='<span class="badge badge-status-'+item.status+'" style="flex-shrink:0">'+item.status+'</span>';
+      h+='<span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="'+eH(item.desc)+'">'+eH(item.title)+'</span>';
+      if(d)h+='<span class="delay-tag">지연</span>';
+      h+='<span style="font-size:10px;color:var(--text-muted);flex-shrink:0">'+eH(item.due)+'</span>';
+      h+='</div>';
+    });
+    h+='</div></div>';
+  });
+
+  // Unassigned card
+  if(unassigned.length){
+    h+='<div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);border-top:3px solid var(--slate)">';
+    h+='<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">';
+    h+='<div style="width:36px;height:36px;border-radius:50%;background:var(--slate);color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px">?</div>';
+    h+='<div><div style="font-size:14px;font-weight:700">미배정</div>';
+    h+='<div style="font-size:11px;color:var(--text-dim)">'+unassigned.length+'건</div></div></div>';
+    h+='<div style="max-height:200px;overflow-y:auto">';
+    unassigned.forEach(function(item){
+      h+='<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--border);font-size:12px">';
+      h+='<span class="badge badge-status-'+item.status+'">'+item.status+'</span>';
+      h+='<span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+eH(item.title)+'</span>';
+      h+='<span style="font-size:10px;color:var(--text-muted);flex-shrink:0">'+eH(item.due)+'</span>';
+      h+='</div>';
+    });
+    h+='</div></div>';
+  }
+
+  h+='</div>';
+  return h;
+}
+
 function renderFixed(){
   var h='<div class="header"><div class="logo">S</div><div class="header-text"><h1>Spavy VOC Dashboard</h1><div class="sub">Voice of Customer · '+today()+'</div></div><div class="header-actions">';
-  h+='<button class="btn" onclick="openAddModal()">＋ VOC 추가</button><button class="btn" onclick="exportXL()">⬇ Excel</button>';
+  h+='<button class="btn" onclick="openAddModal()">＋ VOC 추가</button><button class="btn" onclick="exportXL()">⬇ Excel</button><button class="btn" onclick="exportJSON()">⬇ JSON</button>';
   h+='<label class="btn" style="cursor:pointer">⬆ Import<input type="file" accept=".xlsx,.xls,.csv" onchange="importXL(event)" style="display:none"></label></div></div>';
   h+='<div class="main-tabs"><button class="main-tab'+(mainTab==="dashboard"?" active":"")+'" onclick="swTab(\'dashboard\')">📋 대시보드</button>';
   h+='<button class="main-tab'+(mainTab==="timeline"?" active":"")+'" onclick="swTab(\'timeline\')">📊 타임라인</button>';
+  h+='<button class="main-tab'+(mainTab==="assignee"?" active":"")+'" onclick="swTab(\'assignee\')">👤 담당자별</button>';
   h+='<button class="main-tab'+(mainTab==="mail"?" active":"")+'" onclick="swTab(\'mail\')">✉ 메일 추출</button></div>';
   h+='<div class="filter-section" style="'+(mainTab==="mail"?"display:none":"")+'">';
   h+='<div class="search-row"><div class="search-box"><span class="icon">🔍</span><input id="searchInput" type="text" placeholder="검색: bug, 버그, in progress, 진행중, security, browser..."></div></div>';
@@ -458,6 +543,12 @@ function renderBody(){
   h+='</tbody></table></div>'}
   h+='</div></div>';
   h+='<div class="panel'+(mainTab==="timeline"?" active":"")+'">'+renderTL(filtered)+'</div>';
+
+  // ── ASSIGNEE PANEL ──
+  h+='<div class="panel'+(mainTab==="assignee"?" active":"")+'">';
+  h+=renderAssignee(filtered);
+  h+='</div>';
+
   h+='<div class="panel'+(mainTab==="mail"?" active":"")+'"><div style="margin-bottom:12px"><h3 style="font-size:15px;font-weight:700">✉ 메일 → VOC 자동 추출</h3><p style="font-size:12px;color:var(--text-dim)">메일 본문 붙여넣기 → AI 분류</p></div>';
   h+='<textarea class="mail-area" id="mailArea" placeholder="메일 본문을 여기에 붙여넣으세요...">'+eH(mailText)+'</textarea>';
   h+='<div style="margin-top:10px;display:flex;gap:8px"><button class="btn btn-primary" onclick="extractMail()">🤖 AI 추출</button><button class="btn" onclick="mailText=\'\';extractedItems=[];renderBody()">지우기</button></div>';
