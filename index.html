@@ -287,7 +287,7 @@ var INIT_DATA=[
 {id:"VOC-0116",customer:"E&A",l1:"Data Sync",l2:"",type:"신규",title:"화공 AR 동기화 관련 상시 요청",desc:"",status:"진행중",due:"12월",assignee:"하냠국",note:"",urgent:false}
 ];
 
-var data=JSON.parse(JSON.stringify(INIT_DATA)),mainTab="dashboard",searchText="",filterStatus="",filterType="",filterL1="",filterCustomer="",qfDelayed=false,qfProgress=false,qfUrgent=false,sortCol="",sortDir="asc",editItem=null,mailText="",extractedItems=[],isComposing=false,ganttColorBy="status",ganttGroupBy="l1";
+var data=JSON.parse(JSON.stringify(INIT_DATA)),mainTab="dashboard",searchText="",filterStatus="",filterType="",filterL1="",filterCustomer="",qfDelayed=false,qfProgress=false,qfUrgent=false,sortCol="",sortDir="asc",editItem=null,mailText="",extractedItems=[],isComposing=false,ganttColorBy="status",ganttGroupBy="l1",ganttHideDone=true;
 function today(){return new Date().toISOString().slice(0,10)}
 function isDelayed(i){
   if(i.status==="완료"||!i.due)return false;
@@ -333,7 +333,10 @@ function pM(d){
 }
 function renderTL(items){
   var now=new Date(),sY=now.getFullYear(),tot=18,tMI=now.getMonth(),tDF=now.getDate()/new Date(now.getFullYear(),now.getMonth()+1,0).getDate();
-  var ti=items.filter(function(d){return d.due}).slice().sort(function(a,b){return a.due<b.due?-1:a.due>b.due?1:0});
+  var ti=items.filter(function(d){return d.due}).slice();
+  if(ganttHideDone)ti=ti.filter(function(d){return d.status!=="완료"});
+  ti.sort(function(a,b){return a.due<b.due?-1:a.due>b.due?1:0});
+  var doneCnt=items.filter(function(d){return d.due&&d.status==="완료"}).length;
 
   // Group by selected mode
   var gr={};
@@ -358,6 +361,8 @@ function renderTL(items){
   h+='<span style="font-size:10px;color:var(--text-muted);margin-left:8px">색상:</span>';
   h+='<button class="btn btn-sm'+(ganttColorBy==="status"?" btn-primary":"")+'" onclick="ganttColorBy=\'status\';renderBody()">상태별</button>';
   h+='<button class="btn btn-sm'+(ganttColorBy==="customer"?" btn-primary":"")+'" onclick="ganttColorBy=\'customer\';renderBody()">고객별</button>';
+  h+='<span style="font-size:10px;color:var(--text-muted);margin-left:8px">완료:</span>';
+  h+='<button class="btn btn-sm'+(ganttHideDone?"":" btn-primary")+'" onclick="ganttHideDone=!ganttHideDone;renderBody()">'+(ganttHideDone?"숨김 ("+doneCnt+")":"표시중")+'</button>';
   h+='<div class="gantt-legend">';for(var k in lg)h+='<span class="gantt-legend-item"><span class="sw" style="background:'+lg[k]+'"></span>'+k+'</span>';
   h+='</div></div>';
   if(!ti.length){h+='<div style="padding:40px;text-align:center;color:var(--text-muted)">📭 마감일 설정된 항목 없음</div></div>';return h}
@@ -599,13 +604,15 @@ function addExt(i){var x=extractedItems[i];if(!x)return;x.id=nextId();x.urgent=f
 function addAllExt(){var c=extractedItems.length;extractedItems.forEach(function(x){x.id=nextId();x.urgent=false;x.assignee=x.assignee||"";x.note=x.note||"";x.status=x.status||"신규";data.push(x)});extractedItems=[];toast(c+"건 등록");renderBody()}
 
 // ─── PERSISTENCE ───
-var LSK="spavy-voc-v8";
+var LSK="spavy-voc-v9";
 function saveData(){try{localStorage.setItem(LSK,JSON.stringify(data))}catch(e){}}
 function loadData(){try{var s=localStorage.getItem(LSK);if(s)data=JSON.parse(s)}catch(e){}}
 
 // ─── KEYBOARD ───
 document.addEventListener("keydown",function(e){if((e.ctrlKey||e.metaKey)&&e.key==="k"){e.preventDefault();var si=document.getElementById("searchInput");if(si)si.focus()}if(e.key==="Escape"){if(document.getElementById("modalOverlay").classList.contains("show"))closeModal();else if(searchText){searchText="";var si2=document.getElementById("searchInput");if(si2)si2.value="";renderBody()}}});
 
+// Clean old cache keys
+try{for(var ci=1;ci<9;ci++){localStorage.removeItem("spavy-voc-v"+ci)}}catch(e){}
 loadData();render();
 </script>
 </body>
