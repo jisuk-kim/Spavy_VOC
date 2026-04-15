@@ -456,7 +456,7 @@
     "title": "각종 데이터의 폴더간 이동",
     "desc": "모든 폴더간 상호간 데이터 이동시 애로",
     "status": "대기",
-    "due": "Q3 2026",
+    "due": "9월",
     "assignee": "여태기",
     "note": "3분기",
     "urgent": false
@@ -1594,5 +1594,33 @@
     "assignee": "윤덕현",
     "note": "Seamless Data Pipeline - BI",
     "urgent": false
+  },
+  {
+    "customer": "E&A",
+    "l1": "BI",
+    "l2": "",
+    "type": "신규",
+    "status": "진행중",
+    "title": "Input Table",
+    "desc": "",
+    "due": "11월",
+    "assignee": "윤덕현",
+    "note": "",
+    "urgent": false,
+    "id": "VOC-0142"
+  },
+  {
+    "customer": "E&A",
+    "l1": "Data Sync",
+    "l2": "",
+    "type": "신규",
+    "status": "진행중",
+    "title": "화공 AR 동기화 관련 상시 요청",
+    "desc": "",
+    "due": "12월",
+    "assignee": "하냠국",
+    "note": "",
+    "urgent": false,
+    "id": "VOC-0143"
   }
 ]
