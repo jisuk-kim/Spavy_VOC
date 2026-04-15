@@ -287,7 +287,7 @@ var INIT_DATA=[
 {id:"VOC-0116",customer:"E&A",l1:"Data Sync",l2:"",type:"신규",title:"화공 AR 동기화 관련 상시 요청",desc:"",status:"진행중",due:"12월",assignee:"하냠국",note:"",urgent:false}
 ];
 
-var data=JSON.parse(JSON.stringify(INIT_DATA)),mainTab="dashboard",searchText="",filterStatus="",filterType="",filterL1="",filterCustomer="",qfDelayed=false,qfProgress=false,qfUrgent=false,sortCol="",sortDir="asc",editItem=null,mailText="",extractedItems=[],isComposing=false,ganttColorBy="status";
+var data=JSON.parse(JSON.stringify(INIT_DATA)),mainTab="dashboard",searchText="",filterStatus="",filterType="",filterL1="",filterCustomer="",qfDelayed=false,qfProgress=false,qfUrgent=false,sortCol="",sortDir="asc",editItem=null,mailText="",extractedItems=[],isComposing=false,ganttColorBy="status",ganttGroupBy="l1";
 function today(){return new Date().toISOString().slice(0,10)}
 function isDelayed(i){
   if(i.status==="완료"||!i.due)return false;
@@ -334,9 +334,28 @@ function pM(d){
 function renderTL(items){
   var now=new Date(),sY=now.getFullYear(),tot=18,tMI=now.getMonth(),tDF=now.getDate()/new Date(now.getFullYear(),now.getMonth()+1,0).getDate();
   var ti=items.filter(function(d){return d.due}).slice().sort(function(a,b){return a.due<b.due?-1:a.due>b.due?1:0});
-  var gr={};ti.forEach(function(i){if(!gr[i.l1])gr[i.l1]=[];gr[i.l1].push(i)});
+
+  // Group by selected mode
+  var gr={};
+  if(ganttGroupBy==="assignee"){
+    ti.forEach(function(i){
+      var a=(i.assignee||"").trim();
+      if(!a){if(!gr["미배정"])gr["미배정"]=[];gr["미배정"].push(i);return}
+      var names=a.split(/[,，]/);
+      names.forEach(function(n){n=n.trim();if(!n)return;if(!gr[n])gr[n]=[];gr[n].push(i)});
+    });
+  } else {
+    ti.forEach(function(i){if(!gr[i.l1])gr[i.l1]=[];gr[i.l1].push(i)});
+  }
+
   var lg=ganttColorBy==="status"?SBC:CBC;
   var h='<div class="gantt-wrap"><div class="gantt-toolbar"><span class="gl">📊 VOC 타임라인 · '+sY+'~'+(sY+1)+'</span>';
+  // Group toggle
+  h+='<span style="font-size:10px;color:var(--text-muted);margin-left:8px">그룹:</span>';
+  h+='<button class="btn btn-sm'+(ganttGroupBy==="l1"?" btn-primary":"")+'" onclick="ganttGroupBy=\'l1\';renderBody()">제품별</button>';
+  h+='<button class="btn btn-sm'+(ganttGroupBy==="assignee"?" btn-primary":"")+'" onclick="ganttGroupBy=\'assignee\';renderBody()">담당자별</button>';
+  // Color toggle
+  h+='<span style="font-size:10px;color:var(--text-muted);margin-left:8px">색상:</span>';
   h+='<button class="btn btn-sm'+(ganttColorBy==="status"?" btn-primary":"")+'" onclick="ganttColorBy=\'status\';renderBody()">상태별</button>';
   h+='<button class="btn btn-sm'+(ganttColorBy==="customer"?" btn-primary":"")+'" onclick="ganttColorBy=\'customer\';renderBody()">고객별</button>';
   h+='<div class="gantt-legend">';for(var k in lg)h+='<span class="gantt-legend-item"><span class="sw" style="background:'+lg[k]+'"></span>'+k+'</span>';
@@ -345,20 +364,36 @@ function renderTL(items){
   h+='<div style="overflow-x:auto"><table class="gt"><thead><tr><th class="lc">VOC 항목</th>';
   for(var mi=0;mi<tot;mi++){var mI=mi%12,mY=sY+Math.floor(mi/12),isT=mi===tMI;var lb=MN[mI];if(mI===0||mi===0)lb=mY+" "+lb;h+='<th class="'+(isT?"tc":"")+(mi<tot-1?" ms":"")+'">'+lb+'</th>'}
   h+='</tr></thead><tbody>';
-  Object.keys(gr).sort().forEach(function(l1){
-    var gi=gr[l1];
-    h+='<tr class="gg"><td class="lc" colspan="'+(tot+1)+'"><span class="gn">'+eH(l1)+'</span><span class="gnc">'+gi.length+'건</span></td></tr>';
+
+  // Sort groups: assignee by count desc, l1 alphabetical
+  var gKeys=Object.keys(gr);
+  if(ganttGroupBy==="assignee"){
+    gKeys.sort(function(a,b){if(a==="미배정")return 1;if(b==="미배정")return -1;return gr[b].length-gr[a].length});
+  } else {
+    gKeys.sort();
+  }
+
+  gKeys.forEach(function(gk){
+    var gi=gr[gk];
+    var groupDl=gi.filter(isDelayed).length,groupIp=gi.filter(isIP).length;
+    h+='<tr class="gg"><td class="lc" colspan="'+(tot+1)+'">';
+    h+='<span class="gn">'+eH(gk)+'</span><span class="gnc">'+gi.length+'건</span>';
+    if(groupDl)h+='<span style="margin-left:8px;background:var(--red-bg);color:var(--red);padding:2px 6px;border-radius:4px;font-size:10px;font-weight:600">지연 '+groupDl+'</span>';
+    if(groupIp)h+='<span style="margin-left:4px;background:var(--yellow-bg);color:var(--yellow);padding:2px 6px;border-radius:4px;font-size:10px;font-weight:600">진행 '+groupIp+'</span>';
+    h+='</td></tr>';
     gi.forEach(function(item){
       var dp=pM(item.due);if(!dp)return;
       var dms=(dp.y-sY)*12+dp.ms,dme=(dp.y-sY)*12+dp.me,dl=isDelayed(item);
       var bs,be=Math.min(tot-1,dme);
-      if(item.status==="완료"){bs=Math.max(0,dms)} // completed: due period only
-      else{bs=Math.max(0,Math.min(tMI,dme))} // everything else: from today to due
+      if(item.status==="완료"){bs=Math.max(0,dms)}
+      else{bs=Math.max(0,Math.min(tMI,dme))}
       bs=Math.min(bs,be);
       var bc=ganttColorBy==="status"?(SBC[item.status]||"#6b7280"):(CBC[item.customer]||"#6b7280");
+      // Row label: show assignee when grouped by L1, show L1 when grouped by assignee
+      var subInfo=ganttGroupBy==="assignee"?item.l1:(item.assignee||"미배정");
       h+='<tr><td class="lc"><span class="gi">'+item.id+'</span><span class="gti">'+eH(item.title)+'</span>';
       if(dl)h+='<span class="delay-tag">지연</span>';if(item.urgent)h+='<span class="urgent-flag">🔥</span>';
-      h+='<span class="gc">'+eH(item.customer)+'</span></td>';
+      h+='<span class="gc">'+eH(subInfo)+'</span></td>';
       for(var ci=0;ci<tot;ci++){
         h+='<td class="gbc'+(ci<tot-1?" ms":"")+'">';
         if(ci>=bs&&ci<=be){
@@ -377,7 +412,7 @@ function renderTL(items){
     });
   });
   var nd=items.filter(function(d){return!d.due});
-  if(nd.length){h+='<tr class="gg"><td class="lc" colspan="'+(tot+1)+'"><span class="gn">📌 마감 미설정</span><span class="gnc">'+nd.length+'건</span></td></tr>';nd.forEach(function(i){h+='<tr><td class="lc"><span class="gi">'+i.id+'</span><span class="gti">'+eH(i.title)+'</span><span class="gc">'+eH(i.customer)+'</span></td>';for(var c=0;c<tot;c++)h+='<td class="gbc'+(c<tot-1?" ms":"")+'"></td>';h+='</tr>'})}
+  if(nd.length){h+='<tr class="gg"><td class="lc" colspan="'+(tot+1)+'"><span class="gn">📌 마감 미설정</span><span class="gnc">'+nd.length+'건</span></td></tr>';nd.forEach(function(i){h+='<tr><td class="lc"><span class="gi">'+i.id+'</span><span class="gti">'+eH(i.title)+'</span><span class="gc">'+eH(ganttGroupBy==="assignee"?i.l1:(i.assignee||""))+'</span></td>';for(var c=0;c<tot;c++)h+='<td class="gbc'+(c<tot-1?" ms":"")+'"></td>';h+='</tr>'})}
   h+='</tbody></table></div></div>';return h;
 }
 
@@ -564,7 +599,7 @@ function addExt(i){var x=extractedItems[i];if(!x)return;x.id=nextId();x.urgent=f
 function addAllExt(){var c=extractedItems.length;extractedItems.forEach(function(x){x.id=nextId();x.urgent=false;x.assignee=x.assignee||"";x.note=x.note||"";x.status=x.status||"신규";data.push(x)});extractedItems=[];toast(c+"건 등록");renderBody()}
 
 // ─── PERSISTENCE ───
-var LSK="spavy-voc-v7";
+var LSK="spavy-voc-v8";
 function saveData(){try{localStorage.setItem(LSK,JSON.stringify(data))}catch(e){}}
 function loadData(){try{var s=localStorage.getItem(LSK);if(s)data=JSON.parse(s)}catch(e){}}
 
