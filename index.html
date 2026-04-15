@@ -589,7 +589,7 @@ function addExt(i){var x=extractedItems[i];if(!x)return;x.id=nextId();x.urgent=f
 function addAllExt(){var c=extractedItems.length;extractedItems.forEach(function(x){x.id=nextId();x.urgent=false;x.assignee=x.assignee||"";x.note=x.note||"";x.status=x.status||"신규";data.push(x)});extractedItems=[];toast(c+"건 등록");renderBody()}
 
 // ─── PERSISTENCE ───
-var LSK="spavy-voc-v5";
+var LSK="spavy-voc-v6";
 function saveData(){try{localStorage.setItem(LSK,JSON.stringify(data))}catch(e){}}
 function loadData(){try{var s=localStorage.getItem(LSK);if(s)data=JSON.parse(s)}catch(e){}}
 
