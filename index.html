@@ -375,7 +375,13 @@ function renderTL(items){
     h+='<tr class="gg"><td class="lc" colspan="'+(tot+1)+'"><span class="gn">'+eH(l1)+'</span><span class="gnc">'+gi.length+'건</span></td></tr>';
     gi.forEach(function(item){
       var dp=pM(item.due);if(!dp)return;
-      var dms=(dp.y-sY)*12+dp.ms,dme=(dp.y-sY)*12+dp.me,bs=Math.max(0,dms),be=Math.min(tot-1,dme),dl=isDelayed(item);
+      var dms=(dp.y-sY)*12+dp.ms,dme=(dp.y-sY)*12+dp.me,dl=isDelayed(item);
+      // Bar = work window, not just deadline
+      var bs,be=Math.min(tot-1,dme);
+      if(item.status==="완료"){bs=Math.max(0,dms)} // completed: show in due period
+      else if(item.status==="진행중"){bs=Math.max(0,Math.min(tMI,dms))} // in progress: from today to due
+      else{bs=Math.max(0,dme-2)} // new/waiting: 2 months before due
+      bs=Math.min(bs,be); // safety
       var bc=ganttColorBy==="status"?(SBC[item.status]||"#6b7280"):(CBC[item.customer]||"#6b7280");
       h+='<tr><td class="lc"><span class="gi">'+item.id+'</span><span class="gti">'+eH(item.title)+'</span>';
       if(dl)h+='<span class="delay-tag">지연</span>';if(item.urgent)h+='<span class="urgent-flag">🔥</span>';
@@ -388,7 +394,7 @@ function renderTL(items){
           var st="left:"+lp+"%;width:"+wp+"%;"+rd+";";
           if(item.status==="완료")st+="background:"+bc+";opacity:.55;";else if(dl)st+="background:"+bc+";box-shadow:inset 0 0 0 2px var(--red);";else st+="background:"+bc+";";
           h+='<div class="gb" style="'+st+'" title="'+eH(item.id+" "+item.title+" ["+item.status+"] "+item.due)+'">';
-          if(ci===bs)h+='<span class="bl">'+eH(item.status)+'</span>';
+          if(ci===bs)h+='<span class="bl">'+eH(item.status)+' → '+eH(item.due)+'</span>';
           h+='</div>';
         }
         if(ci===tMI)h+='<div class="tl" style="left:'+(tDF*100).toFixed(1)+'%"></div>';
