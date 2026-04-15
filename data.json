@@ -28,20 +28,6 @@
     "urgent": false
   },
   {
-    "id": "VOC-0010",
-    "customer": "E&A",
-    "l1": "Spatial Studio",
-    "l2": "Clash",
-    "type": "개선",
-    "title": "Clash File Download",
-    "desc": "Clash 파일 다운로드 기능",
-    "status": "완료",
-    "due": "Q1 2026",
-    "assignee": "",
-    "note": "",
-    "urgent": false
-  },
-  {
     "id": "VOC-0011",
     "customer": "삼성물산",
     "l1": "PJT",
@@ -52,20 +38,6 @@
     "status": "완료",
     "due": "3월",
     "assignee": "여태기",
-    "note": "",
-    "urgent": false
-  },
-  {
-    "id": "VOC-0012",
-    "customer": "E&A",
-    "l1": "UI",
-    "l2": "",
-    "type": "개선",
-    "title": "SPAVY Manual URL 공유",
-    "desc": "사용자가 상시 MANUAL LINK에 접근",
-    "status": "완료",
-    "due": "3월",
-    "assignee": "완료",
     "note": "",
     "urgent": false
   },
@@ -691,7 +663,7 @@
     "l1": "SPAVY - MANUAL",
     "l2": "",
     "type": "신규",
-    "title": " MANUAL LINK( ",
+    "title": " MANUAL LINK(",
     "desc": "준비중인 URL 공유 요청, 사용자가 상시 MANUAL LINK( 에 접근할 수 있으면 좋겠음 (상단바 등..) - 해당메뉴에서 link 선택 시 매뉴얼의 해당 페이지로 바로 이동?? 이런건 불가능한지? (옵션…)",
     "status": "완료",
     "due": "3월",
