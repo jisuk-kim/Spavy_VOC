@@ -1622,5 +1622,19 @@
     "assignee": "하냠국",
     "note": "",
     "urgent": false
+  },
+  {
+    "customer": "삼성전자",
+    "l1": "Data Sync",
+    "l2": "",
+    "type": "신규",
+    "status": "진행중",
+    "title": "Spavy Sync 설치 ",
+    "desc": "Spavy Sync 설치",
+    "due": "2026-04-16",
+    "assignee": "여태기",
+    "note": "",
+    "urgent": false,
+    "id": "VOC-0117"
   }
 ]
