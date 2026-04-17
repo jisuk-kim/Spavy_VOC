@@ -288,6 +288,7 @@ var INIT_DATA=[
 ];
 
 var data=JSON.parse(JSON.stringify(INIT_DATA)),mainTab="dashboard",searchText="",filterStatus="",filterType="",filterL1="",filterCustomer="",qfDelayed=false,qfProgress=false,qfUrgent=false,sortCol="",sortDir="asc",editItem=null,mailText="",extractedItems=[],isComposing=false,ganttColorBy="status",ganttGroupBy="l1",ganttHideDone=true;
+var apiKey="";try{apiKey=localStorage.getItem("spavy-api-key")||""}catch(e){}
 function today(){return new Date().toISOString().slice(0,10)}
 function isDelayed(i){
   if(i.status==="완료"||!i.due)return false;
@@ -569,6 +570,7 @@ function renderBody(){
   h+='</div>';
 
   h+='<div class="panel'+(mainTab==="mail"?" active":"")+'"><div style="margin-bottom:12px"><h3 style="font-size:15px;font-weight:700">✉ 메일 → VOC 자동 추출</h3><p style="font-size:12px;color:var(--text-dim)">메일 본문 붙여넣기 → AI 분류</p></div>';
+  h+='<div style="margin-bottom:10px;display:flex;align-items:center;gap:8px"><span style="font-size:11px;color:var(--text-dim);white-space:nowrap">API Key:</span><input id="apiKeyInput" type="password" placeholder="sk-ant-..." value="'+(apiKey||"")+'" style="flex:1;padding:7px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg-input);color:var(--text);font-size:12px;font-family:monospace;outline:none" onchange="apiKey=this.value;try{localStorage.setItem(\'spavy-api-key\',apiKey)}catch(e){}"><a href="https://console.anthropic.com/settings/keys" target="_blank" style="font-size:10px;color:var(--accent);white-space:nowrap">키 발급</a></div>';
   h+='<textarea class="mail-area" id="mailArea" placeholder="메일 본문을 여기에 붙여넣으세요...">'+eH(mailText)+'</textarea>';
   h+='<div style="margin-top:10px;display:flex;gap:8px"><button class="btn btn-primary" onclick="extractMail()">🤖 AI 추출</button><button class="btn" onclick="mailText=\'\';extractedItems=[];renderBody()">지우기</button></div>';
   if(extractedItems.length){h+='<div style="margin-top:14px"><h4 style="font-size:13px;font-weight:600;margin-bottom:8px">추출 ('+extractedItems.length+'건)</h4>';extractedItems.forEach(function(ei,idx){h+='<div class="ext-item"><div class="ext-title">'+eH(ei.title||"")+'</div><div class="ext-meta">'+eH(ei.customer||"기타")+' · '+eH(ei.l1||"")+' · '+eH(ei.type||"신규")+'</div><button class="btn btn-sm btn-green" style="margin-top:6px" onclick="addExt('+idx+')">+ 등록</button></div>'});h+='<button class="btn btn-green" style="margin-top:8px" onclick="addAllExt()">전체 등록</button></div>'}
@@ -599,12 +601,12 @@ function exportXL(){var f=getS(getF()),rows=f.map(function(d){return{ID:d.id,"�
 function importXL(ev){var file=ev.target.files[0];if(!file)return;var r=new FileReader();r.onload=function(e){try{var wb=XLSX.read(e.target.result,{type:"binary"}),ws=wb.Sheets[wb.SheetNames[0]],rows=XLSX.utils.sheet_to_json(ws),c=0;rows.forEach(function(r){var t=r["제목"]||r.title||"";if(!t)return;data.push({id:nextId(),customer:r["고객사"]||r.customer||"기타",l1:r.L1||r.l1||"",l2:r.L2||r.l2||"",type:r["유형"]||r.type||"신규",title:t,desc:r["설명"]||r.desc||"",status:r["상태"]||r.status||"신규",due:r["마감일"]||r.due||"",assignee:r["담당"]||r.assignee||"",note:r["비고"]||r.note||"",urgent:(r["긴급"]||"")=="Y"});c++});toast(c+"건 가져오기");renderBody()}catch(err){alert("오류: "+err.message)}};r.readAsBinaryString(file);ev.target.value=""}
 
 // ─── MAIL AI ───
-function extractMail(){var area=document.getElementById("mailArea");mailText=area?area.value:"";if(!mailText.trim()){alert("메일 입력");return}var sp="Extract VOC from Korean email for Spavy BIM software.\nL1: "+L1S.join(",")+"\nTypes: 신규,개선,버그,보안,인프라\nReturn ONLY JSON array: [{customer,l1,l2,type,title,desc,status:\"신규\",due:\"TBD\"}]\nEmpty=[]";toast("AI 분석...","🤖");fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json","anthropic-dangerous-direct-browser-access":"true"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:2000,system:sp,messages:[{role:"user",content:mailText}]})}).then(function(r){return r.json()}).then(function(d){var t="";if(d.content)d.content.forEach(function(c){if(c.type==="text")t+=c.text});t=t.replace(/```json/g,"").replace(/```/g,"").trim();try{extractedItems=JSON.parse(t);if(!Array.isArray(extractedItems))extractedItems=[];toast(extractedItems.length+"건 추출","✅")}catch(e){extractedItems=[];toast("파싱 실패","❌")}renderBody()}).catch(function(e){toast("오류: "+e.message,"❌")})}
+function extractMail(){var area=document.getElementById("mailArea");mailText=area?area.value:"";if(!mailText.trim()){alert("메일 본문을 입력하세요");return}if(!apiKey){alert("API Key를 입력하세요 (메일 추출 탭 상단)");return}var sp="Extract VOC items from Korean email for Spavy (BIM/construction software).\nL1 products: "+L1S.join(", ")+"\nTypes: "+TYPES.join(", ")+"\nCustomers: "+CUSTS.join(", ")+"\nReturn ONLY a JSON array (no markdown, no backticks). Each item:\n{\"customer\":\"company or 기타\",\"l1\":\"L1\",\"l2\":\"L2 or empty\",\"type\":\"type\",\"title\":\"short Korean title\",\"desc\":\"description\",\"status\":\"신규\",\"due\":\"TBD\"}\nIf none found return [].";toast("AI 분석...","🤖");fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json","x-api-key":apiKey,"anthropic-dangerous-direct-browser-access":"true"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:2000,system:sp,messages:[{role:"user",content:mailText}]})}).then(function(r){return r.json()}).then(function(d){if(d.error){toast("API 오류: "+(d.error.message||"인증 실패"),"❌");return}var t="";if(d.content)d.content.forEach(function(c){if(c.type==="text")t+=c.text});t=t.replace(/```json/g,"").replace(/```/g,"").trim();try{extractedItems=JSON.parse(t);if(!Array.isArray(extractedItems))extractedItems=[];toast(extractedItems.length+"건 추출","✅")}catch(e){extractedItems=[];toast("파싱 실패","❌")}renderBody()}).catch(function(e){toast("오류: "+e.message,"❌")})}
 function addExt(i){var x=extractedItems[i];if(!x)return;x.id=nextId();x.urgent=false;x.assignee=x.assignee||"";x.note=x.note||"";x.status=x.status||"신규";data.push(x);extractedItems.splice(i,1);toast(x.id+" 등록");renderBody()}
 function addAllExt(){var c=extractedItems.length;extractedItems.forEach(function(x){x.id=nextId();x.urgent=false;x.assignee=x.assignee||"";x.note=x.note||"";x.status=x.status||"신규";data.push(x)});extractedItems=[];toast(c+"건 등록");renderBody()}
 
 // ─── PERSISTENCE ───
-var LSK="spavy-voc-v9";
+var LSK="spavy-voc-v10";
 function saveData(){try{localStorage.setItem(LSK,JSON.stringify(data))}catch(e){}}
 function loadData(){try{var s=localStorage.getItem(LSK);if(s)data=JSON.parse(s)}catch(e){}}
 
@@ -612,7 +614,7 @@ function loadData(){try{var s=localStorage.getItem(LSK);if(s)data=JSON.parse(s)}
 document.addEventListener("keydown",function(e){if((e.ctrlKey||e.metaKey)&&e.key==="k"){e.preventDefault();var si=document.getElementById("searchInput");if(si)si.focus()}if(e.key==="Escape"){if(document.getElementById("modalOverlay").classList.contains("show"))closeModal();else if(searchText){searchText="";var si2=document.getElementById("searchInput");if(si2)si2.value="";renderBody()}}});
 
 // Clean old cache keys
-try{for(var ci=1;ci<9;ci++){localStorage.removeItem("spavy-voc-v"+ci)}}catch(e){}
+try{for(var ci=1;ci<10;ci++){localStorage.removeItem("spavy-voc-v"+ci)}}catch(e){}
 loadData();render();
 </script>
 </body>
