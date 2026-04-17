@@ -164,7 +164,7 @@ tbody td{padding:10px 14px;font-size:12.5px;vertical-align:middle}
 <div class="toast" id="toast"></div>
 <script>
 var MODS={"360": [], "3D viewer": [], "API": [], "Admin": ["시스템설정"], "BI": ["Extract Module", "Refresh", "Web API", "Web Server"], "Browser": ["Dynamic Properties", "Export CD", "FPL", "Issue List", "Properties", "Quick Space", "Spatial Tree", "Spavy Dock", "System Tree", "Viewer"], "Data Sync": [], "Designer": [], "Dimension Tree": [], "Directory List": [], "Dynamic Properties": [], "Gaussian": [], "Infra": ["배포", "보안", "서버"], "New Spatial Planning": [], "PJT": ["마이그레이션"], "SPAVY - BROWSER": [], "SPAVY - MANUAL": [], "SPAVY - Operation Spec": [], "SPAVY - PBI 시각화 객체": [], "SPAVY - PDF": [], "Spatial Studio": ["Space", "Spatial Data Positioning", "Spatial Planning"], "Sync": ["Backend", "PBI", "QuerySet", "Recipe", "Sync", "Table", "UI", "Visio View", "Web SDK"], "공통": []};
-var L1S=Object.keys(MODS),CUSTS=["E&A", "삼성물산", "삼성전자"],TYPES=["개발", "개선", "고지사항", "금년 중요과업", "기능제안", "버그", "보안", "삼인 로드맵관련", "신규", "오류"],STATS=["진행중", "완료", "대기", "취소"];
+var L1S=Object.keys(MODS),CUSTS=["E&A", "삼성물산", "삼성전자", "기타"],TYPES=["개발", "개선", "고지사항", "금년 중요과업", "기능제안", "버그", "보안", "삼인 로드맵관련", "신규", "오류"],STATS=["진행중", "완료", "대기", "취소"];
 var BILINGUAL={"신규":"new,new feature","개선":"improve,improvement,enhancement","버그":"bug,defect,error","보안":"security","인프라":"infra,infrastructure","진행중":"in progress,wip,ongoing,working,진행,작업중","완료":"done,complete,completed,finished,resolved","대기":"waiting,pending,hold,queue","취소":"cancel,cancelled,취소","고지사항":"notice,announcement","금년 중요과업":"important,key task","기능제안":"feature request,suggestion","삼인 로드맵관련":"roadmap","개발":"development,dev","오류":"error,bug","확인":"check,verify","Sync":"동기화,싱크,visio","Data Sync":"데이터싱크,동기화","Spatial Studio":"공간스튜디오,스페이셜","Data Studio":"데이터스튜디오","Browser":"브라우저","BI":"비아이,pbi,power bi,파이프라인","360":"삼육공","Gaussian":"가우시안","API":"에이피아이","Admin":"관리자,어드민","Designer":"디자이너","Infra":"인프라","PJT":"프로젝트","E&A":"이에이,ea","삼성물산":"samsung ct,물산","삼성전자":"samsung electronics,전자","기타":"etc,other"};
 function buildSI(){var x={};for(var k in BILINGUAL){var ts=(k+","+BILINGUAL[k]).toLowerCase().split(",");for(var i=0;i<ts.length;i++){var t=ts[i].trim();if(t){if(!x[t])x[t]=[];if(x[t].indexOf(k)===-1)x[t].push(k)}}}return x}
 var SIdx=buildSI();
@@ -782,7 +782,7 @@ function extractMail(){
 function addAllExt(){var c=extractedItems.length;extractedItems.forEach(function(x){x.id=nextId();x.urgent=false;x.assignee=x.assignee||"";x.note=x.note||"";x.status=x.status||"신규";data.push(x)});extractedItems=[];toast(c+"건 등록");renderBody()}
 
 // ─── PERSISTENCE ───
-var LSK="spavy-voc-v13";
+var LSK="spavy-voc-v14";
 function saveData(){try{localStorage.setItem(LSK,JSON.stringify(data))}catch(e){}}
 function loadData(){try{var s=localStorage.getItem(LSK);if(s)data=JSON.parse(s)}catch(e){}}
 
@@ -790,7 +790,7 @@ function loadData(){try{var s=localStorage.getItem(LSK);if(s)data=JSON.parse(s)}
 document.addEventListener("keydown",function(e){if((e.ctrlKey||e.metaKey)&&e.key==="k"){e.preventDefault();var si=document.getElementById("searchInput");if(si)si.focus()}if(e.key==="Escape"){if(document.getElementById("modalOverlay").classList.contains("show"))closeModal();else if(searchText){searchText="";var si2=document.getElementById("searchInput");if(si2)si2.value="";renderBody()}}});
 
 // Clean old cache keys
-try{for(var ci=1;ci<13;ci++){localStorage.removeItem("spavy-voc-v"+ci)}}catch(e){}
+try{for(var ci=1;ci<14;ci++){localStorage.removeItem("spavy-voc-v"+ci)}}catch(e){}
 loadMODS();
 loadData();render();
 </script>
