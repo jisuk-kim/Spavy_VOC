@@ -51,8 +51,8 @@
     "desc": "Database 암호화 적용",
     "status": "대기",
     "due": "6월",
-    "assignee": "",
-    "note": "",
+    "assignee": "여태기",
+    "note": "삼성전자 방향에 따름 선 삼성전자 ",
     "urgent": false
   },
   {
@@ -64,7 +64,7 @@
     "title": "DWG 내보내기",
     "desc": "DWG 파일 내보내기 기능",
     "status": "대기",
-    "due": "Q2 2026",
+    "due": "6월",
     "assignee": "",
     "note": "E&A와 공통",
     "urgent": false
@@ -78,7 +78,7 @@
     "title": "권한 제어 RBAC",
     "desc": "Role-Based Access Control 적용",
     "status": "대기",
-    "due": "Q2 2026",
+    "due": "6월",
     "assignee": "",
     "note": "E&A SEA-5 연관",
     "urgent": false
@@ -313,11 +313,11 @@
     "l1": "Browser",
     "l2": "Dynamic Properties",
     "type": "개선",
-    "title": "Dynamic Property",
+    "title": "Dynamic Property-개선",
     "desc": "Then 부분에서 표시할 Key값은 List에서 Checkbox 등을 쉽게 선택하도록 개선 요망",
     "status": "대기",
     "due": "",
-    "assignee": "",
+    "assignee": "김세희",
     "note": "창의적인 아이디어로 고민 필요 (다른 영역에도 적용 필요)",
     "urgent": false
   },
@@ -1624,17 +1624,17 @@
     "urgent": false
   },
   {
-    "customer": "기타",
-    "l1": "",
+    "customer": "삼성전자",
+    "l1": "3D Model",
     "l2": "",
     "type": "신규",
-    "title": "USD Export Test 프로그램이 준비되어 안내 드립니다.",
-    "desc": "USD Export Test 프로그램이 준비되어 안내 드립니다.",
-    "status": "대기",
-    "due": "TBD",
+    "title": "USD Export Test",
+    "desc": "USD Export Test ",
+    "status": "진행중",
+    "due": "5월",
     "id": "VOC-0117",
     "urgent": false,
-    "assignee": "",
+    "assignee": "하남국",
     "note": ""
   }
 ]
