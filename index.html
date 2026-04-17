@@ -511,7 +511,7 @@ function renderAssignee(items){
 
 function renderFixed(){
   var h='<div class="header"><div class="logo">S</div><div class="header-text"><h1>Spavy VOC Dashboard</h1><div class="sub">Voice of Customer · '+today()+'</div></div><div class="header-actions">';
-  h+='<button class="btn" onclick="openAddModal()">＋ VOC 추가</button><button class="btn" onclick="exportXL()">⬇ Excel</button><button class="btn" onclick="exportJSON()">⬇ JSON</button>';
+  h+='<button class="btn" onclick="openAddModal()">＋ VOC 추가</button><button class="btn" onclick="exportXL()">⬇ Excel</button><button class="btn" onclick="exportJSON()">⬇ JSON</button><button class="btn" onclick="openL1Modal()">⚙ L1/L2 관리</button>';
   h+='<label class="btn" style="cursor:pointer">⬆ Import<input type="file" accept=".xlsx,.xls,.csv" onchange="importXL(event)" style="display:none"></label></div></div>';
   h+='<div class="main-tabs"><button class="main-tab'+(mainTab==="dashboard"?" active":"")+'" onclick="swTab(\'dashboard\')">📋 대시보드</button>';
   h+='<button class="main-tab'+(mainTab==="timeline"?" active":"")+'" onclick="swTab(\'timeline\')">📊 타임라인</button>';
@@ -587,6 +587,117 @@ function rF(){return{customer:document.getElementById("f_customer").value,l1:doc
 function saveNew(){var f=rF();if(!f.title){alert("제목 입력");return}f.id=nextId();data.push(f);closeModal();toast(f.id+" 등록");renderBody()}
 function saveEdit(){if(!editItem)return;var f=rF();for(var k in f)editItem[k]=f[k];closeModal();toast(editItem.id+" 수정");editItem=null;renderBody()}
 function delItem(id){if(!confirm(id+" 삭제?"))return;data=data.filter(function(d){return d.id!==id});closeModal();toast(id+" 삭제","🗑");renderBody()}
+
+// ─── L1/L2 MANAGEMENT ───
+function saveMODS(){
+  L1S=Object.keys(MODS).sort();
+  try{localStorage.setItem("spavy-mods",JSON.stringify(MODS))}catch(e){}
+}
+function loadMODS(){
+  try{var s=localStorage.getItem("spavy-mods");if(s){MODS=JSON.parse(s);L1S=Object.keys(MODS).sort()}}catch(e){}
+}
+
+function openL1Modal(){
+  renderL1Modal();
+}
+
+function renderL1Modal(){
+  var h='<div class="modal-header"><h2>⚙ L1/L2 관리</h2><button class="modal-close" onclick="closeModal()">✕</button></div>';
+  h+='<div class="modal-body">';
+
+  // Add new L1
+  h+='<div style="display:flex;gap:8px;margin-bottom:16px">';
+  h+='<input id="newL1Input" type="text" placeholder="새 L1 이름 입력..." style="flex:1;padding:8px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg-input);color:var(--text);font-size:13px;font-family:inherit;outline:none">';
+  h+='<button class="btn btn-primary" onclick="addL1()">＋ L1 추가</button>';
+  h+='</div>';
+
+  // L1 list
+  var keys=Object.keys(MODS).sort();
+  h+='<div style="max-height:400px;overflow-y:auto">';
+  keys.forEach(function(l1){
+    var cnt=data.filter(function(d){return d.l1===l1}).length;
+    var l2s=MODS[l1]||[];
+    h+='<div style="border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:8px;overflow:hidden">';
+    // L1 header
+    h+='<div style="display:flex;align-items:center;padding:10px 12px;background:var(--bg-input);gap:8px">';
+    h+='<span style="font-weight:600;flex:1">'+eH(l1)+'</span>';
+    h+='<span style="font-size:11px;color:var(--text-dim)">'+cnt+'건</span>';
+    h+='<button class="btn btn-sm" style="border-color:var(--red);color:var(--red)" onclick="delL1(\''+eA(l1)+'\')">삭제</button>';
+    h+='</div>';
+    // L2 list
+    h+='<div style="padding:8px 12px">';
+    if(l2s.length){
+      l2s.forEach(function(l2){
+        var l2cnt=data.filter(function(d){return d.l1===l1&&d.l2===l2}).length;
+        h+='<div style="display:flex;align-items:center;gap:6px;padding:3px 0;font-size:12px">';
+        h+='<span style="color:var(--text-dim)">└</span>';
+        h+='<span style="flex:1">'+eH(l2)+'</span>';
+        h+='<span style="font-size:10px;color:var(--text-muted)">'+l2cnt+'건</span>';
+        h+='<button style="background:none;border:none;color:var(--red);cursor:pointer;font-size:14px;padding:0 4px" onclick="delL2(\''+eA(l1)+'\',\''+eA(l2)+'\')" title="삭제">✕</button>';
+        h+='</div>';
+      });
+    } else {
+      h+='<span style="font-size:11px;color:var(--text-muted)">하위 항목 없음</span>';
+    }
+    // Add L2
+    h+='<div style="display:flex;gap:6px;margin-top:6px">';
+    h+='<input class="l2add" data-l1="'+eH(l1)+'" type="text" placeholder="L2 추가..." style="flex:1;padding:5px 8px;border:1px solid var(--border);border-radius:4px;background:var(--bg-input);color:var(--text);font-size:11px;outline:none">';
+    h+='<button class="btn btn-sm btn-primary" onclick="addL2(\''+eA(l1)+'\')">＋</button>';
+    h+='</div>';
+    h+='</div></div>';
+  });
+  h+='</div>';
+
+  h+='</div>';
+  h+='<div class="modal-footer"><button class="btn" onclick="closeModal();renderFixed();renderBody()">닫기</button></div>';
+  openModal(h);
+}
+
+function addL1(){
+  var inp=document.getElementById("newL1Input");
+  var name=(inp?inp.value:"").trim();
+  if(!name){alert("L1 이름을 입력하세요");return}
+  if(MODS[name]!==undefined){alert("이미 존재하는 L1입니다");return}
+  MODS[name]=[];
+  saveMODS();
+  toast(name+" L1 추가","✅");
+  renderL1Modal();
+}
+
+function delL1(l1){
+  var cnt=data.filter(function(d){return d.l1===l1}).length;
+  var msg=l1+" 삭제";
+  if(cnt>0)msg+="\n⚠ 이 L1에 "+cnt+"건의 VOC가 있습니다. 데이터는 유지되지만 분류에서 사라집니다.";
+  if(!confirm(msg))return;
+  delete MODS[l1];
+  saveMODS();
+  toast(l1+" 삭제됨","🗑");
+  renderL1Modal();
+}
+
+function addL2(l1){
+  var inputs=document.querySelectorAll('.l2add');
+  var val="";
+  for(var i=0;i<inputs.length;i++){
+    if(inputs[i].getAttribute("data-l1")===l1){val=inputs[i].value.trim();break}
+  }
+  if(!val){return}
+  if(!MODS[l1])MODS[l1]=[];
+  if(MODS[l1].indexOf(val)!==-1){alert("이미 존재");return}
+  MODS[l1].push(val);
+  MODS[l1].sort();
+  saveMODS();
+  toast(l1+" → "+val+" 추가","✅");
+  renderL1Modal();
+}
+
+function delL2(l1,l2){
+  if(!confirm(l1+" → "+l2+" 삭제?"))return;
+  MODS[l1]=MODS[l1].filter(function(v){return v!==l2});
+  saveMODS();
+  toast(l2+" 삭제됨","🗑");
+  renderL1Modal();
+}
 
 // ─── EXCEL ───
 function exportJSON(){
@@ -671,7 +782,7 @@ function extractMail(){
 function addAllExt(){var c=extractedItems.length;extractedItems.forEach(function(x){x.id=nextId();x.urgent=false;x.assignee=x.assignee||"";x.note=x.note||"";x.status=x.status||"신규";data.push(x)});extractedItems=[];toast(c+"건 등록");renderBody()}
 
 // ─── PERSISTENCE ───
-var LSK="spavy-voc-v11";
+var LSK="spavy-voc-v12";
 function saveData(){try{localStorage.setItem(LSK,JSON.stringify(data))}catch(e){}}
 function loadData(){try{var s=localStorage.getItem(LSK);if(s)data=JSON.parse(s)}catch(e){}}
 
@@ -679,7 +790,8 @@ function loadData(){try{var s=localStorage.getItem(LSK);if(s)data=JSON.parse(s)}
 document.addEventListener("keydown",function(e){if((e.ctrlKey||e.metaKey)&&e.key==="k"){e.preventDefault();var si=document.getElementById("searchInput");if(si)si.focus()}if(e.key==="Escape"){if(document.getElementById("modalOverlay").classList.contains("show"))closeModal();else if(searchText){searchText="";var si2=document.getElementById("searchInput");if(si2)si2.value="";renderBody()}}});
 
 // Clean old cache keys
-try{for(var ci=1;ci<11;ci++){localStorage.removeItem("spavy-voc-v"+ci)}}catch(e){}
+try{for(var ci=1;ci<12;ci++){localStorage.removeItem("spavy-voc-v"+ci)}}catch(e){}
+loadMODS();
 loadData();render();
 </script>
 </body>
