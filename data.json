@@ -610,7 +610,7 @@
     "title": "Dimension기능 사용 시 현 그리드를 먼저 그리고 그 그리드를 Set으로 넘기는 방식",
     "desc": "Dimension기능 사용 시 현재처럼 Set을 하는게 아닌 방식 가능한지? -> 그리드를 먼저 그리고 그 그리드를 Set으로 넘기는 방식으로하면 두 기능모두 활용가능?",
     "status": "대기",
-    "due": "",
+    "due": "5월11일",
     "assignee": "염용주",
     "note": "염프로 확인해서 듀데이트 정하기",
     "urgent": false
@@ -624,7 +624,7 @@
     "title": "Search에 다중조건 주기",
     "desc": "Search에 다중조건 가능한지? - Search set말고",
     "status": "대기",
-    "due": "3월",
+    "due": "5월",
     "assignee": "여태기",
     "note": "",
     "urgent": false
@@ -637,8 +637,8 @@
     "type": "신규",
     "title": "Property+ : 보고싶은 속성만 볼수있게 hovering or 다른창이든",
     "desc": "Property+ : 보고싶은 속성만 볼수있게 hovering or 다른창이든",
-    "status": "대기",
-    "due": "완료",
+    "status": "완료",
+    "due": "",
     "assignee": "",
     "note": "",
     "urgent": false
@@ -694,7 +694,7 @@
     "title": "객체 선택, 숨기기 등 브라우저 상에서도 단축키 지원 가능한지 문의",
     "desc": "객체 선택, 숨기기 등 브라우저 상에서도 단축키 지원 가능한지 문의 -> 브라우저 자체 단축키랑 겹칠우려",
     "status": "진행중",
-    "due": "",
+    "due": "4월",
     "assignee": "장나겸",
     "note": "단축키 자체 테스트중",
     "urgent": false
@@ -750,7 +750,7 @@
     "title": "- Viewer 설정 시 한 개 프로젝트가 아닌 프로젝트 Group 화 하여 사용자가 Project 변경하여 불러오도록 하는기능",
     "desc": "- viewer 설정 시 한개프로젝트가 아닌 프로젝트 Group을 선택하고, 그룹 내 프로젝트를 사용자가 선택하면서 변경할 수 있도록 가능한지? - 프로젝트를 불러올때 CAD Model 폴더 전체에서 사용자가 선택하는 것이 아닌, 쿼리셋 단위로 로드 ex) 쿼리셋에서 불러올 객체 지정(File단위든, Category단위든) > 쿼리셋중 bi 시각화로 사용할",
     "status": "대기",
-    "due": "",
+    "due": "4월",
     "assignee": "장나겸",
     "note": "",
     "urgent": false
@@ -778,8 +778,8 @@
     "title": "Ditectory List를 사용하는 메뉴들에서 디렉토리와 파일(Item)의 순서 및 Level변경 관련 전체적으로 수정필요 1) Data Sy",
     "desc": "Ditectory List를 사용하는 메뉴들에서 디렉토리와 파일(Item)의 순서 및 Level변경 관련 전체적으로 수정필요 1) Data Sync의 CAD Model, Point Cloud, Drawing, Image, General Files - 디렉토리와 파일의 List 각각 구성 / 모두 정렬지원없음 > 디렉토리와 파일정렬의 기본정렬을 이름순으로 가",
     "status": "대기",
-    "due": "",
-    "assignee": "",
+    "due": "5월11일",
+    "assignee": "김준우",
     "note": "",
     "urgent": false
   },
@@ -792,7 +792,7 @@
     "title": "Spavy / 삭제된 객체 정보가 DB에 남아있는 현상",
     "desc": "Spavy / 삭제된 객체 정보가 DB에 남아있는 현상 - 3/19 메일 참조 Web UI를 통해 Spavy에 업로드한 파일을 삭제하였으나, DB테이블에서 테이블 정보를 로드하면 삭제된 파일정보가 남아있는 현상이 있습니다. - 5개 파일 업로드 후 4개 삭제하여.. 브라우저에서는 하나만 보이지만, DB에는 5개가 모두 조회됨 종종 Space 작업중에도 유사",
     "status": "대기",
-    "due": "",
+    "due": "3월",
     "assignee": "여태기",
     "note": "2026.03.23 : 확인",
     "urgent": false
@@ -890,7 +890,7 @@
     "title": "Browser에서 객체를 이동",
     "desc": "Browser에서 객체를 이동(+복제?, 삭제? Scale up? 등) 볼 수 있는 기능(Navisworks와 동일한 기능) : 설계검토나 간섭검토 시, 객체위치 수정에 대한 여유 치수를 확인 ex) 1안 : Navisworks처럼 Browser를 닫으면 해당내용 삭제 2안 : 다른 기능들 처럼 List에 Item명을 생성하고 객체를 이동 - 해당 Item",
     "status": "대기",
-    "due": "",
+    "due": "4월",
     "assignee": "",
     "note": "",
     "urgent": false
@@ -1636,5 +1636,61 @@
     "urgent": false,
     "assignee": "하남국",
     "note": ""
+  },
+  {
+    "customer": "E&A",
+    "l1": "Admin",
+    "l2": "",
+    "type": "개선",
+    "status": "진행중",
+    "title": "1. User Management의 Group에서도 Multi Upload 추가",
+    "desc": "1. User Management의 Group에서도 Multi Upload 추가(Users에는 있음)\n2. Project의 Access Control에도 Multi Upload추가 -> 해당기능에서는 upload시 User목록에 등록여부 체크하는 절차 필요(등록여부 및 access level 체크 -> 등록안된 리스트 보여야함)",
+    "due": "5월",
+    "assignee": "여태기",
+    "note": "",
+    "urgent": false,
+    "id": "VOC-0118"
+  },
+  {
+    "customer": "E&A",
+    "l1": "Browser",
+    "l2": "Viewer",
+    "type": "신규",
+    "status": "대기",
+    "title": "단축키 I(Isolate & Fit) 작동 오류  - Fit 동작하지 않음",
+    "desc": "단축키 I(Isolate & Fit) 작동 오류\n - Fit 동작하지 않음",
+    "due": "4월",
+    "assignee": "장나겸",
+    "note": "",
+    "urgent": false,
+    "id": "VOC-0119"
+  },
+  {
+    "customer": "E&A",
+    "l1": "Spatial Studio",
+    "l2": "Space",
+    "type": "개선",
+    "status": "진행중",
+    "title": "Simple part to space>다양한 형태 로드 가능하도록 개선",
+    "desc": "Simple part to space에서 육면체형태가 아닌 다양한 형태(ex.도넛, 6면이 아닌 체적을 가진 형태)도 load가능하도록 개선",
+    "due": "4월",
+    "assignee": "염용주",
+    "note": "",
+    "urgent": false,
+    "id": "VOC-0120"
+  },
+  {
+    "customer": "E&A",
+    "l1": "Data Sync",
+    "l2": "",
+    "type": "신규",
+    "status": "대기",
+    "title": "Spavy Sync App 설치 ",
+    "desc": "방문해서 Spavy Sync App 설치",
+    "due": "4월",
+    "assignee": "김세희",
+    "note": "",
+    "urgent": false,
+    "id": "VOC-0121"
   }
 ]
