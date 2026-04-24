@@ -1692,5 +1692,19 @@
     "note": "",
     "urgent": false,
     "id": "VOC-0121"
+  },
+  {
+    "customer": "삼성전자",
+    "l1": "3D Model",
+    "l2": "",
+    "type": "개발",
+    "status": "진행중",
+    "title": "IFC Export Test",
+    "desc": "IFC Export Test ",
+    "due": "5월",
+    "assignee": "하남국",
+    "note": "",
+    "urgent": false,
+    "id": "VOC-0122"
   }
 ]
