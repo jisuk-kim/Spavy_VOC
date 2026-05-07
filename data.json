@@ -257,7 +257,7 @@
     "l1": "Spatial Studio",
     "l2": "Spatial Planning",
     "type": "개선",
-    "title": "Grid 표시",
+    "title": "Spatial Planning>Grid 표시",
     "desc": "- 층별 그리드를 정의하고, 표시하는 기능 (On/Off 가능 - Spavy Dock에 넣으면? - Grid 번호는 화면 줌인/줌아웃시 항상 화면 안에서 표시되도록 자동 조정",
     "status": "대기",
     "due": "6월",
