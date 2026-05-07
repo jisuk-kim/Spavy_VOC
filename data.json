@@ -874,7 +874,7 @@
     "l2": "",
     "type": "개발",
     "title": "Browser에서 객체를 이동",
-    "desc": "Browser에서 객체를 이동(+복제?, 삭제? Scale up? 등) 볼 수 있는 기능(Navisworks와 동일한 기능) : 설계검토나 간섭검토 시, 객체위치 수정에 대한 여유 치수를 확인 ex) 1안 : Navisworks처럼 Browser를 닫으면 해당내용 삭제 2안 : 다른 기능들 처럼 List에 Item명을 생성하고 객체를 이동 - 해당 Item",
+    "desc": "Browser에서 객체를 이동(+복제?, 삭제? Scale up? 등) 볼 수 있는 기능(Navisworks와 동일한 기능) : 설계검토나 간섭검토 시, 객체위치 수정에 대한 여유 치수를 확인 ex) 1안 : Navisworks처럼 Browser를 닫으면 해당내용 삭제 2안 : 다른 기능들 처럼 List에 Item명을 생성하고 객체를 이동 - 해당 Item에 객체 이동에 대한 정보를 남겨두고 재활용가능",
     "status": "대기",
     "due": "4월",
     "assignee": "",
