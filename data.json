@@ -1706,5 +1706,33 @@
     "note": "",
     "urgent": false,
     "id": "VOC-0123"
+  },
+  {
+    "customer": "E&A",
+    "l1": "BI",
+    "l2": "",
+    "type": "개선",
+    "status": "진행중",
+    "title": "Power BI_Color Code 속도 개선 ",
+    "desc": "Power BI_Color Code 개선 ",
+    "due": "2026-05-31",
+    "assignee": "김준우",
+    "note": "",
+    "urgent": false,
+    "id": "VOC-0124"
+  },
+  {
+    "customer": "E&A",
+    "l1": "Ontology Sandbox",
+    "l2": "",
+    "type": "신규",
+    "status": "진행중",
+    "title": "Ontology_AI ",
+    "desc": "Ontology_AI ",
+    "due": "2026-06-30",
+    "assignee": "김준우",
+    "note": "",
+    "urgent": false,
+    "id": "VOC-0125"
   }
 ]
