@@ -151,6 +151,37 @@ tbody td{padding:10px 14px;font-size:12.5px;vertical-align:middle}
 .gg td{background:rgba(99,102,241,.06);padding:6px 14px!important}
 .gg .gn{font-size:11px;font-weight:700;color:var(--accent)}
 .gg .gnc{font-size:10px;color:var(--text-muted);margin-left:6px}
+.col-filter-btn{display:inline-block;background:none;border:none;cursor:pointer;padding:1px 3px;margin-left:2px;opacity:.55;font-size:10px;color:var(--text-dim);vertical-align:middle;line-height:1}
+.col-filter-btn:hover{opacity:1;color:var(--accent)}
+.col-filter-btn.active{opacity:1;color:var(--accent)}
+thead th.has-filter{background:var(--accent-glow)}
+thead th.has-filter .col-filter-btn{opacity:1;color:var(--accent)}
+.filter-popover{position:absolute;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:0 10px 32px rgba(0,0,0,.15);padding:10px;z-index:1500;min-width:220px;max-width:280px;font-size:12px}
+.filter-popover .fp-search{width:100%;padding:6px 10px;margin-bottom:8px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg-input);font-size:12px;outline:none;font-family:inherit;color:var(--text)}
+.filter-popover .fp-search:focus{border-color:var(--border-focus)}
+.filter-popover .fp-actions{display:flex;gap:8px;margin-bottom:6px;font-size:11px;color:var(--text-dim)}
+.filter-popover .fp-actions span{cursor:pointer;color:var(--accent)}
+.filter-popover .fp-actions span:hover{text-decoration:underline}
+.filter-popover .fp-options{max-height:240px;overflow-y:auto;border-top:1px solid var(--border);padding-top:6px}
+.filter-popover .fp-opt{display:flex;align-items:center;gap:6px;padding:5px 4px;cursor:pointer;border-radius:4px;user-select:none}
+.filter-popover .fp-opt:hover{background:var(--bg-card-hover)}
+.filter-popover .fp-opt input{cursor:pointer;flex-shrink:0}
+.filter-popover .fp-opt span.fp-lab{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.filter-popover .fp-opt .fp-cnt{font-size:10px;color:var(--text-muted);flex-shrink:0}
+.filter-popover .fp-footer{display:flex;gap:6px;margin-top:8px;padding-top:8px;border-top:1px solid var(--border);justify-content:flex-end}
+.active-filters{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;align-items:center;padding:8px 10px;background:var(--bg-card);border:1px dashed var(--border);border-radius:var(--radius-sm)}
+.active-filters .af-label{font-size:10px;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-right:4px}
+.active-filters .af-hint{font-size:11px;color:var(--text-muted);margin-right:6px}
+.active-filters .af-divider{width:1px;height:18px;background:var(--border);margin:0 4px}
+.af-quick-btn{font-size:11px;padding:3px 10px;border-radius:14px;border:1px solid var(--border);background:transparent;color:var(--text-dim);cursor:pointer;font-family:inherit;transition:all .15s;display:inline-flex;align-items:center;gap:4px}
+.af-quick-btn:hover{border-color:var(--accent);color:var(--accent)}
+.af-quick-btn.active{border-color:var(--accent);background:var(--accent-glow);color:var(--accent);font-weight:600}
+.af-quick-btn .af-cnt{font-size:9px;opacity:.7}
+.active-filter-chip{display:inline-flex;align-items:center;gap:5px;padding:3px 6px 3px 10px;border-radius:14px;background:var(--accent-glow);border:1px solid var(--accent);color:var(--accent);font-size:11px;font-weight:500}
+.active-filter-chip .x{cursor:pointer;opacity:.7;font-size:14px;line-height:1;padding:0 3px;border-radius:50%}
+.active-filter-chip .x:hover{opacity:1;background:rgba(99,102,241,.15)}
+.active-filters .af-clear{margin-left:auto;font-size:11px;color:var(--red);cursor:pointer;font-weight:500}
+.active-filters .af-clear:hover{text-decoration:underline}
 @media(max-width:768px){.app{padding:14px 12px}.stat-row{grid-template-columns:repeat(3,1fr)}.form-grid{grid-template-columns:1fr}.search-box{min-width:100%}table{font-size:11.5px}thead th,tbody td{padding:8px 10px}}
 ::-webkit-scrollbar{width:6px;height:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#d1d5db;border-radius:3px}::-webkit-scrollbar-thumb:hover{background:#9ca3af}
 </style>
@@ -169,130 +200,135 @@ var BILINGUAL={"진행중":"in progress,wip,ongoing,working,진행,작업중","�
 function buildSI(){var x={};for(var k in BILINGUAL){var ts=(k+","+BILINGUAL[k]).toLowerCase().split(",");for(var i=0;i<ts.length;i++){var t=ts[i].trim();if(t){if(!x[t])x[t]=[];if(x[t].indexOf(k)===-1)x[t].push(k)}}}return x}
 var SIdx=buildSI();
 var INIT_DATA=[
-{id:"VOC-0001",customer:"E&A",l1:"BI",l2:"",type:"신규",title:"Fit World 기능",desc:"view 내에 fit world 추가",status:"완료",due:"3월",assignee:"장나겸",note:"단축키로 구현-좌표로는 X",urgent:false},
-{id:"VOC-0002",customer:"삼성물산",l1:"Data Sync",l2:"",type:"신규",title:"CRT",desc:"진행사항 주기적으로 공유 부탁드립니다.",status:"진행중",due:"6월",assignee:"하남국, 여태기, 김준우",note:"2분기 내 적용",urgent:false},
-{id:"VOC-0003",customer:"삼성물산",l1:"PJT",l2:"마이그레이션",type:"신규",title:"PJT 데이터 Export",desc:"- PJT 데이터 Export, 백업, Import, Offline 뷰어 제공 등 - 프로젝트 데이터 Export - 배포완료 (피드백 확인 필요)- Offline 뷰어 하반기 진행",status:"완료",due:"3월",assignee:"여태기",note:"",urgent:false},
-{id:"VOC-0004",customer:"삼성물산",l1:"Infra",l2:"보안",type:"보안",title:"DB 암호화",desc:"Database 암호화 적용",status:"대기",due:"6월",assignee:"여태기",note:"삼성전자 방향에 따름 선 삼성전자 ",urgent:false},
-{id:"VOC-0005",customer:"삼성전자",l1:"Browser",l2:"Export CD",type:"신규",title:"DWG 내보내기",desc:"DWG 파일 내보내기 기능",status:"대기",due:"6월",assignee:"",note:"E&A와 공통",urgent:false},
-{id:"VOC-0006",customer:"삼성전자",l1:"Browser",l2:"Properties",type:"개선",title:"권한 제어 RBAC",desc:"Role-Based Access Control 적용",status:"대기",due:"6월",assignee:"",note:"E&A SEA-5 연관",urgent:false},
-{id:"VOC-0007",customer:"삼성물산",l1:"Infra",l2:"서버",type:"고지사항",title:"YSP PJT 대응",desc:"5~9월 리소스 필요 가능성 있음",status:"대기",due:"",assignee:"여태기",note:"리소스 필요 시 대응",urgent:false},
-{id:"VOC-0008",customer:"삼성물산",l1:"Infra",l2:"배포",type:"고지사항",title:"운영시 당사 ITSM 활용필요",desc:"- 추후 당사 ITSM을 통해 승인 후 서버 업데이트 진행 등 절차 적용 필요 - 방법 확인하여 3월부터 시행 준비(안내 예정)",status:"대기",due:"",assignee:"여태기, 염용주",note:"요청 절차에 따라 진행",urgent:false},
-{id:"VOC-0009",customer:"삼성물산",l1:"Designer",l2:"",type:"개선",title:"장비배치기능",desc:"- Browser에서 장비(오브젝트)를 움직여보고, 측정 - 사전에 오브젝트의 크기, 방향, 회전 방향을 정의하거나, 한데 묶인 모델들을 분리하여 1개 객체로 분리하는 등 사전에 오브젝트를 편집, 관리할 수 있는 기능(Catalog Management 개편)",status:"대기",due:"6월",assignee:"김행운",note:"- 2분기 - 1차 구현 (객체의 회전 반경 및 가동 범위 제어를 위한 중심점(Origin) 및 관절(Joint) 구조 제외) - 3분기 - 완료",urgent:false},
-{id:"VOC-0010",customer:"삼성물산",l1:"API",l2:"",type:"금년 중요과업",title:"엔젤스윙 데이터 연동(API)",desc:"- 엔젤스윙 > Spavy - 물산 Requirement 전달 예정",status:"대기",due:"",assignee:"여태기",note:"API 수령 및 물산 요구사항 구체화 후 대응",urgent:false},
-{id:"VOC-0011",customer:"삼성물산",l1:"API",l2:"",type:"금년 중요과업",title:"Outbound API 개발",desc:"- Spavy > 외부 (당사 개발 서버) - 당사 임직원이 직접 개발 중인 AI 분석 시스템에 입력 데이터로 활용 - Spavy에 입력된 파일 자체를 요청하는 API로 최초 목표는 드론 정사영상임 - 상기 엔젤스윙의 API를 BM하여 초기 방향을 검토할 수 있을것으로 전망",status:"대기",due:"",assignee:"여태기",note:"대응시점 : 2분기 내",urgent:false},
-{id:"VOC-0012",customer:"삼성물산",l1:"API",l2:"",type:"금년 중요과업",title:"ACC/360(큐픽스) 데이터 연동(API)",desc:"- 금년 추진 가능성은 있으나 우선 순위 높지 않음 - 진행방향 결정시 별도 고지 예정",status:"진행중",due:"",assignee:"여태기",note:"- ACC 진행 중 - 큐픽스 API 수령 후 검토",urgent:false},
-{id:"VOC-0013",customer:"삼성물산",l1:"360",l2:"",type:"개선",title:"데이터 수용 고도화 - 360",desc:"- 360 이미지 가시화 관련 UX 적인 이슈 해결 . Bubble 클릭시 360 이미지가 별도 질문 없이 바로 변경 . FOV 불일치 문제 (PCD, 3DGS 공통 이슈)",status:"진행중",due:"4월",assignee:"윤덕현",note:"- Bubble 클릭 동작 옵션 제공: 이미지 즉시 변경 또는 사용자 선택 변경 설정 (매뉴얼 하단 참조- https://samin.gitbook.io/spavy/tutorial/browser/contents-view/spavy-dock) - FOV 불일치 이슈 해결을",urgent:false},
-{id:"VOC-0014",customer:"삼성물산",l1:"Gaussian",l2:"",type:"금년 중요과업",title:"데이터 수용 고도화 - 3DGS",desc:"- 3DGS 가시화 및 내부 데이터 처리 관련 고도화 . 진행사항 주기적으로 공유 부탁드립니다. . LCC 파일 지원 여부 . 3DGS Point Cloud 파일이 Spavy Dock에서 표시되지 않는 문제",status:"진행중",due:"",assignee:"김행운",note:"- LCC는 ZIP 파일로 현재 제공 - Spavy Dock 에 파일 표시 3월 내 배포 - 진행사항 지속 보고",urgent:false},
-{id:"VOC-0015",customer:"삼성물산",l1:"Spatial Studio",l2:"Spatial Planning",type:"삼인 로드맵관련",title:"Spatial Planning",desc:"- 층별 기준정보 세팅의 중요한 부분으로 판단하고 있으며, 특히 PCD 데이터를 층별로 사전 Segmentation 하는 부분을 꼭 포함 시켜 주시기 바랍니다. . 목적1 : 해당 층의 RC데이터 유무를 메타데이터로 갖고 있음 . 목적2 : PCD를 층별로 가시화함으로써 로딩 속도 개선 및 PCD 면 뒤쪽의 멀리있는 Point를 스냅하는 문제 해결 - 층",status:"진행중",due:"6월",assignee:"염용주",note:"- [3월 3~4주] Spatial Planning 개편안 1차 배포 및 피드백 수집 - [2분기 완료] 목적 1, 목적 2 관련 내용 구현 - [3분기 완료] 층 기준 정보 적용 목표",urgent:false},
-{id:"VOC-0016",customer:"삼성물산",l1:"Browser",l2:"Issue List",type:"개선",title:"이슈관리 고도화",desc:"- 진행상황 공유 부탁드립니다.",status:"대기",due:"",assignee:"",note:"구체적인 설계 후 로드맵 확정 후 공유",urgent:false},
-{id:"VOC-0017",customer:"삼성물산",l1:"Browser",l2:"Viewer",type:"개선",title:"Scene을 템플릿으로 활용하여 동적 서비스 화면 구성",desc:"- URL 파라미터로 Scene Loading 및 객체 Selection - 사용예 : 좌측 3D Model, 우측 RC 데이터 형태로 계획대비 실적을 비교하는 기능 구현. . 좌측 3D 모델 : 대상 3D 객체가 Selection 되어 X-Ray & Zoom . 우측 RC : 화면이 Sync되어 해당 객체에 대한 RC데이터 가시화 (추후 Spatial P",status:"대기",due:"6월",assignee:"김준우",note:"- 구현 검토: 기술적 문제 없음 (2분기) - 향후 계획: 프로토타입 정의 필요. 물산의 구체적 일정 요청시 작업 착수",urgent:false},
-{id:"VOC-0018",customer:"삼성물산",l1:"Admin",l2:"시스템설정",type:"기능제안",title:"관리자 화면 구성",desc:"- 서버 스토리지의 잔여 용량 및 PJT별 사용용량을 표시해주는 관리자 화면 필요 - 주기적으로 모니터링하여 필요시 Cloud 자원 용량 증설 검토",status:"대기",due:"4월",assignee:"여태기",note:"최대한 빨리 적용 예정",urgent:false},
-{id:"VOC-0019",customer:"삼성물산",l1:"Browser",l2:"Spatial Tree",type:"개선",title:"동적 메타데이터",desc:"- 최신 RC 데이터라는 Metadata - Spatial Planning과 엮여서 해당 위치에서의 최신 RC 데이터를 찾는 로직",status:"대기",due:"6월",assignee:"",note:"스페셜 플래닝 자료구조를 활용한 다양한 기능 개발 에정 - 2분기",urgent:false},
-{id:"VOC-0020",customer:"삼성물산",l1:"Spatial Studio",l2:"Spatial Planning",type:"개선",title:"Grid 표시",desc:"- 층별 그리드를 정의하고, 표시하는 기능 (On/Off 가능 - Spavy Dock에 넣으면? - Grid 번호는 화면 줌인/줌아웃시 항상 화면 안에서 표시되도록 자동 조정",status:"대기",due:"6월",assignee:"염용주",note:"2분기 내 적용",urgent:false},
-{id:"VOC-0021",customer:"삼성물산",l1:"Browser",l2:"FPL",type:"개선",title:"Floor Plan Locator(FPL) 개편",desc:"- 도면 핸들 버튼을 없애고 동일한 기능을 수행하는 별도 아이콘을 화면 내에 배치 - Crop 된 상태에서 FPL 작동시 Crop이 풀리는 문제 있음",status:"진행중",due:"4월",assignee:"김행운",note:"- 1차 기능 구현 완료 - Crop 기능 풀리는 문제는 검토 중, 2분기 내 수정 완료 예정",urgent:false},
-{id:"VOC-0022",customer:"삼성물산",l1:"Browser",l2:"Spavy Dock",type:"개선",title:"Spavy Dock 하위 트리 생성",desc:"- Rvt 파일의 경우 Custom Tree 등으로 묶인 항목을 하위 트리로 표시 . 기둥, 보, 바닥 등을 별도 하위 Tree로 분리하고 별도 색상 부여 및 On/Off . 사용자가 Custom으로 객체를 숨겨서 만든 Rvt 모델을 하위 Tree로 저장하여 재활용 - NWD 파일의 경우 파일 내 파일 Tree를 Dock에서 리스트로 확인 및 조정 필요 (",status:"대기",due:"",assignee:"",note:"창의적인 아이디어로 고민 필요",urgent:false},
-{id:"VOC-0023",customer:"삼성물산",l1:"Browser",l2:"Dynamic Properties",type:"개선",title:"Dynamic Property-개선",desc:"Then 부분에서 표시할 Key값은 List에서 Checkbox 등을 쉽게 선택하도록 개선 요망",status:"대기",due:"",assignee:"김세희",note:"창의적인 아이디어로 고민 필요 (다른 영역에도 적용 필요)",urgent:false},
-{id:"VOC-0024",customer:"삼성물산",l1:"BI",l2:"",type:"개선",title:"PBI 컬러 코드에 투명도 포함",desc:"- '3D 모델에서 내부 객체의 색상 변경시 확인이 불가함 - 가시성을 높이도록 색상이 적용되지 않거나 사용자가 의도적으로 선택한 객체를 투명하게 변경하도록 함",status:"완료",due:"3월",assignee:"장나겸",note:"3월 내",urgent:false},
-{id:"VOC-0025",customer:"삼성물산",l1:"Browser",l2:"Export CD",type:"개선",title:"PCD Crop & Export 기능 개선",desc:"- 화면 Crop 모드 상태에서 해당 PCD를 Export할수 있도록 기능 추가",status:"대기",due:"",assignee:"윤덕현",note:"내부 리소스 검토 후 상세 일정 계획 에정",urgent:false},
-{id:"VOC-0026",customer:"삼성물산",l1:"Browser",l2:"Quick Space",type:"개선",title:"Quick Space Top/Bottom 선택 개선",desc:"- Crop Control처럼 눈으로 보면서 조정하는 기능 추가",status:"완료",due:"4월",assignee:"염용주",note:"4월6일배포",urgent:false},
-{id:"VOC-0027",customer:"삼성물산",l1:"Spatial Studio",l2:"Space",type:"개선",title:"Space 생성 기능 고도화",desc:"- Query, Custom Tree, Ontology List 등의 오브젝트 집합체를 통해 Space를 생성하는 기능 - 간단히 오브젝트를 그려서 생성하는 방식 - 2D 도면으로 모양 그리기 + Top/Bottom 입력",status:"대기",due:"",assignee:"염용주",note:"- 2D 도면 - 4월 - 나머지 1차 배포 후 검토, 퀵 스페이스에서 좀 더 다양한 메소드로 스페이스 생성 기능 검토 예정",urgent:false},
-{id:"VOC-0028",customer:"삼성물산",l1:"Browser",l2:"Spavy Dock",type:"개선",title:"Spavy Dock 개선",desc:"- 모든 탭을 통합해서 보여주기 + 탭간 데이터 복사, 이동 - Unload 기능을 여기에 통합 (X 버튼 등) - 탭 이름 수정 기능 요청",status:"진행중",due:"4월",assignee:"장나겸",note:"- 모든 탭 통합, 탭간 데이터 복사, 이동 - 아이디어 도출 예정 / Unload 기능 추가 - 3월 - 탭 이름 수정 기능 - 4월",urgent:false},
-{id:"VOC-0029",customer:"삼성물산",l1:"Browser",l2:"Viewer",type:"개선",title:"View Sync 기능 추가",desc:"화면 내 Tab 들을 한번에 Sync 하는 기능 추가(별도 질문 없이 원터치로)",status:"완료",due:"3월",assignee:"장나겸",note:"테스트 후 배포 예정(3월)",urgent:false},
-{id:"VOC-0030",customer:"삼성물산",l1:"Browser",l2:"System Tree",type:"개선",title:"각종 Tree 내 데이터 정렬 기능 필요",desc:"순서 변경",status:"진행중",due:"",assignee:"여태기",note:"순차 적용",urgent:false},
-{id:"VOC-0031",customer:"삼성물산",l1:"BI",l2:"",type:"개선",title:"PBI 전용 Data List Tree 필요",desc:"",status:"대기",due:"6월",assignee:"장나겸, 강경완",note:"마이트리 기능 추가 후 재협의 필요",urgent:false},
-{id:"VOC-0032",customer:"삼성물산",l1:"Data Sync",l2:"",type:"개선",title:"파일명 외 보여주는 이름 정의 필요",desc:"보여주는 이름 부여(Alias) Alias Name 기능 개선 필요 → File List의 추가 항목들이 Sync 입력 컬럼과 연동되도록 구조 개선 필요",status:"대기",due:"",assignee:"김준우",note:"스페셜 플래닝 적용 후 재협의 필요",urgent:true},
-{id:"VOC-0033",customer:"삼성물산",l1:"PJT",l2:"마이그레이션",type:"개선",title:"각종 데이터의 폴더간 이동",desc:"모든 폴더간 상호간 데이터 이동시 애로",status:"대기",due:"9월",assignee:"여태기",note:"3분기",urgent:false},
-{id:"VOC-0034",customer:"삼성물산",l1:"Browser",l2:"Viewer",type:"개선",title:"Action Tree기능을 Custom 버튼으로 동작",desc:"Viewpoint 이동, Scene 불러오기 등",status:"대기",due:"",assignee:"",note:"아이디어 도출 후 개발",urgent:false},
-{id:"VOC-0035",customer:"삼성물산",l1:"Admin",l2:"시스템설정",type:"신규",title:"시스템 한글화",desc:"",status:"완료",due:"4월",assignee:"장나겸",note:"4월 배포 (일부 용어는 고객사에서 제안해도 됨.)",urgent:false},
-{id:"VOC-0036",customer:"삼성물산",l1:"Data Sync",l2:"",type:"신규",title:"Revit 2026 연동",desc:"",status:"대기",due:"6월",assignee:"하남국",note:"",urgent:false},
-{id:"VOC-0037",customer:"삼성물산",l1:"Data Sync",l2:"",type:"개선",title:"컬럼 순서 개선 요청",desc:"Progress → File Name → Revision → File Size → Acquisition Date 순으로 정렬",status:"진행중",due:"4월",assignee:"김세희",note:"4/10 개발완료 계획",urgent:false},
-{id:"VOC-0038",customer:"삼성물산",l1:"Data Sync",l2:"",type:"개선",title:"Sync 시 필요정보 일괄 입력/수정",desc:"- Transform Set, Acquisition Date 등 입력값 일괄 입력/수정 기능 필요 - 수정 가능한 항목을 좌측으로 배치 → Acquisition Date를 Transformation 다음 위치로 이동 - Revit 파일의 경우, 뷰어에 \"Set Revit Position\" 기능 추가",status:"진행중",due:"4월",assignee:"김세희",note:"메일로 요청",urgent:false},
-{id:"VOC-0039",customer:"삼성물산",l1:"Spatial Studio",l2:"Spatial Data Positioning",type:"신규",title:"Revit Position 변경",desc:"Revit Position 변경 → 좌측 Tree에서 Base Point 메뉴를 부르고 → 해당 Tree(또는 폴더) 전체 rvt 파일을 일괄 변경 가능하도록 수정",status:"대기",due:"4월",assignee:"김행운",note:"메일로 요청",urgent:false},
-{id:"VOC-0040",customer:"삼성물산",l1:"Spatial Studio",l2:"",type:"개선",title:"Transform Set 접근방법 및 내부값 수정 가능하도록 요청",desc:"별도의 Transform Set 관리화면으로 접근하는 방법 추가 Transform 내부 값 Key-in 방식 수정 기능 필요 (예: 수치 직접 변경) + Duplicate 기능",status:"대기",due:"4월",assignee:"김행운",note:"",urgent:false},
-{id:"VOC-0041",customer:"삼성물산",l1:"360",l2:"",type:"버그",title:"360 이미지 버블이 사라짐",desc:"현상 : 아래와 같이 형태(PCD 좌, 360이미지 우) 로 Scene 저장 후 Scene을 로드하면 360 이미지 버블이 사라짐",status:"대기",due:"4월",assignee:"윤덕현",note:"메일에서 추출",urgent:false},
-{id:"VOC-0042",customer:"E&A",l1:"SPAVY - BROWSER",l2:"",type:"오류",title:"Browser>Reset Visibility 시 파일 로드 오류",desc:"Browser에서 system tree로 CAD Model을 불러온 후, 모델 리뷰(검색, isolated, hide, zoom 등)작업 후 Reset visibility(R키)를 하면, 다른 폴더에 있는 파일이 모두 로드됨 (ex. 251119폴더의 AMW파일을 최초 Load후 작업 후 R을 하면 251209의 폴더의 rvt파일도 모두 로드됨)",status:"대기",due:"3월",assignee:"",note:"2026.03.23 : 작업완료 삼인 담당자 Check 필요",urgent:false},
-{id:"VOC-0043",customer:"E&A",l1:"Spatial Studio",l2:"Space",type:"개발",title:"Space 기능 개선 : RVT의 Mass를 인식할수 있도록",desc:"추가검토요청사항 : Revit의 Room으로 모델링 시 Naviswork으로 Export시 해당 Room들이 Volume을 가지게 Export가능하다고 하는데, Spavy에서도 Revit의 Room을 인식할 수있는지?",status:"대기",due:"4월",assignee:"염용주",note:"2026.03.23 : 테스트 할 파일 요청 후 대기 중",urgent:false},
-{id:"VOC-0044",customer:"E&A",l1:"Dimension Tree",l2:"",type:"개발",title:"Dimension기능 사용 시 현 그리드를 먼저 그리고 그 그리드를 Set으로 넘기는 방식",desc:"Dimension기능 사용 시 현재처럼 Set을 하는게 아닌 방식 가능한지? -> 그리드를 먼저 그리고 그 그리드를 Set으로 넘기는 방식으로하면 두 기능모두 활용가능?",status:"대기",due:"5월11일",assignee:"염용주",note:"염프로 확인해서 듀데이트 정하기",urgent:false},
-{id:"VOC-0045",customer:"E&A",l1:"SPAVY - BROWSER",l2:"",type:"개발",title:"Search에 다중조건 주기",desc:"Search에 다중조건 가능한지? - Search set말고",status:"대기",due:"5월",assignee:"여태기",note:"",urgent:false},
-{id:"VOC-0046",customer:"E&A",l1:"Browser",l2:"",type:"신규",title:"Property+ : 보고싶은 속성만 볼수있게 hovering or 다른창이든",desc:"Property+ : 보고싶은 속성만 볼수있게 hovering or 다른창이든",status:"완료",due:"",assignee:"",note:"",urgent:false},
-{id:"VOC-0047",customer:"E&A",l1:"SPAVY - PDF",l2:"",type:"신규",title:"Drawing markup, Approval Stamp 기능",desc:"Drawing markup, Approval Stamp 기능 ( 본사 Site mobile App. 개발 일정에 반영될 예정 → 현장 적용 가능한 시점은 언제쯤 될까요? )",status:"대기",due:"",assignee:"",note:"",urgent:false},
-{id:"VOC-0048",customer:"E&A",l1:"SPAVY - MANUAL",l2:"",type:"신규",title:"MANUAL LINK(",desc:"준비중인 URL 공유 요청, 사용자가 상시 MANUAL LINK( 에 접근할 수 있으면 좋겠음 (상단바 등..) - 해당메뉴에서 link 선택 시 매뉴얼의 해당 페이지로 바로 이동?? 이런건 불가능한지? (옵션…)",status:"완료",due:"3월",assignee:"여태기",note:"2026.03.23 : 바로 가기 버튼 구현 가능",urgent:false},
-{id:"VOC-0049",customer:"E&A",l1:"SPAVY - PBI 시각화 객체",l2:"",type:"개선",title:"S-Hub와 같이 모서리에 사용빈도 높은 기본 기능 설명과 단축키 show (off 지원)",desc:"S-Hub와 같이 모서리에 사용빈도 높은 기본 기능 설명과 단축키 show (off 지원) - 단축키 S-Hub와 동일하게 우하단으로 이동(현재 Search창과 겹침)",status:"완료",due:"완료",assignee:"장나겸",note:"",urgent:false},
-{id:"VOC-0050",customer:"E&A",l1:"SPAVY - PBI 시각화 객체",l2:"",type:"신규",title:"객체 선택, 숨기기 등 브라우저 상에서도 단축키 지원 가능한지 문의",desc:"객체 선택, 숨기기 등 브라우저 상에서도 단축키 지원 가능한지 문의 -> 브라우저 자체 단축키랑 겹칠우려",status:"진행중",due:"4월",assignee:"장나겸",note:"단축키 자체 테스트중",urgent:false},
-{id:"VOC-0051",customer:"E&A",l1:"SPAVY - PBI 시각화 객체",l2:"",type:"신규",title:"Fit World 기능",desc:"Fit World 기능 -> view내에 fit world 추가",status:"완료",due:"3월",assignee:"장나겸",note:"",urgent:false},
-{id:"VOC-0052",customer:"E&A",l1:"SPAVY - Operation Spec",l2:"",type:"신규",title:"Spavy 구동을 위해 필0명, 100명, 1000명 등..) 측정/제안",desc:"Spavy 구동을 위해 필요한 최소, 권장 인프라 사양 (동시사용자 10명, 100명, 1000명 등..) 측정/제안을 통해 솔루션 운영 최적화 (cpu, hdd, network 등.. idle/stress 환경 load test) 하면 좋겠습니다.",status:"대기",due:"6월",assignee:"",note:"",urgent:false},
-{id:"VOC-0053",customer:"E&A",l1:"3D viewer",l2:"",type:"개발",title:"동일 Project Group에 있는 Project를 한 개의 view에서 볼수있는 기능",desc:"동일 Project Group에 있는 Project를 한 개의 view에서 볼수있는 기능 - 선택된 프로젝트에서 다른 프로젝트를 불러오거나, Project Group에서 별도 browser를 실행 등 방법은 상관없음",status:"대기",due:"안함",assignee:"",note:"",urgent:false},
-{id:"VOC-0054",customer:"E&A",l1:"SPAVY - PBI 시각화 객체",l2:"",type:"개선",title:"- Viewer 설정 시 한 개 프로젝트가 아닌 프로젝트 Group 화 하여 사용자가 Project 변경하여 불러오도록 하는기능",desc:"- viewer 설정 시 한개프로젝트가 아닌 프로젝트 Group을 선택하고, 그룹 내 프로젝트를 사용자가 선택하면서 변경할 수 있도록 가능한지? - 프로젝트를 불러올때 CAD Model 폴더 전체에서 사용자가 선택하는 것이 아닌, 쿼리셋 단위로 로드 ex) 쿼리셋에서 불러올 객체 지정(File단위든, Category단위든) > 쿼리셋중 bi 시각화로 사용할",status:"대기",due:"4월",assignee:"장나겸",note:"",urgent:false},
-{id:"VOC-0055",customer:"E&A",l1:"Spatial Studio",l2:"Space",type:"개선",title:"simple part to space에서 Mass가 겹친상황에 대한 별도 로직이나 알림이 없음",desc:"simple part to space에서 Mass가 겹친상황에 대한 별도 로직이나 알림이 없음 - simple part to space뿐만 아니라 Space기능에서 생성된 Space가 겹치는 경우, 겹치는 Space를 알려주고 \"겹치는 Space가 있다. 그래도 저장하시겠습니까?\" 같은 경고창 가능한지 검토 - 겹치는 경우, simple part to sp",status:"진행중",due:"4월",assignee:"염용주",note:"",urgent:false},
-{id:"VOC-0056",customer:"E&A",l1:"Directory List",l2:"",type:"개선",title:"Ditectory List를 사용하는 메뉴들에서 디렉토리와 파일(Item)의 순서 및 Level변경 관련 전체적으로 수정필요 1) Data Sy",desc:"Ditectory List를 사용하는 메뉴들에서 디렉토리와 파일(Item)의 순서 및 Level변경 관련 전체적으로 수정필요 1) Data Sync의 CAD Model, Point Cloud, Drawing, Image, General Files - 디렉토리와 파일의 List 각각 구성 / 모두 정렬지원없음 > 디렉토리와 파일정렬의 기본정렬을 이름순으로 가",status:"대기",due:"5월11일",assignee:"김준우",note:"",urgent:false},
-{id:"VOC-0057",customer:"E&A",l1:"Infra",l2:"",type:"오류",title:"Spavy / 삭제된 객체 정보가 DB에 남아있는 현상",desc:"Spavy / 삭제된 객체 정보가 DB에 남아있는 현상 - 3/19 메일 참조 Web UI를 통해 Spavy에 업로드한 파일을 삭제하였으나, DB테이블에서 테이블 정보를 로드하면 삭제된 파일정보가 남아있는 현상이 있습니다. - 5개 파일 업로드 후 4개 삭제하여.. 브라우저에서는 하나만 보이지만, DB에는 5개가 모두 조회됨 종종 Space 작업중에도 유사",status:"대기",due:"3월",assignee:"여태기",note:"2026.03.23 : 확인",urgent:false},
-{id:"VOC-0058",customer:"E&A",l1:"Spatial Studio",l2:"Space",type:"개선",title:"Simple part to space에서 Mass를 선택할때, 마우스 드레그 가능하도록",desc:"Simple part to space에서 Mass를 선택할때, Browser와 동일한 마우스 드레그 가능하도록 기능 추가",status:"대기",due:"4월",assignee:"염용주",note:"",urgent:false},
-{id:"VOC-0059",customer:"E&A",l1:"Spatial Studio",l2:"Space",type:"오류",title:"Space 생성시 색상을 지정 오류",desc:"Space 생성시 색상을 지정 오류 - Default로 지정된 색상 외에 다른 색상을 지정하려는 경우 어떤 색을 선택하든 검은색으로 생성",status:"진행중",due:"4월",assignee:"염용주",note:"",urgent:false},
-{id:"VOC-0060",customer:"E&A",l1:"공통",l2:"",type:"개선",title:"204번 207번 중 어떤게 최신인지? 2",desc:"204번 207번 중 어떤게 최신인지? 207이 Test서버인데 204에는 있고 207에는 없는 메뉴가 있음 - ex. Spavy Designer은 204에만 있음 / 기존에 있던 Spatical Data Positioning이 204에서 사라짐",status:"진행중",due:"4월",assignee:"여태기",note:"",urgent:false},
-{id:"VOC-0061",customer:"E&A",l1:"New Spatial Planning",l2:"",type:"개선",title:"Setting화면에서 최초 Setting 이후 해당메뉴에서 결과를 확인할 수 없음",desc:"Setting화면에서 최초 Setting 이후 해당메뉴에서 결과를 확인할 수 없음 - Section Planning, Floor Camera View 등",status:"대기",due:"4월",assignee:"염용주",note:"",urgent:false},
-{id:"VOC-0062",customer:"E&A",l1:"Dynamic Properties",l2:"",type:"오류",title:"Dynamic properties에서 생성한 item 헤더명 확인불가",desc:"Dynamic properties에서 생성한 item 헤더명 확인불가(4월 초 적용예정이었으나 미해결)",status:"대기",due:"4월",assignee:"김세희",note:"",urgent:false},
-{id:"VOC-0063",customer:"E&A",l1:"Dimension Tree",l2:"",type:"개선",title:"List에 있는 Dimension Item을 다중선택 삭제",desc:"(Instant Dimension기능이 없다는 가정) List에 있는 Dimension Item을 삭제하려면 각각 하나씩 삭제작업을 해야함 - 중복선택 기능 추가 : 중복선택 후 우클릭>삭제(중복선택 후 우클릭 시 Delete, Show 정도만 활성화)",status:"진행중",due:"4월",assignee:"염용주",note:"",urgent:false},
-{id:"VOC-0064",customer:"E&A",l1:"Browser",l2:"",type:"개발",title:"Browser에서 객체를 이동",desc:"Browser에서 객체를 이동(+복제?, 삭제? Scale up? 등) 볼 수 있는 기능(Navisworks와 동일한 기능) : 설계검토나 간섭검토 시, 객체위치 수정에 대한 여유 치수를 확인 ex) 1안 : Navisworks처럼 Browser를 닫으면 해당내용 삭제 2안 : 다른 기능들 처럼 List에 Item명을 생성하고 객체를 이동 - 해당 Item",status:"대기",due:"4월",assignee:"",note:"",urgent:false},
-{id:"VOC-0065",customer:"E&A",l1:"Spatial Studio",l2:"Space",type:"개선",title:"Simple part to space에서 육면체형태가 아닌 다양한 형태 가능 ?",desc:"Simple part to space에서 육면체형태가 아닌 다양한 형태(ex.도넛, 6면이 아닌 체적을 가진 형태)도 load가능하도록 개선",status:"완료",due:"4월",assignee:"염용주",note:"있는 기능 - E&A 테스트 필요",urgent:false},
-{id:"VOC-0066",customer:"E&A",l1:"Sync",l2:"UI",type:"신규",title:"Visio File 전용 Upload 화면",desc:"Visio 전용 업로드 화면, 프로젝트/디렉터리 관리, Upload/Delete, 동기화 상태 View",status:"완료",due:"3월",assignee:"하남국",note:"Seamless Data Pipeline - Visio",urgent:false},
-{id:"VOC-0067",customer:"E&A",l1:"Visio",l2:"",type:"신규",title:"Visio File 자동 동기화 설정",desc:"주기/조건에 따른 Visio File 자동 동기화 옵션, 사용자별/프로젝트별 설정",status:"진행중",due:"7월",assignee:"하남국",note:"Seamless Data Pipeline - Visio",urgent:false},
-{id:"VOC-0068",customer:"E&A",l1:"Sync",l2:"Backend",type:"신규",title:"Visio Node Type 추가",desc:"Visio 도면 요소를 Spavy Node Type으로 정의, 전용 DB 테이블 생성",status:"완료",due:"3월",assignee:"하남국",note:"Seamless Data Pipeline - Visio",urgent:false},
-{id:"VOC-0069",customer:"E&A",l1:"Sync",l2:"Sync",type:"신규",title:"Visio File Data 추출",desc:"Visio 파일에서 형상/위치/텍스트/Color/속성 파싱하여 공통 데이터 구조로 추출",status:"완료",due:"3월",assignee:"하남국",note:"Seamless Data Pipeline - Visio",urgent:false},
-{id:"VOC-0070",customer:"E&A",l1:"Sync",l2:"Sync",type:"신규",title:"Visio Entity별 Instance화",desc:"추출 데이터를 Entity 단위로 재구성하여 Instance 객체 관리",status:"완료",due:"3월",assignee:"하남국",note:"Seamless Data Pipeline - Visio",urgent:false},
-{id:"VOC-0071",customer:"E&A",l1:"Sync",l2:"Sync",type:"신규",title:"Shape 형상 Modelling",desc:"Visio 형상을 Geometry로 변환, Web Viewer용 2D/유사3D 형상 데이터 생성",status:"완료",due:"3월",assignee:"하남국",note:"Seamless Data Pipeline - Visio",urgent:false},
-{id:"VOC-0072",customer:"E&A",l1:"Sync",l2:"Sync",type:"신규",title:"RenderingTree 구성",desc:"Web Streaming 가능한 계층 구조 Tree로 Data 재구성",status:"완료",due:"3월",assignee:"하남국",note:"Seamless Data Pipeline - Visio",urgent:false},
-{id:"VOC-0073",customer:"E&A",l1:"Sync",l2:"Sync",type:"신규",title:"Data 구조화",desc:"Visio Node간 Relation 속성화, Spavy 공통 DB 스키마 정규화/저장",status:"완료",due:"3월",assignee:"하남국",note:"Seamless Data Pipeline - Visio",urgent:false},
-{id:"VOC-0074",customer:"E&A",l1:"Sync",l2:"Visio View",type:"신규",title:"SystemTree 구성",desc:"SystemTree/탐색 패널에 Visio Node 등록, 트리 확장/축소/검색/필터",status:"완료",due:"3월",assignee:"하남국",note:"Seamless Data Pipeline - Visio",urgent:false},
-{id:"VOC-0075",customer:"E&A",l1:"Sync",l2:"Visio View",type:"신규",title:"Visio P&ID 전용 View 생성",desc:"Visio P&ID 전용 View, Pan/Zoom, Layer 제어, 배경/그리드 옵션",status:"완료",due:"3월",assignee:"하남국",note:"Seamless Data Pipeline - Visio",urgent:false},
-{id:"VOC-0076",customer:"E&A",l1:"Sync",l2:"Visio View",type:"신규",title:"Visio P&ID Load 및 가시화",desc:"Streaming 방식 점진적 렌더링, 로딩 상태 표시 및 성능 최적화",status:"완료",due:"3월",assignee:"하남국",note:"Seamless Data Pipeline - Visio",urgent:false},
-{id:"VOC-0077",customer:"E&A",l1:"Sync",l2:"Visio View",type:"신규",title:"객체별 Selection & Visibility",desc:"객체 클릭/드래그 선택, Highlight, Hide/Unhide, Fit to Selection",status:"완료",due:"3월",assignee:"하남국",note:"Seamless Data Pipeline - Visio",urgent:false},
-{id:"VOC-0078",customer:"E&A",l1:"Visio",l2:"",type:"신규",title:"객체별 속성 가시화",desc:"선택 객체 속성을 패널/Tooltip으로 조회, Table/Recipe 링크 반영",status:"진행중",due:"7월",assignee:"하남국",note:"Seamless Data Pipeline - Visio",urgent:false},
-{id:"VOC-0079",customer:"E&A",l1:"Sync",l2:"QuerySet",type:"신규",title:"QuerySet Interface (Visio)",desc:"Visio Node 대상 QuerySet 설정 UI, 조건 조합 쿼리 정의 및 저장",status:"완료",due:"3월",assignee:"하남국",note:"Seamless Data Pipeline - Visio",urgent:false},
-{id:"VOC-0080",customer:"E&A",l1:"Sync",l2:"QuerySet",type:"신규",title:"QuerySet DB 조회 (Visio)",desc:"QuerySet 정의 기반 Visio Node DB 조회 Backend",status:"완료",due:"3월",assignee:"하남국",note:"Seamless Data Pipeline - Visio",urgent:false},
-{id:"VOC-0081",customer:"E&A",l1:"Visio",l2:"",type:"신규",title:"TabularData Interface (Visio)",desc:"Visio Node 표 형태 조회/정렬/필터 UI, Visio View 객체 동기화",status:"진행중",due:"7월",assignee:"하남국",note:"Seamless Data Pipeline - Visio",urgent:false},
-{id:"VOC-0082",customer:"E&A",l1:"Visio",l2:"",type:"신규",title:"DB View Table 생성 (Visio)",desc:"Visio Tabular Data 조회용 DB View/Table 생성",status:"진행중",due:"7월",assignee:"하남국",note:"Seamless Data Pipeline - Visio",urgent:false},
-{id:"VOC-0083",customer:"E&A",l1:"Visio",l2:"",type:"신규",title:"Visio Node Type 추가 Interface",desc:"Visio Node와 Tabular Data/Recipe 연결 설정 UI",status:"진행중",due:"7월",assignee:"하남국",note:"Seamless Data Pipeline - Visio",urgent:false},
-{id:"VOC-0084",customer:"E&A",l1:"Visio",l2:"",type:"신규",title:"Result DBTable 생성",desc:"Recipe 정의에 따라 다수 Table/Relation 조합 Result Table 생성",status:"진행중",due:"7월",assignee:"하남국",note:"Seamless Data Pipeline - Visio",urgent:false},
-{id:"VOC-0085",customer:"E&A",l1:"Visio",l2:"",type:"신규",title:"Visio-3DModel 연계 View Sync",desc:"Visio Node 속성과 3D Model Part 매핑, 양방향 Highlight/Zoom 연계",status:"완료",due:"7월",assignee:"하남국",note:"Seamless Data Pipeline - Visio",urgent:false},
-{id:"VOC-0086",customer:"E&A",l1:"Visio",l2:"",type:"신규",title:"시각화 객체 컨테이너 구성",desc:"PBI Visio Viewer Custom Visual 컨테이너 베이스 구성",status:"완료",due:"7월",assignee:"하남국",note:"Seamless Data Pipeline - Visio",urgent:false},
-{id:"VOC-0087",customer:"E&A",l1:"Visio",l2:"",type:"신규",title:"Web SDK 연동",desc:"PBI Custom Visual 내부 Spavy Web SDK 통신 환경 구성",status:"완료",due:"7월",assignee:"하남국",note:"Seamless Data Pipeline - Visio",urgent:false},
-{id:"VOC-0088",customer:"E&A",l1:"Visio",l2:"",type:"신규",title:"Visio 렌더링 (PBI)",desc:"PBI 내에서 Visio 데이터 렌더링, 줌/이동/선택",status:"완료",due:"7월",assignee:"하남국",note:"Seamless Data Pipeline - Visio",urgent:false},
-{id:"VOC-0089",customer:"E&A",l1:"Visio",l2:"",type:"신규",title:"Node 데이터 매핑",desc:"PBI Dataset 테이블/컬럼을 Visio Node 속성에 매핑",status:"진행중",due:"7월",assignee:"하남국",note:"Seamless Data Pipeline - Visio",urgent:false},
-{id:"VOC-0090",customer:"E&A",l1:"Visio",l2:"",type:"신규",title:"Visio Viewer 필터링",desc:"다른 시각화에서 필터된 데이터에 맞춰 Visio Node 가시화",status:"진행중",due:"7월",assignee:"하남국",note:"Seamless Data Pipeline - Visio",urgent:false},
-{id:"VOC-0091",customer:"E&A",l1:"Visio",l2:"",type:"신규",title:"다른 시각화 객체 필터링",desc:"Visio Viewer 노드 선택 시 다른 PBI 시각화에 필터 전달",status:"진행중",due:"7월",assignee:"하남국",note:"Seamless Data Pipeline - Visio",urgent:false},
-{id:"VOC-0092",customer:"E&A",l1:"Visio",l2:"",type:"신규",title:"SDK 환경 설정 및 초기화",desc:"서버 주소/프로젝트 정보/API 키 기본 설정, SDK 초기화",status:"진행중",due:"7월",assignee:"하남국",note:"Seamless Data Pipeline - Visio",urgent:false},
-{id:"VOC-0093",customer:"E&A",l1:"Visio",l2:"",type:"신규",title:"SDK 인증 및 세션 관리",desc:"API 키 인증, 토큰 발급/갱신, 세션 만료 처리",status:"진행중",due:"7월",assignee:"하남국",note:"Seamless Data Pipeline - Visio",urgent:false},
-{id:"VOC-0094",customer:"E&A",l1:"Visio",l2:"",type:"신규",title:"뷰어 엔진 초기화",desc:"Visio Viewer 엔진 DOM 마운트, 기본 뷰 옵션 설정",status:"진행중",due:"7월",assignee:"하남국",note:"Seamless Data Pipeline - Visio",urgent:false},
-{id:"VOC-0095",customer:"E&A",l1:"Visio",l2:"",type:"신규",title:"데이터 파이프라인 구성",desc:"서버에서 Visio 데이터 가져와 파싱, 렌더링용 내부 데이터 구조 구성",status:"진행중",due:"7월",assignee:"하남국",note:"Seamless Data Pipeline - Visio",urgent:false},
-{id:"VOC-0096",customer:"E&A",l1:"Visio",l2:"",type:"신규",title:"Visio 불러오기",desc:"동기화된 Visio 파일 목록 조회, 선택 파일 로딩",status:"진행중",due:"7월",assignee:"하남국",note:"Seamless Data Pipeline - Visio",urgent:false},
-{id:"VOC-0097",customer:"E&A",l1:"Visio",l2:"",type:"신규",title:"객체 선택 제어",desc:"Visio Node ID 기반 선택/해제 상태 제어",status:"진행중",due:"7월",assignee:"하남국",note:"Seamless Data Pipeline - Visio",urgent:false},
-{id:"VOC-0098",customer:"E&A",l1:"Visio",l2:"",type:"신규",title:"가시화 상태 관리",desc:"Visio Node ID 기준 표시/숨김 상태 제어",status:"진행중",due:"7월",assignee:"하남국",note:"Seamless Data Pipeline - Visio",urgent:false},
-{id:"VOC-0099",customer:"E&A",l1:"Visio",l2:"",type:"신규",title:"이벤트 연동",desc:"Node 클릭/선택 변경 등 사용자 동작 이벤트 외부 콜백",status:"진행중",due:"7월",assignee:"하남국",note:"Seamless Data Pipeline - Visio",urgent:false},
-{id:"VOC-0100",customer:"E&A",l1:"BI",l2:"Refresh",type:"신규",title:"새로고침 시각화 객체 설정",desc:"PBI 보고서 새로고침 시각화 객체 동작 설정",status:"진행중",due:"7월",assignee:"윤덕현",note:"Seamless Data Pipeline - BI",urgent:false},
-{id:"VOC-0101",customer:"E&A",l1:"BI",l2:"Refresh",type:"신규",title:"새로고침 시각화 객체 Refresh",desc:"사용자 클릭 시 PBI API 호출하여 보고서 데이터 즉시 새로고침",status:"진행중",due:"7월",assignee:"윤덕현",note:"Seamless Data Pipeline - BI",urgent:false},
-{id:"VOC-0102",customer:"E&A",l1:"BI",l2:"Web Server",type:"신규",title:"API Server 구성",desc:"PBI Data Pipeline용 Web Service Backend 기본 구성",status:"완료",due:"3월",assignee:"윤덕현",note:"Seamless Data Pipeline - BI",urgent:false},
-{id:"VOC-0103",customer:"E&A",l1:"BI",l2:"Web Server",type:"신규",title:"PBI 연결 관련 설정",desc:"PBI Report Server 연동용 서버 주소/계정/토큰 연결 설정",status:"완료",due:"3월",assignee:"윤덕현",note:"Seamless Data Pipeline - BI",urgent:false},
-{id:"VOC-0104",customer:"E&A",l1:"BI",l2:"Web API",type:"신규",title:"게시된 Report 조회",desc:"PBI API로 게시된 Report 목록 조회, 메타데이터 반환",status:"완료",due:"3월",assignee:"윤덕현",note:"Seamless Data Pipeline - BI",urgent:false},
-{id:"VOC-0105",customer:"E&A",l1:"BI",l2:"Web API",type:"신규",title:"Report Refresh",desc:"ReportID 기반 PBI API 호출하여 예약된 새로고침 실행",status:"진행중",due:"7월",assignee:"윤덕현",note:"Seamless Data Pipeline - BI",urgent:false},
-{id:"VOC-0106",customer:"E&A",l1:"BI",l2:"Web API",type:"신규",title:"PBI Data Extract & CSV Export",desc:"PBI Data Extract Module 실행, CSV 파일/스트림 반환",status:"완료",due:"3월",assignee:"윤덕현",note:"Seamless Data Pipeline - BI",urgent:false},
-{id:"VOC-0107",customer:"E&A",l1:"BI",l2:"Extract Module",type:"신규",title:"PBI Report 조회 (Command)",desc:"PBI RS 게시 Report 목록 내부 조회, 메타 정보 수집",status:"완료",due:"3월",assignee:"윤덕현",note:"Seamless Data Pipeline - BI",urgent:false},
-{id:"VOC-0108",customer:"E&A",l1:"BI",l2:"Extract Module",type:"신규",title:"PBI Report 다운로드",desc:"선택 PBI Report 다운로드, 패키지 Uncompress",status:"완료",due:"3월",assignee:"윤덕현",note:"Seamless Data Pipeline - BI",urgent:false},
-{id:"VOC-0109",customer:"E&A",l1:"BI",l2:"Extract Module",type:"신규",title:"PBI Table Data DAX Query",desc:"Report 내부 구조 분석, Table Data 추출용 DAX 쿼리 자동 생성",status:"완료",due:"3월",assignee:"윤덕현",note:"Seamless Data Pipeline - BI",urgent:false},
-{id:"VOC-0110",customer:"E&A",l1:"BI",l2:"Extract Module",type:"신규",title:"PBI Table Data Extraction",desc:"DAX 쿼리 실행하여 Table Data 추출",status:"진행중",due:"7월",assignee:"윤덕현",note:"Seamless Data Pipeline - BI",urgent:false},
-{id:"VOC-0111",customer:"E&A",l1:"BI",l2:"Extract Module",type:"신규",title:"PBI Table Data Export",desc:"추출된 Table Data를 CSV 형식으로 Export",status:"완료",due:"3월",assignee:"윤덕현",note:"Seamless Data Pipeline - BI",urgent:false},
-{id:"VOC-0112",customer:"E&A",l1:"BI",l2:"Extract Module",type:"신규",title:"PBI Visual Data DAX Query",desc:"Visual 단위 집계 결과 추출용 DAX 쿼리 자동 생성",status:"완료",due:"3월",assignee:"윤덕현",note:"Seamless Data Pipeline - BI",urgent:false},
-{id:"VOC-0113",customer:"E&A",l1:"BI",l2:"Extract Module",type:"신규",title:"PBI Visual Data Extraction",desc:"Visual용 DAX 쿼리 실행, Visual 데이터 추출/수집",status:"완료",due:"3월",assignee:"윤덕현",note:"Seamless Data Pipeline - BI",urgent:false},
-{id:"VOC-0114",customer:"E&A",l1:"BI",l2:"Extract Module",type:"신규",title:"PBI Visual Data Export",desc:"추출된 Visual Data를 CSV 형식으로 Export",status:"완료",due:"3월",assignee:"윤덕현",note:"Seamless Data Pipeline - BI",urgent:false},
-{id:"VOC-0115",customer:"E&A",l1:"BI",l2:"",type:"신규",title:"Input Table",desc:"",status:"진행중",due:"11월",assignee:"윤덕현",note:"",urgent:false},
-{id:"VOC-0116",customer:"E&A",l1:"Data Sync",l2:"",type:"신규",title:"화공 AR 동기화 관련 상시 요청",desc:"",status:"진행중",due:"12월",assignee:"하남국",note:"",urgent:false},
-{id:"VOC-0117",customer:"삼성전자",l1:"3D Model",l2:"",type:"신규",title:"USD Export Test",desc:"USD Export Test ",status:"진행중",due:"5월",assignee:"하남국",note:"",urgent:false},
-{id:"VOC-0118",customer:"E&A",l1:"Admin",l2:"",type:"개선",title:"1. User Management의 Group에서도 Multi Upload 추가",desc:"1. User Management의 Group에서도 Multi Upload 추가(Users에는 있음)\n2. Project의 Access Control에도 Multi Upload추가 -> 해당기능에서는 upload시 User목록에 등록여부 체크하는 절차 필요(등록여부 및 access level 체크 -> 등록안된 리스트 보여야함)",status:"진행중",due:"5월",assignee:"여태기",note:"",urgent:false},
-{id:"VOC-0119",customer:"E&A",l1:"Browser",l2:"Viewer",type:"신규",title:"단축키 I(Isolate & Fit) 작동 오류  - Fit 동작하지 않음",desc:"단축키 I(Isolate & Fit) 작동 오류\n - Fit 동작하지 않음",status:"대기",due:"4월",assignee:"장나겸",note:"",urgent:false},
-{id:"VOC-0120",customer:"E&A",l1:"Spatial Studio",l2:"Space",type:"개선",title:"Simple part to space>다양한 형태 로드 가능하도록 개선",desc:"Simple part to space에서 육면체형태가 아닌 다양한 형태(ex.도넛, 6면이 아닌 체적을 가진 형태)도 load가능하도록 개선",status:"진행중",due:"4월",assignee:"염용주",note:"",urgent:false},
-{id:"VOC-0121",customer:"E&A",l1:"Data Sync",l2:"",type:"신규",title:"Spavy Sync App 설치 ",desc:"방문해서 Spavy Sync App 설치",status:"대기",due:"4월",assignee:"김세희",note:"",urgent:false}
+{"id":"VOC-0001","customer":"E&A","l1":"BI","l2":"","type":"신규","title":"Fit World 기능","desc":"view 내에 fit world 추가","status":"완료","due":"3월","assignee":"장나겸","note":"단축키로 구현-좌표로는 X","urgent":false},
+{"id":"VOC-0002","customer":"삼성물산","l1":"Data Sync","l2":"","type":"신규","title":"CRT","desc":"진행사항 주기적으로 공유 부탁드립니다.","status":"진행중","due":"6월","assignee":"하남국, 여태기, 김준우","note":"2분기 내 적용","urgent":false},
+{"id":"VOC-0003","customer":"삼성물산","l1":"PJT","l2":"마이그레이션","type":"신규","title":"PJT 데이터 Export","desc":"- PJT 데이터 Export, 백업, Import, Offline 뷰어 제공 등 - 프로젝트 데이터 Export - 배포완료 (피드백 확인 필요)- Offline 뷰어 하반기 진행","status":"완료","due":"3월","assignee":"여태기","note":"","urgent":false},
+{"id":"VOC-0004","customer":"삼성물산","l1":"Infra","l2":"보안","type":"보안","title":"DB 암호화","desc":"Database 암호화 적용","status":"대기","due":"6월","assignee":"여태기","note":"삼성전자 방향에 따름 선 삼성전자 ","urgent":false},
+{"id":"VOC-0006","customer":"삼성전자","l1":"Browser","l2":"Properties","type":"개선","title":"권한 제어 Role-Based Access Control 적용","desc":"Role-Based Access Control 적용","status":"대기","due":"6월","assignee":"","note":"E&A SEA-5 연관","urgent":false},
+{"id":"VOC-0007","customer":"삼성물산","l1":"Infra","l2":"서버","type":"고지사항","title":"YSP PJT 대응","desc":"5~9월 리소스 필요 가능성 있음","status":"대기","due":"","assignee":"여태기","note":"리소스 필요 시 대응","urgent":false},
+{"id":"VOC-0008","customer":"삼성물산","l1":"Infra","l2":"배포","type":"고지사항","title":"운영시 당사 ITSM 활용필요","desc":"- 추후 당사 ITSM을 통해 승인 후 서버 업데이트 진행 등 절차 적용 필요 - 방법 확인하여 3월부터 시행 준비(안내 예정)","status":"대기","due":"","assignee":"여태기, 염용주","note":"요청 절차에 따라 진행","urgent":false},
+{"id":"VOC-0009","customer":"삼성물산","l1":"Designer","l2":"","type":"개선","title":"장비배치기능","desc":"- Browser에서 장비(오브젝트)를 움직여보고, 측정 - 사전에 오브젝트의 크기, 방향, 회전 방향을 정의하거나, 한데 묶인 모델들을 분리하여 1개 객체로 분리하는 등 사전에 오브젝트를 편집, 관리할 수 있는 기능(Catalog Management 개편)","status":"진행중","due":"6월","assignee":"김행운","note":"- 2분기 - 1차 구현 (객체의 회전 반경 및 가동 범위 제어를 위한 중심점(Origin) 및 관절(Joint) 구조 제외) - 3분기 - 완료","urgent":false},
+{"id":"VOC-0010","customer":"삼성물산","l1":"API","l2":"","type":"금년 중요과업","title":"엔젤스윙 데이터 연동(API)","desc":"- 엔젤스윙 > Spavy - 물산 Requirement 전달 예정","status":"대기","due":"","assignee":"여태기","note":"API 수령 및 물산 요구사항 구체화 후 대응","urgent":false},
+{"id":"VOC-0011","customer":"삼성물산","l1":"API","l2":"","type":"금년 중요과업","title":"Outbound API 개발","desc":"- Spavy > 외부 (당사 개발 서버) - 당사 임직원이 직접 개발 중인 AI 분석 시스템에 입력 데이터로 활용 - Spavy에 입력된 파일 자체를 요청하는 API로 최초 목표는 드론 정사영상임 - 상기 엔젤스윙의 API를 BM하여 초기 방향을 검토할 수 있을것으로 전망","status":"대기","due":"","assignee":"여태기","note":"대응시점 : 2분기 내","urgent":false},
+{"id":"VOC-0012","customer":"삼성물산","l1":"API","l2":"","type":"금년 중요과업","title":"ACC/360(큐픽스) 데이터 연동(API)","desc":"- 금년 추진 가능성은 있으나 우선 순위 높지 않음 - 진행방향 결정시 별도 고지 예정","status":"진행중","due":"","assignee":"여태기","note":"- ACC 진행 중 - 큐픽스 API 수령 후 검토","urgent":false},
+{"id":"VOC-0013","customer":"삼성물산","l1":"360","l2":"","type":"개선","title":"데이터 수용 고도화 - 360","desc":"- 360 이미지 가시화 관련 UX 적인 이슈 해결 . Bubble 클릭시 360 이미지가 별도 질문 없이 바로 변경 . FOV 불일치 문제 (PCD, 3DGS 공통 이슈)","status":"진행중","due":"4월","assignee":"윤덕현","note":"- Bubble 클릭 동작 옵션 제공: 이미지 즉시 변경 또는 사용자 선택 변경 설정 (매뉴얼 하단 참조- https://samin.gitbook.io/spavy/tutorial/browser/contents-view/spavy-dock) - FOV 불일치 이슈 해결을","urgent":false},
+{"id":"VOC-0014","customer":"삼성물산","l1":"Gaussian","l2":"","type":"금년 중요과업","title":"데이터 수용 고도화 - 3DGS","desc":"- 3DGS 가시화 및 내부 데이터 처리 관련 고도화 . 진행사항 주기적으로 공유 부탁드립니다. . LCC 파일 지원 여부 . 3DGS Point Cloud 파일이 Spavy Dock에서 표시되지 않는 문제","status":"진행중","due":"","assignee":"김행운","note":"- LCC는 ZIP 파일로 현재 제공 - Spavy Dock 에 파일 표시 3월 내 배포 - 진행사항 지속 보고","urgent":false},
+{"id":"VOC-0015","customer":"삼성물산","l1":"Spatial Studio","l2":"Spatial Planning","type":"삼인 로드맵관련","title":"Spatial Planning","desc":"- 층별 기준정보 세팅의 중요한 부분으로 판단하고 있으며, 특히 PCD 데이터를 층별로 사전 Segmentation 하는 부분을 꼭 포함 시켜 주시기 바랍니다. . 목적1 : 해당 층의 RC데이터 유무를 메타데이터로 갖고 있음 . 목적2 : PCD를 층별로 가시화함으로써 로딩 속도 개선 및 PCD 면 뒤쪽의 멀리있는 Point를 스냅하는 문제 해결 - 층","status":"진행중","due":"6월","assignee":"염용주","note":"- [3월 3~4주] Spatial Planning 개편안 1차 배포 및 피드백 수집 - [2분기 완료] 목적 1, 목적 2 관련 내용 구현 - [3분기 완료] 층 기준 정보 적용 목표","urgent":false},
+{"id":"VOC-0016","customer":"삼성물산","l1":"Browser","l2":"Issue List","type":"개선","title":"이슈관리 고도화","desc":"- 진행상황 공유 부탁드립니다.","status":"대기","due":"","assignee":"","note":"구체적인 설계 후 로드맵 확정 후 공유","urgent":false},
+{"id":"VOC-0017","customer":"삼성물산","l1":"Browser","l2":"Viewer","type":"개선","title":"Scene을 템플릿으로 활용하여 동적 서비스 화면 구성","desc":"- URL 파라미터로 Scene Loading 및 객체 Selection - 사용예 : 좌측 3D Model, 우측 RC 데이터 형태로 계획대비 실적을 비교하는 기능 구현. . 좌측 3D 모델 : 대상 3D 객체가 Selection 되어 X-Ray & Zoom . 우측 RC : 화면이 Sync되어 해당 객체에 대한 RC데이터 가시화 (추후 Spatial P","status":"대기","due":"6월","assignee":"김준우","note":"- 구현 검토: 기술적 문제 없음 (2분기) - 향후 계획: 프로토타입 정의 필요. 물산의 구체적 일정 요청시 작업 착수","urgent":false},
+{"id":"VOC-0018","customer":"삼성물산","l1":"Admin","l2":"시스템설정","type":"기능제안","title":"관리자 화면 구성","desc":"- 서버 스토리지의 잔여 용량 및 PJT별 사용용량을 표시해주는 관리자 화면 필요 - 주기적으로 모니터링하여 필요시 Cloud 자원 용량 증설 검토","status":"진행중","due":"4월","assignee":"여태기","note":"최대한 빨리 적용 예정","urgent":false},
+{"id":"VOC-0019","customer":"삼성물산","l1":"Browser","l2":"Spatial Tree","type":"개선","title":"최신 RC 데이터라는 Metadata - Spatial Planning과 엮여 찾기","desc":"- 최신 RC 데이터라는 Metadata - Spatial Planning과 엮여서 해당 위치에서의 최신 RC 데이터를 찾는 로직","status":"대기","due":"6월","assignee":"","note":"스페셜 플래닝 자료구조를 활용한 다양한 기능 개발 에정 - 2분기","urgent":false},
+{"id":"VOC-0020","customer":"삼성물산","l1":"Spatial Studio","l2":"Spatial Planning","type":"개선","title":"Spatial Planning>Grid 표시","desc":"- 층별 그리드를 정의하고, 표시하는 기능 (On/Off 가능 - Spavy Dock에 넣으면? - Grid 번호는 화면 줌인/줌아웃시 항상 화면 안에서 표시되도록 자동 조정","status":"대기","due":"6월","assignee":"염용주","note":"2분기 내 적용","urgent":false},
+{"id":"VOC-0021","customer":"삼성물산","l1":"Browser","l2":"FPL","type":"개선","title":"Floor Plan Locator(FPL) 개편","desc":"- 도면 핸들 버튼을 없애고 동일한 기능을 수행하는 별도 아이콘을 화면 내에 배치 - Crop 된 상태에서 FPL 작동시 Crop이 풀리는 문제 있음","status":"진행중","due":"4월","assignee":"김행운","note":"- 1차 기능 구현 완료 - Crop 기능 풀리는 문제는 검토 중, 2분기 내 수정 완료 예정","urgent":false},
+{"id":"VOC-0022","customer":"삼성물산","l1":"Browser","l2":"Spavy Dock","type":"개선","title":"Spavy Dock 하위 트리 생성","desc":"- Rvt 파일의 경우 Custom Tree 등으로 묶인 항목을 하위 트리로 표시 . 기둥, 보, 바닥 등을 별도 하위 Tree로 분리하고 별도 색상 부여 및 On/Off . 사용자가 Custom으로 객체를 숨겨서 만든 Rvt 모델을 하위 Tree로 저장하여 재활용 - NWD 파일의 경우 파일 내 파일 Tree를 Dock에서 리스트로 확인 및 조정 필요 (","status":"대기","due":"","assignee":"","note":"창의적인 아이디어로 고민 필요","urgent":false},
+{"id":"VOC-0023","customer":"삼성물산","l1":"Browser","l2":"Dynamic Properties","type":"개선","title":"Dynamic Property-개선","desc":"Then 부분에서 표시할 Key값은 List에서 Checkbox 등을 쉽게 선택하도록 개선 요망","status":"대기","due":"","assignee":"김세희","note":"창의적인 아이디어로 고민 필요 (다른 영역에도 적용 필요)","urgent":false},
+{"id":"VOC-0024","customer":"삼성물산","l1":"BI","l2":"","type":"개선","title":"PBI 컬러 코드에 투명도 포함","desc":"- '3D 모델에서 내부 객체의 색상 변경시 확인이 불가함 - 가시성을 높이도록 색상이 적용되지 않거나 사용자가 의도적으로 선택한 객체를 투명하게 변경하도록 함","status":"완료","due":"3월","assignee":"장나겸","note":"3월 내","urgent":false},
+{"id":"VOC-0025","customer":"삼성물산","l1":"Browser","l2":"Export CD","type":"개선","title":"PCD Crop & Export 기능 개선","desc":"- 화면 Crop 모드 상태에서 해당 PCD를 Export할수 있도록 기능 추가","status":"대기","due":"","assignee":"윤덕현","note":"내부 리소스 검토 후 상세 일정 계획 에정","urgent":false},
+{"id":"VOC-0026","customer":"삼성물산","l1":"Browser","l2":"Quick Space","type":"개선","title":"Quick Space Top/Bottom 선택 개선","desc":"- Crop Control처럼 눈으로 보면서 조정하는 기능 추가","status":"완료","due":"4월","assignee":"염용주","note":"4월6일배포","urgent":false},
+{"id":"VOC-0027","customer":"삼성물산","l1":"Spatial Studio","l2":"Space","type":"개선","title":"Space 생성 기능 고도화","desc":"- Query, Custom Tree, Ontology List 등의 오브젝트 집합체를 통해 Space를 생성하는 기능 - 간단히 오브젝트를 그려서 생성하는 방식 - 2D 도면으로 모양 그리기 + Top/Bottom 입력","status":"대기","due":"","assignee":"염용주","note":"- 2D 도면 - 4월 - 나머지 1차 배포 후 검토, 퀵 스페이스에서 좀 더 다양한 메소드로 스페이스 생성 기능 검토 예정","urgent":false},
+{"id":"VOC-0028","customer":"삼성물산","l1":"Browser","l2":"Spavy Dock","type":"개선","title":"Spavy Dock 개선","desc":"- 모든 탭을 통합해서 보여주기 + 탭간 데이터 복사, 이동 - Unload 기능을 여기에 통합 (X 버튼 등) - 탭 이름 수정 기능 요청","status":"진행중","due":"4월","assignee":"장나겸","note":"- 모든 탭 통합, 탭간 데이터 복사, 이동 - 아이디어 도출 예정 / Unload 기능 추가 - 3월 - 탭 이름 수정 기능 - 4월","urgent":false},
+{"id":"VOC-0029","customer":"삼성물산","l1":"Browser","l2":"Viewer","type":"개선","title":"View Sync 기능 추가","desc":"화면 내 Tab 들을 한번에 Sync 하는 기능 추가(별도 질문 없이 원터치로)","status":"완료","due":"3월","assignee":"장나겸","note":"테스트 후 배포 예정(3월)","urgent":false},
+{"id":"VOC-0030","customer":"삼성물산","l1":"Browser","l2":"System Tree","type":"개선","title":"각종 Tree 내 데이터 정렬 기능 필요","desc":"순서 변경","status":"진행중","due":"","assignee":"여태기","note":"순차 적용","urgent":false},
+{"id":"VOC-0031","customer":"삼성물산","l1":"BI","l2":"","type":"개선","title":"PBI 전용 Data List Tree 필요-일단 My Tree","desc":"","status":"대기","due":"6월","assignee":"장나겸, 강경완","note":"마이트리 기능 추가 후 재협의 필요","urgent":false},
+{"id":"VOC-0032","customer":"삼성물산","l1":"Data Sync","l2":"","type":"개선","title":"파일명 외 보여주는 이름- Alias Name 기능 개선 정의 필요","desc":"보여주는 이름 부여(Alias) Alias Name 기능 개선 필요 → File List의 추가 항목들이 Sync 입력 컬럼과 연동되도록 구조 개선 필요","status":"대기","due":"","assignee":"김준우","note":"스페셜 플래닝 적용 후 재협의 필요","urgent":true},
+{"id":"VOC-0033","customer":"삼성물산","l1":"PJT","l2":"마이그레이션","type":"개선","title":"각종 데이터의 폴더간 이동","desc":"모든 폴더간 상호간 데이터 이동시 애로","status":"대기","due":"9월","assignee":"여태기","note":"3분기","urgent":false},
+{"id":"VOC-0034","customer":"삼성물산","l1":"Browser","l2":"Viewer","type":"개선","title":"Action Tree기능을 Custom 버튼으로 동작","desc":"Viewpoint 이동, Scene 불러오기 등","status":"대기","due":"","assignee":"","note":"아이디어 도출 후 개발","urgent":false},
+{"id":"VOC-0035","customer":"삼성물산","l1":"Admin","l2":"시스템설정","type":"신규","title":"시스템 한글화","desc":"","status":"완료","due":"4월","assignee":"장나겸","note":"4월 배포 (일부 용어는 고객사에서 제안해도 됨.)","urgent":false},
+{"id":"VOC-0036","customer":"삼성물산","l1":"Data Sync","l2":"","type":"신규","title":"Revit 2026 연동","desc":"","status":"진행중","due":"6월","assignee":"하남국","note":"","urgent":false},
+{"id":"VOC-0037","customer":"삼성물산","l1":"Data Sync","l2":"","type":"개선","title":"컬럼 순서 개선 요청","desc":"Progress → File Name → Revision → File Size → Acquisition Date 순으로 정렬","status":"완료","due":"4월","assignee":"김세희","note":"4/10 개발완료 계획","urgent":false},
+{"id":"VOC-0038","customer":"삼성물산","l1":"Data Sync","l2":"","type":"개선","title":"Sync 시 필요정보 일괄 입력/수정","desc":"- Transform Set, Acquisition Date 등 입력값 일괄 입력/수정 기능 필요 - 수정 가능한 항목을 좌측으로 배치 → Acquisition Date를 Transformation 다음 위치로 이동 - Revit 파일의 경우, 뷰어에 \"Set Revit Position\" 기능 추가","status":"완료","due":"4월","assignee":"김세희","note":"메일로 요청","urgent":false},
+{"id":"VOC-0039","customer":"삼성물산","l1":"Spatial Studio","l2":"Spatial Data Positioning","type":"신규","title":"Revit Position 변경","desc":"Revit Position 변경 → 좌측 Tree에서 Base Point 메뉴를 부르고 → 해당 Tree(또는 폴더) 전체 rvt 파일을 일괄 변경 가능하도록 수정","status":"완료","due":"4월","assignee":"김행운","note":"메일로 요청","urgent":false},
+{"id":"VOC-0040","customer":"삼성물산","l1":"Spatial Studio","l2":"","type":"개선","title":"Transform Set 접근방법 및 내부값 수정 가능하도록 요청","desc":"별도의 Transform Set 관리화면으로 접근하는 방법 추가 Transform 내부 값 Key-in 방식 수정 기능 필요 (예: 수치 직접 변경) + Duplicate 기능","status":"완료","due":"4월","assignee":"김행운","note":"","urgent":false},
+{"id":"VOC-0041","customer":"삼성물산","l1":"360","l2":"","type":"버그","title":"360 이미지 버블이 사라짐","desc":"현상 : 아래와 같이 형태(PCD 좌, 360이미지 우) 로 Scene 저장 후 Scene을 로드하면 360 이미지 버블이 사라짐","status":"완료","due":"4월","assignee":"윤덕현","note":"메일에서 추출","urgent":false},
+{"id":"VOC-0042","customer":"E&A","l1":"SPAVY - BROWSER","l2":"","type":"오류","title":"Browser>Reset Visibility 시 파일 로드 오류","desc":"Browser에서 system tree로 CAD Model을 불러온 후, 모델 리뷰(검색, isolated, hide, zoom 등)작업 후 Reset visibility(R키)를 하면, 다른 폴더에 있는 파일이 모두 로드됨 (ex. 251119폴더의 AMW파일을 최초 Load후 작업 후 R을 하면 251209의 폴더의 rvt파일도 모두 로드됨)","status":"완료","due":"5월","assignee":"김준우","note":"2026.03.23 : 작업완료 삼인 담당자 Check 필요 - 최영철 프로 테스트 (5/11)","urgent":false},
+{"id":"VOC-0043","customer":"E&A","l1":"Spatial Studio","l2":"Space","type":"개발","title":"Space 기능 개선 : RVT의 Mass를 인식할수 있도록","desc":"추가검토요청사항 : Revit의 Room으로 모델링 시 Naviswork으로 Export시 해당 Room들이 Volume을 가지게 Export가능하다고 하는데, Spavy에서도 Revit의 Room을 인식할 수있는지?","status":"대기","due":"4월","assignee":"염용주","note":"Hold ?","urgent":false},
+{"id":"VOC-0044","customer":"E&A","l1":"Dimension Tree","l2":"","type":"개발","title":"Quick Dimension","desc":"Dimension기능 사용 시 현재처럼 Set을 하는게 아닌 방식 가능한지? -> 그리드를 먼저 그리고 그 그리드를 Set으로 넘기는 방식으로하면 두 기능모두 활용가능?","status":"완료","due":"5월11일","assignee":"염용주","note":"염프로 확인해서 듀데이트 정하기","urgent":false},
+{"id":"VOC-0045","customer":"E&A","l1":"SPAVY - BROWSER","l2":"","type":"개발","title":"Search에 다중조건 주기","desc":"Search에 다중조건 가능한지? - Search set말고","status":"대기","due":"6월","assignee":"여태기","note":"삼성전자 요구사항도 감안해서 설계, 개발 예정","urgent":false},
+{"id":"VOC-0046","customer":"E&A","l1":"Browser","l2":"","type":"신규","title":"Property+ : 보고싶은 속성만 볼수있게 hovering or 다른창이든","desc":"Property+ : 보고싶은 속성만 볼수있게 hovering or 다른창이든","status":"완료","due":"","assignee":"","note":"","urgent":false},
+{"id":"VOC-0047","customer":"E&A","l1":"SPAVY - PDF","l2":"","type":"신규","title":"Drawing markup, Approval Stamp 기능","desc":"Drawing markup, Approval Stamp 기능 ( 본사 Site mobile App. 개발 일정에 반영될 예정 → 현장 적용 가능한 시점은 언제쯤 될까요? )","status":"진행중","due":"","assignee":"","note":"한현우 프로 요구사항","urgent":false},
+{"id":"VOC-0048","customer":"E&A","l1":"SPAVY - MANUAL","l2":"","type":"신규","title":"MANUAL LINK(","desc":"준비중인 URL 공유 요청, 사용자가 상시 MANUAL LINK( 에 접근할 수 있으면 좋겠음 (상단바 등..) - 해당메뉴에서 link 선택 시 매뉴얼의 해당 페이지로 바로 이동?? 이런건 불가능한지? (옵션…)","status":"완료","due":"3월","assignee":"여태기","note":"2026.03.23 : 바로 가기 버튼 구현 가능","urgent":false},
+{"id":"VOC-0049","customer":"E&A","l1":"SPAVY - PBI 시각화 객체","l2":"","type":"개선","title":"S-Hub와 같이 모서리에 사용빈도 높은 기본 기능 설명과 단축키 show (off 지원)","desc":"S-Hub와 같이 모서리에 사용빈도 높은 기본 기능 설명과 단축키 show (off 지원) - 단축키 S-Hub와 동일하게 우하단으로 이동(현재 Search창과 겹침)","status":"완료","due":"완료","assignee":"장나겸","note":"","urgent":false},
+{"id":"VOC-0050","customer":"E&A","l1":"SPAVY - PBI 시각화 객체","l2":"","type":"신규","title":"객체 선택, 숨기기 등 브라우저 상에서도 단축키 지원 가능한지 문의","desc":"객체 선택, 숨기기 등 브라우저 상에서도 단축키 지원 가능한지 문의 -> 브라우저 자체 단축키랑 겹칠우려","status":"진행중","due":"4월","assignee":"장나겸","note":"단축키 자체 테스트중","urgent":false},
+{"id":"VOC-0051","customer":"E&A","l1":"SPAVY - PBI 시각화 객체","l2":"","type":"신규","title":"Fit World 기능","desc":"Fit World 기능 -> view내에 fit world 추가","status":"완료","due":"3월","assignee":"장나겸","note":"","urgent":false},
+{"id":"VOC-0052","customer":"E&A","l1":"SPAVY - Operation Spec","l2":"","type":"신규","title":"Spavy 구동을 위해 필0명, 100명, 1000명 등..) 측정/제안","desc":"Spavy 구동을 위해 필요한 최소, 권장 인프라 사양 (동시사용자 10명, 100명, 1000명 등..) 측정/제안을 통해 솔루션 운영 최적화 (cpu, hdd, network 등.. idle/stress 환경 load test) 하면 좋겠습니다.","status":"대기","due":"6월","assignee":"","note":"","urgent":false},
+{"id":"VOC-0053","customer":"E&A","l1":"3D viewer","l2":"","type":"개발","title":"동일 Project Group에 있는 Project를 한 개의 view에서 볼수있는 기능","desc":"동일 Project Group에 있는 Project를 한 개의 view에서 볼수있는 기능 - 선택된 프로젝트에서 다른 프로젝트를 불러오거나, Project Group에서 별도 browser를 실행 등 방법은 상관없음","status":"대기","due":"안함","assignee":"","note":"","urgent":false},
+{"id":"VOC-0054","customer":"E&A","l1":"SPAVY - PBI 시각화 객체","l2":"","type":"개선","title":"- Viewer 설정 시 한 개 프로젝트가 아닌 프로젝트 Group 화 하여 사용자가 Project 변경하여 불러오도록 하는기능","desc":"- viewer 설정 시 한개프로젝트가 아닌 프로젝트 Group을 선택하고, 그룹 내 프로젝트를 사용자가 선택하면서 변경할 수 있도록 가능한지? - 프로젝트를 불러올때 CAD Model 폴더 전체에서 사용자가 선택하는 것이 아닌, 쿼리셋 단위로 로드 ex) 쿼리셋에서 불러올 객체 지정(File단위든, Category단위든) > 쿼리셋중 bi 시각화로 사용할","status":"대기","due":"4월","assignee":"장나겸","note":"내부 확인 필요","urgent":false},
+{"id":"VOC-0055","customer":"E&A","l1":"Spatial Studio","l2":"Space","type":"개선","title":"simple part to space에서 Mass가 겹친상황에 대한 별도 로직이나 알림이 없음","desc":"simple part to space에서 Mass가 겹친상황에 대한 별도 로직이나 알림이 없음 - simple part to space뿐만 아니라 Space기능에서 생성된 Space가 겹치는 경우, 겹치는 Space를 알려주고 \"겹치는 Space가 있다. 그래도 저장하시겠습니까?\" 같은 경고창 가능한지 검토 - 겹치는 경우, simple part to space ","status":"진행중","due":"5월11일","assignee":"염용주","note":"겹치는 순서 변경은 완료","urgent":false},
+{"id":"VOC-0056","customer":"E&A","l1":"Directory List","l2":"","type":"개선","title":"Ditectory List를 사용하는 메뉴들에서 디렉토리와 파일(Item)의 순서 및 Level변경 관련 전체적으로 수정필요 1) Data Sy","desc":"Ditectory List를 사용하는 메뉴들에서 디렉토리와 파일(Item)의 순서 및 Level변경 관련 전체적으로 수정필요 1) Data Sync의 CAD Model, Point Cloud, Drawing, Image, General Files - 디렉토리와 파일의 List 각각 구성 / 모두 정렬지원없음 > 디렉토리와 파일정렬의 기본정렬을 이름순으로 가","status":"완료","due":"5월11일","assignee":"김준우","note":"","urgent":false},
+{"id":"VOC-0057","customer":"E&A","l1":"Infra","l2":"","type":"오류","title":"Spavy / 삭제된 객체 정보가 DB에 남아있는 현상","desc":"Spavy / 삭제된 객체 정보가 DB에 남아있는 현상 - 3/19 메일 참조 Web UI를 통해 Spavy에 업로드한 파일을 삭제하였으나, DB테이블에서 테이블 정보를 로드하면 삭제된 파일정보가 남아있는 현상이 있습니다. - 5개 파일 업로드 후 4개 삭제하여.. 브라우저에서는 하나만 보이지만, DB에는 5개가 모두 조회됨 종종 Space 작업중에도 유사","status":"대기","due":"3월","assignee":"여태기","note":"2026.03.23 : 확인","urgent":false},
+{"id":"VOC-0058","customer":"E&A","l1":"Spatial Studio","l2":"Space","type":"개선","title":"Simple part to space에서 Mass를 선택할때, 마우스 드레그 가능하도록","desc":"Simple part to space에서 Mass를 선택할때, Browser와 동일한 마우스 드레그 가능하도록 기능 추가","status":"완료","due":"4월","assignee":"염용주","note":"","urgent":false},
+{"id":"VOC-0059","customer":"E&A","l1":"Spatial Studio","l2":"Space","type":"오류","title":"Space 생성시 색상을 지정 오류","desc":"Space 생성시 색상을 지정 오류 - Default로 지정된 색상 외에 다른 색상을 지정하려는 경우 어떤 색을 선택하든 검은색으로 생성","status":"완료","due":"4월","assignee":"염용주","note":"","urgent":false},
+{"id":"VOC-0060","customer":"E&A","l1":"공통","l2":"","type":"개선","title":"204번 207번 중 어떤게 최신인지? ","desc":"204번 207번 중 어떤게 최신인지? 207이 Test서버인데 204에는 있고 207에는 없는 메뉴가 있음 - ex. Spavy Designer은 204에만 있음 / 기존에 있던 Spatical Data Positioning이 204에서 사라짐","status":"진행중","due":"4월","assignee":"여태기","note":"","urgent":false},
+{"id":"VOC-0061","customer":"E&A","l1":"New Spatial Planning","l2":"","type":"개선","title":"Setting화면에서 최초 Setting 이후 해당메뉴에서 결과를 확인할 수 없음","desc":"Setting화면에서 최초 Setting 이후 해당메뉴에서 결과를 확인할 수 없음 - Section Planning, Floor Camera View 등","status":"완료","due":"4월","assignee":"염용주","note":"","urgent":false},
+{"id":"VOC-0062","customer":"E&A","l1":"Dynamic Properties","l2":"","type":"오류","title":"Dynamic properties에서 생성한 item 헤더명 확인불가","desc":"Dynamic properties에서 생성한 item 헤더명 확인불가(4월 초 적용예정이었으나 미해결)","status":"완료","due":"4월","assignee":"김세희","note":"","urgent":false},
+{"id":"VOC-0063","customer":"E&A","l1":"Dimension Tree","l2":"","type":"개선","title":"List에 있는 Dimension Item을 다중선택 삭제","desc":"(Instant Dimension기능이 없다는 가정) List에 있는 Dimension Item을 삭제하려면 각각 하나씩 삭제작업을 해야함 - 중복선택 기능 추가 : 중복선택 후 우클릭>삭제(중복선택 후 우클릭 시 Delete, Show 정도만 활성화)","status":"완료","due":"4월","assignee":"염용주","note":"","urgent":false},
+{"id":"VOC-0064","customer":"E&A","l1":"Browser","l2":"","type":"개발","title":"Browser에서 객체를 이동","desc":"Browser에서 객체를 이동(+복제?, 삭제? Scale up? 등) 볼 수 있는 기능(Navisworks와 동일한 기능) : 설계검토나 간섭검토 시, 객체위치 수정에 대한 여유 치수를 확인 ex) 1안 : Navisworks처럼 Browser를 닫으면 해당내용 삭제 2안 : 다른 기능들 처럼 List에 Item명을 생성하고 객체를 이동 - 해당 Item에 객체 이동에 대한 정보를 남겨두고 재활용가능","status":"대기","due":"4월","assignee":"","note":"","urgent":false},
+{"id":"VOC-0065","customer":"E&A","l1":"Spatial Studio","l2":"Space","type":"개선","title":"Simple part to space에서 육면체형태가 아닌 다양한 형태 가능 ?","desc":"Simple part to space에서 육면체형태가 아닌 다양한 형태(ex.도넛, 6면이 아닌 체적을 가진 형태)도 load가능하도록 개선","status":"진행중","due":"5월","assignee":"염용주","note":"있는 기능 - E&A 테스트 필요","urgent":false},
+{"id":"VOC-0066","customer":"E&A","l1":"Sync","l2":"UI","type":"신규","title":"Visio File 전용 Upload 화면","desc":"Visio 전용 업로드 화면, 프로젝트/디렉터리 관리, Upload/Delete, 동기화 상태 View","status":"완료","due":"3월","assignee":"하남국","note":"Seamless Data Pipeline - Visio","urgent":false},
+{"id":"VOC-0067","customer":"E&A","l1":"Visio","l2":"","type":"신규","title":"Visio File 자동 동기화 설정","desc":"주기/조건에 따른 Visio File 자동 동기화 옵션, 사용자별/프로젝트별 설정","status":"진행중","due":"7월","assignee":"하남국","note":"Seamless Data Pipeline - Visio","urgent":false},
+{"id":"VOC-0068","customer":"E&A","l1":"Sync","l2":"Backend","type":"신규","title":"Visio Node Type 추가","desc":"Visio 도면 요소를 Spavy Node Type으로 정의, 전용 DB 테이블 생성","status":"완료","due":"3월","assignee":"하남국","note":"Seamless Data Pipeline - Visio","urgent":false},
+{"id":"VOC-0069","customer":"E&A","l1":"Sync","l2":"Sync","type":"신규","title":"Visio File Data 추출","desc":"Visio 파일에서 형상/위치/텍스트/Color/속성 파싱하여 공통 데이터 구조로 추출","status":"완료","due":"3월","assignee":"하남국","note":"Seamless Data Pipeline - Visio","urgent":false},
+{"id":"VOC-0070","customer":"E&A","l1":"Sync","l2":"Sync","type":"신규","title":"Visio Entity별 Instance화","desc":"추출 데이터를 Entity 단위로 재구성하여 Instance 객체 관리","status":"완료","due":"3월","assignee":"하남국","note":"Seamless Data Pipeline - Visio","urgent":false},
+{"id":"VOC-0071","customer":"E&A","l1":"Sync","l2":"Sync","type":"신규","title":"Shape 형상 Modelling","desc":"Visio 형상을 Geometry로 변환, Web Viewer용 2D/유사3D 형상 데이터 생성","status":"완료","due":"3월","assignee":"하남국","note":"Seamless Data Pipeline - Visio","urgent":false},
+{"id":"VOC-0072","customer":"E&A","l1":"Sync","l2":"Sync","type":"신규","title":"RenderingTree 구성","desc":"Web Streaming 가능한 계층 구조 Tree로 Data 재구성","status":"완료","due":"3월","assignee":"하남국","note":"Seamless Data Pipeline - Visio","urgent":false},
+{"id":"VOC-0073","customer":"E&A","l1":"Sync","l2":"Sync","type":"신규","title":"Data 구조화","desc":"Visio Node간 Relation 속성화, Spavy 공통 DB 스키마 정규화/저장","status":"완료","due":"3월","assignee":"하남국","note":"Seamless Data Pipeline - Visio","urgent":false},
+{"id":"VOC-0074","customer":"E&A","l1":"Sync","l2":"Visio View","type":"신규","title":"SystemTree 구성","desc":"SystemTree/탐색 패널에 Visio Node 등록, 트리 확장/축소/검색/필터","status":"완료","due":"3월","assignee":"하남국","note":"Seamless Data Pipeline - Visio","urgent":false},
+{"id":"VOC-0075","customer":"E&A","l1":"Sync","l2":"Visio View","type":"신규","title":"Visio P&ID 전용 View 생성","desc":"Visio P&ID 전용 View, Pan/Zoom, Layer 제어, 배경/그리드 옵션","status":"완료","due":"3월","assignee":"하남국","note":"Seamless Data Pipeline - Visio","urgent":false},
+{"id":"VOC-0076","customer":"E&A","l1":"Sync","l2":"Visio View","type":"신규","title":"Visio P&ID Load 및 가시화","desc":"Streaming 방식 점진적 렌더링, 로딩 상태 표시 및 성능 최적화","status":"완료","due":"3월","assignee":"하남국","note":"Seamless Data Pipeline - Visio","urgent":false},
+{"id":"VOC-0077","customer":"E&A","l1":"Sync","l2":"Visio View","type":"신규","title":"객체별 Selection & Visibility","desc":"객체 클릭/드래그 선택, Highlight, Hide/Unhide, Fit to Selection","status":"완료","due":"3월","assignee":"하남국","note":"Seamless Data Pipeline - Visio","urgent":false},
+{"id":"VOC-0078","customer":"E&A","l1":"Visio","l2":"","type":"신규","title":"객체별 속성 가시화","desc":"선택 객체 속성을 패널/Tooltip으로 조회, Table/Recipe 링크 반영","status":"진행중","due":"7월","assignee":"하남국","note":"Seamless Data Pipeline - Visio","urgent":false},
+{"id":"VOC-0079","customer":"E&A","l1":"Sync","l2":"QuerySet","type":"신규","title":"QuerySet Interface (Visio)","desc":"Visio Node 대상 QuerySet 설정 UI, 조건 조합 쿼리 정의 및 저장","status":"완료","due":"3월","assignee":"하남국","note":"Seamless Data Pipeline - Visio","urgent":false},
+{"id":"VOC-0080","customer":"E&A","l1":"Sync","l2":"QuerySet","type":"신규","title":"QuerySet DB 조회 (Visio)","desc":"QuerySet 정의 기반 Visio Node DB 조회 Backend","status":"완료","due":"3월","assignee":"하남국","note":"Seamless Data Pipeline - Visio","urgent":false},
+{"id":"VOC-0081","customer":"E&A","l1":"Visio","l2":"","type":"신규","title":"TabularData Interface (Visio)","desc":"Visio Node 표 형태 조회/정렬/필터 UI, Visio View 객체 동기화","status":"진행중","due":"7월","assignee":"하남국","note":"Seamless Data Pipeline - Visio","urgent":false},
+{"id":"VOC-0082","customer":"E&A","l1":"Visio","l2":"","type":"신규","title":"DB View Table 생성 (Visio)","desc":"Visio Tabular Data 조회용 DB View/Table 생성","status":"진행중","due":"7월","assignee":"하남국","note":"Seamless Data Pipeline - Visio","urgent":false},
+{"id":"VOC-0083","customer":"E&A","l1":"Visio","l2":"","type":"신규","title":"Visio Node Type 추가 Interface","desc":"Visio Node와 Tabular Data/Recipe 연결 설정 UI","status":"진행중","due":"7월","assignee":"하남국","note":"Seamless Data Pipeline - Visio","urgent":false},
+{"id":"VOC-0084","customer":"E&A","l1":"Visio","l2":"","type":"신규","title":"Result DBTable 생성","desc":"Recipe 정의에 따라 다수 Table/Relation 조합 Result Table 생성","status":"진행중","due":"7월","assignee":"하남국","note":"Seamless Data Pipeline - Visio","urgent":false},
+{"id":"VOC-0085","customer":"E&A","l1":"Visio","l2":"","type":"신규","title":"Visio-3DModel 연계 View Sync","desc":"Visio Node 속성과 3D Model Part 매핑, 양방향 Highlight/Zoom 연계","status":"완료","due":"7월","assignee":"하남국","note":"Seamless Data Pipeline - Visio","urgent":false},
+{"id":"VOC-0086","customer":"E&A","l1":"Visio","l2":"","type":"신규","title":"시각화 객체 컨테이너 구성","desc":"PBI Visio Viewer Custom Visual 컨테이너 베이스 구성","status":"완료","due":"7월","assignee":"하남국","note":"Seamless Data Pipeline - Visio","urgent":false},
+{"id":"VOC-0087","customer":"E&A","l1":"Visio","l2":"","type":"신규","title":"Web SDK 연동","desc":"PBI Custom Visual 내부 Spavy Web SDK 통신 환경 구성","status":"완료","due":"7월","assignee":"하남국","note":"Seamless Data Pipeline - Visio","urgent":false},
+{"id":"VOC-0088","customer":"E&A","l1":"Visio","l2":"","type":"신규","title":"Visio 렌더링 (PBI)","desc":"PBI 내에서 Visio 데이터 렌더링, 줌/이동/선택","status":"완료","due":"7월","assignee":"하남국","note":"Seamless Data Pipeline - Visio","urgent":false},
+{"id":"VOC-0089","customer":"E&A","l1":"Visio","l2":"","type":"신규","title":"Node 데이터 매핑","desc":"PBI Dataset 테이블/컬럼을 Visio Node 속성에 매핑","status":"진행중","due":"7월","assignee":"하남국","note":"Seamless Data Pipeline - Visio","urgent":false},
+{"id":"VOC-0090","customer":"E&A","l1":"Visio","l2":"","type":"신규","title":"Visio Viewer 필터링","desc":"다른 시각화에서 필터된 데이터에 맞춰 Visio Node 가시화","status":"진행중","due":"7월","assignee":"하남국","note":"Seamless Data Pipeline - Visio","urgent":false},
+{"id":"VOC-0091","customer":"E&A","l1":"Visio","l2":"","type":"신규","title":"다른 시각화 객체 필터링","desc":"Visio Viewer 노드 선택 시 다른 PBI 시각화에 필터 전달","status":"진행중","due":"7월","assignee":"하남국","note":"Seamless Data Pipeline - Visio","urgent":false},
+{"id":"VOC-0092","customer":"E&A","l1":"Visio","l2":"","type":"신규","title":"SDK 환경 설정 및 초기화","desc":"서버 주소/프로젝트 정보/API 키 기본 설정, SDK 초기화","status":"진행중","due":"7월","assignee":"하남국","note":"Seamless Data Pipeline - Visio","urgent":false},
+{"id":"VOC-0093","customer":"E&A","l1":"Visio","l2":"","type":"신규","title":"SDK 인증 및 세션 관리","desc":"API 키 인증, 토큰 발급/갱신, 세션 만료 처리","status":"진행중","due":"7월","assignee":"하남국","note":"Seamless Data Pipeline - Visio","urgent":false},
+{"id":"VOC-0094","customer":"E&A","l1":"Visio","l2":"","type":"신규","title":"뷰어 엔진 초기화","desc":"Visio Viewer 엔진 DOM 마운트, 기본 뷰 옵션 설정","status":"진행중","due":"7월","assignee":"하남국","note":"Seamless Data Pipeline - Visio","urgent":false},
+{"id":"VOC-0095","customer":"E&A","l1":"Visio","l2":"","type":"신규","title":"데이터 파이프라인 구성","desc":"서버에서 Visio 데이터 가져와 파싱, 렌더링용 내부 데이터 구조 구성","status":"진행중","due":"7월","assignee":"하남국","note":"Seamless Data Pipeline - Visio","urgent":false},
+{"id":"VOC-0096","customer":"E&A","l1":"Visio","l2":"","type":"신규","title":"Visio 불러오기","desc":"동기화된 Visio 파일 목록 조회, 선택 파일 로딩","status":"진행중","due":"7월","assignee":"하남국","note":"Seamless Data Pipeline - Visio","urgent":false},
+{"id":"VOC-0097","customer":"E&A","l1":"Visio","l2":"","type":"신규","title":"객체 선택 제어","desc":"Visio Node ID 기반 선택/해제 상태 제어","status":"진행중","due":"7월","assignee":"하남국","note":"Seamless Data Pipeline - Visio","urgent":false},
+{"id":"VOC-0098","customer":"E&A","l1":"Visio","l2":"","type":"신규","title":"가시화 상태 관리","desc":"Visio Node ID 기준 표시/숨김 상태 제어","status":"진행중","due":"7월","assignee":"하남국","note":"Seamless Data Pipeline - Visio","urgent":false},
+{"id":"VOC-0099","customer":"E&A","l1":"Visio","l2":"","type":"신규","title":"이벤트 연동","desc":"Node 클릭/선택 변경 등 사용자 동작 이벤트 외부 콜백","status":"진행중","due":"7월","assignee":"하남국","note":"Seamless Data Pipeline - Visio","urgent":false},
+{"id":"VOC-0100","customer":"E&A","l1":"BI","l2":"Refresh","type":"신규","title":"새로고침 시각화 객체 설정","desc":"PBI 보고서 새로고침 시각화 객체 동작 설정","status":"진행중","due":"7월","assignee":"윤덕현","note":"Seamless Data Pipeline - BI","urgent":false},
+{"id":"VOC-0101","customer":"E&A","l1":"BI","l2":"Refresh","type":"신규","title":"새로고침 시각화 객체 Refresh","desc":"사용자 클릭 시 PBI API 호출하여 보고서 데이터 즉시 새로고침","status":"진행중","due":"7월","assignee":"윤덕현","note":"Seamless Data Pipeline - BI","urgent":false},
+{"id":"VOC-0102","customer":"E&A","l1":"BI","l2":"Web Server","type":"신규","title":"API Server 구성","desc":"PBI Data Pipeline용 Web Service Backend 기본 구성","status":"완료","due":"3월","assignee":"윤덕현","note":"Seamless Data Pipeline - BI","urgent":false},
+{"id":"VOC-0103","customer":"E&A","l1":"BI","l2":"Web Server","type":"신규","title":"PBI 연결 관련 설정","desc":"PBI Report Server 연동용 서버 주소/계정/토큰 연결 설정","status":"완료","due":"3월","assignee":"윤덕현","note":"Seamless Data Pipeline - BI","urgent":false},
+{"id":"VOC-0104","customer":"E&A","l1":"BI","l2":"Web API","type":"신규","title":"게시된 Report 조회","desc":"PBI API로 게시된 Report 목록 조회, 메타데이터 반환","status":"완료","due":"3월","assignee":"윤덕현","note":"Seamless Data Pipeline - BI","urgent":false},
+{"id":"VOC-0105","customer":"E&A","l1":"BI","l2":"Web API","type":"신규","title":"Report Refresh","desc":"ReportID 기반 PBI API 호출하여 예약된 새로고침 실행","status":"진행중","due":"7월","assignee":"윤덕현","note":"Seamless Data Pipeline - BI","urgent":false},
+{"id":"VOC-0106","customer":"E&A","l1":"BI","l2":"Web API","type":"신규","title":"PBI Data Extract & CSV Export","desc":"PBI Data Extract Module 실행, CSV 파일/스트림 반환","status":"완료","due":"3월","assignee":"윤덕현","note":"Seamless Data Pipeline - BI","urgent":false},
+{"id":"VOC-0107","customer":"E&A","l1":"BI","l2":"Extract Module","type":"신규","title":"PBI Report 조회 (Command)","desc":"PBI RS 게시 Report 목록 내부 조회, 메타 정보 수집","status":"완료","due":"3월","assignee":"윤덕현","note":"Seamless Data Pipeline - BI","urgent":false},
+{"id":"VOC-0108","customer":"E&A","l1":"BI","l2":"Extract Module","type":"신규","title":"PBI Report 다운로드","desc":"선택 PBI Report 다운로드, 패키지 Uncompress","status":"완료","due":"3월","assignee":"윤덕현","note":"Seamless Data Pipeline - BI","urgent":false},
+{"id":"VOC-0109","customer":"E&A","l1":"BI","l2":"Extract Module","type":"신규","title":"PBI Table Data DAX Query","desc":"Report 내부 구조 분석, Table Data 추출용 DAX 쿼리 자동 생성","status":"완료","due":"3월","assignee":"윤덕현","note":"Seamless Data Pipeline - BI","urgent":false},
+{"id":"VOC-0110","customer":"E&A","l1":"BI","l2":"Extract Module","type":"신규","title":"PBI Table Data Extraction","desc":"DAX 쿼리 실행하여 Table Data 추출","status":"진행중","due":"7월","assignee":"윤덕현","note":"Seamless Data Pipeline - BI","urgent":false},
+{"id":"VOC-0111","customer":"E&A","l1":"BI","l2":"Extract Module","type":"신규","title":"PBI Table Data Export","desc":"추출된 Table Data를 CSV 형식으로 Export","status":"완료","due":"3월","assignee":"윤덕현","note":"Seamless Data Pipeline - BI","urgent":false},
+{"id":"VOC-0112","customer":"E&A","l1":"BI","l2":"Extract Module","type":"신규","title":"PBI Visual Data DAX Query","desc":"Visual 단위 집계 결과 추출용 DAX 쿼리 자동 생성","status":"완료","due":"3월","assignee":"윤덕현","note":"Seamless Data Pipeline - BI","urgent":false},
+{"id":"VOC-0113","customer":"E&A","l1":"BI","l2":"Extract Module","type":"신규","title":"PBI Visual Data Extraction","desc":"Visual용 DAX 쿼리 실행, Visual 데이터 추출/수집","status":"완료","due":"3월","assignee":"윤덕현","note":"Seamless Data Pipeline - BI","urgent":false},
+{"id":"VOC-0114","customer":"E&A","l1":"BI","l2":"Extract Module","type":"신규","title":"PBI Visual Data Export","desc":"추출된 Visual Data를 CSV 형식으로 Export","status":"완료","due":"3월","assignee":"윤덕현","note":"Seamless Data Pipeline - BI","urgent":false},
+{"id":"VOC-0115","customer":"E&A","l1":"BI","l2":"","type":"신규","title":"Input Table","desc":"","status":"진행중","due":"11월","assignee":"윤덕현","note":"","urgent":false},
+{"id":"VOC-0116","customer":"E&A","l1":"Data Sync","l2":"","type":"신규","title":"화공 AR 동기화 관련 상시 요청","desc":"","status":"진행중","due":"12월","assignee":"하남국","note":"","urgent":false},
+{"customer":"삼성전자","l1":"3D Model","l2":"","type":"신규","title":"USD Export Test","desc":"USD Export Test ","status":"진행중","due":"5월","id":"VOC-0117","urgent":false,"assignee":"하남국","note":""},
+{"customer":"E&A","l1":"Admin","l2":"","type":"개선","status":"진행중","title":"1. User Management의 Group에서도 Multi Upload 추가","desc":"1. User Management의 Group에서도 Multi Upload 추가(Users에는 있음)\n2. Project의 Access Control에도 Multi Upload추가 -> 해당기능에서는 upload시 User목록에 등록여부 체크하는 절차 필요(등록여부 및 access level 체크 -> 등록안된 리스트 보여야함)","due":"2026년5월18일","assignee":"여태기","note":"","urgent":false,"id":"VOC-0118"},
+{"customer":"E&A","l1":"Browser","l2":"Viewer","type":"신규","status":"완료","title":"단축키 I(Isolate & Fit) 작동 오류  - Fit 동작하지 않음","desc":"단축키 I(Isolate & Fit) 작동 오류\n - Fit 동작하지 않음","due":"4월","assignee":"장나겸","note":"","urgent":false,"id":"VOC-0119"},
+{"customer":"삼성물산","l1":"Data Sync","l2":"","type":"신규","status":"완료","title":"Spavy Sync App 설치 ","desc":"방문해서 Spavy Sync App 설치","due":"4월","assignee":"김세희","note":"","urgent":false,"id":"VOC-0121"},
+{"customer":"삼성전자","l1":"3D Model","l2":"","type":"개발","status":"진행중","title":"IFC Export Test","desc":"IFC Export Test ","due":"5월","assignee":"하남국","note":"","urgent":false,"id":"VOC-0122"},
+{"customer":"삼성물산","l1":"Dimension Tree","l2":"","type":"신규","status":"대기","title":"PCD기반 치수기능 추가 (편평도_수직도)","desc":"- 현업에서 편평도 분석(포인트클라우드기반), 컬럼 수직도 분석등에 대한 요청\n-지금 옥트리 스트리밍 구조에서 일부 영역만 분석결과에대한 컬러맵을 표현하기가 어려운 상황 (대안 필요)","due":"2026-07-30","assignee":"윤덕현","note":"","urgent":false,"id":"VOC-0123"},
+{"customer":"E&A","l1":"BI","l2":"","type":"개선","status":"진행중","title":"Power BI_Color Code 속도 개선 ","desc":"Power BI_Color Code 개선 ","due":"2026-05-31","assignee":"김준우","note":"","urgent":false,"id":"VOC-0124"},
+{"customer":"E&A","l1":"Ontology Sandbox","l2":"","type":"신규","status":"진행중","title":"Ontology_AI ","desc":"Ontology_AI ","due":"2026-06-30","assignee":"김준우","note":"","urgent":false,"id":"VOC-0125"},
+{"customer":"E&A","l1":"3D Model","l2":"","type":"개선","status":"진행중","title":"Revit 모델의 변경일 및 리비전 속성 추가","desc":"1. Revit 모델의 변경일 및 리비전 속성(형상 및 속성 변경 여부 구분, 리비전 번호) 추가\n - 필드명 및 필드값 구성 및 위치는 삼인에서 초안을 주면 협의\nex.\n  - 1안(필드4개) : 생성 및 변경일, 형상변경Y/N, 속성변경Y/N, 리비전No.  <--- 영어로….\n  - 2안(필드3개) : 생성 및 변경일, 리비전 타입(형상, 속성), 리비전No   <--- 영어로….\n  - 3안 : 삼인에서 추천하는 안...\n생성예시\n  - 최초 생성시에는 날짜는 생성날짜, 리비전No는 0, 나머지는 null\n  - 이후 속성 수정시 날짜는 수정된날짜, 리비전No는 1, 나머지는 각 안에 따라 작성됨","due":"5월","assignee":"하남국","note":"","urgent":false,"id":"VOC-0126"}
 ];
 
-var data=JSON.parse(JSON.stringify(INIT_DATA)),mainTab="dashboard",searchText="",filterStatus="",filterType="",filterL1="",filterCustomer="",qfDelayed=false,qfProgress=false,qfUrgent=false,sortCol="",sortDir="asc",editItem=null,mailText="",extractedItems=[],isComposing=false,ganttColorBy="status",ganttGroupBy="l1",ganttHideDone=true;
+var data=JSON.parse(JSON.stringify(INIT_DATA)),mainTab="dashboard",searchText="",filterStatus=[],filterType=[],filterL1=[],filterL2=[],filterCustomer=[],filterAssignee=[],openFilterCol=null,qfDelayed=false,qfProgress=false,qfUrgent=false,sortCol="",sortDir="asc",editItem=null,mailText="",extractedItems=[],isComposing=false,ganttColorBy="status",ganttGroupBy="l1",ganttHideDone=true;
+// 기본값: 완료 제외하고 표시
+function applyDefaultFilters(){filterStatus=STATS.filter(function(s){return s!=="완료"})}
 function today(){return new Date().toISOString().slice(0,10)}
 function isDelayed(i){
   if(i.status==="완료"||!i.due)return false;
@@ -311,10 +347,11 @@ function toast(m,ic){var t=document.getElementById("toast");t.innerHTML=(ic||"�
 function openModal(h){document.getElementById("modalContent").innerHTML=h;document.getElementById("modalOverlay").className="modal-overlay show"}
 function closeModal(){document.getElementById("modalOverlay").className="modal-overlay"}
 function matchS(item,q){if(!q)return true;var ql=q.toLowerCase().trim(),toks=ql.split(/\s+/);return toks.every(function(tok){var f=[item.id,item.customer,item.l1,item.l2,item.type,item.title,item.desc,item.status,item.assignee,item.note].join(" ").toLowerCase();if(f.indexOf(tok)!==-1)return true;var mp=SIdx[tok];if(mp){for(var i=0;i<mp.length;i++)if(f.indexOf(mp[i].toLowerCase())!==-1)return true}for(var k in SIdx){if(k.indexOf(tok)!==-1){var vs=SIdx[k];for(var j=0;j<vs.length;j++)if(f.indexOf(vs[j].toLowerCase())!==-1)return true}}return false})}
-function getF(){return data.filter(function(i){if(!matchS(i,searchText))return false;if(filterStatus&&i.status!==filterStatus)return false;if(filterType&&i.type!==filterType)return false;if(filterL1&&i.l1!==filterL1)return false;if(filterCustomer&&i.customer!==filterCustomer)return false;if(qfDelayed&&!isDelayed(i))return false;if(qfProgress&&!isIP(i))return false;if(qfUrgent&&!i.urgent)return false;return true})}
+function getF(){return data.filter(function(i){if(!matchS(i,searchText))return false;if(filterStatus.length&&filterStatus.indexOf(i.status)===-1)return false;if(filterType.length&&filterType.indexOf(i.type)===-1)return false;if(filterL1.length&&filterL1.indexOf(i.l1)===-1)return false;if(filterL2.length&&filterL2.indexOf(i.l2||"")===-1)return false;if(filterCustomer.length&&filterCustomer.indexOf(i.customer)===-1)return false;if(filterAssignee.length&&filterAssignee.indexOf(i.assignee||"")===-1)return false;if(qfDelayed&&!isDelayed(i))return false;if(qfProgress&&!isIP(i))return false;if(qfUrgent&&!i.urgent)return false;return true})}
 function getS(items){if(!sortCol)return items;var a=items.slice();a.sort(function(x,y){var va=(x[sortCol]||"").toString().toLowerCase(),vb=(y[sortCol]||"").toString().toLowerCase();return va<vb?(sortDir==="asc"?-1:1):va>vb?(sortDir==="asc"?1:-1):0});return a}
 function togSort(c){if(sortCol===c)sortDir=sortDir==="asc"?"desc":"asc";else{sortCol=c;sortDir="asc"}renderBody()}
-function clearAll(){searchText="";filterStatus="";filterType="";filterL1="";filterCustomer="";qfDelayed=false;qfProgress=false;qfUrgent=false;var si=document.getElementById("searchInput");if(si)si.value="";renderBody()}
+function clearAll(){searchText="";filterStatus=[];filterType=[];filterL1=[];filterL2=[];filterCustomer=[];filterAssignee=[];qfDelayed=false;qfProgress=false;qfUrgent=false;closeColFilterPopover();var si=document.getElementById("searchInput");if(si)si.value="";renderBody()}
+function clearAllToDefault(){clearAll();applyDefaultFilters();renderBody()}
 
 // ─── GANTT ───
 var MN=["1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"];
@@ -516,7 +553,7 @@ function renderAssignee(items){
 
 function renderFixed(){
   var h='<div class="header"><div class="logo">S</div><div class="header-text"><h1>Spavy VOC Dashboard</h1><div class="sub">Voice of Customer · '+today()+'</div></div><div class="header-actions">';
-  h+='<button class="btn" onclick="openAddModal()">＋ VOC 추가</button><button class="btn" onclick="exportXL()">⬇ Excel</button><button class="btn" onclick="exportJSON()">⬇ JSON</button><button class="btn" onclick="openL1Modal()">⚙ L1/L2 관리</button>';
+  h+='<button class="btn" onclick="openAddModal()">＋ VOC 추가</button><button class="btn" onclick="exportXL()">⬇ Excel</button><button class="btn" onclick="exportJSON()">⬇ JSON</button><button class="btn" onclick="openCustModal()">🏢 고객사 관리</button><button class="btn" onclick="openL1Modal()">⚙ L1/L2 관리</button>';
   h+='<label class="btn" style="cursor:pointer">⬆ Import<input type="file" accept=".xlsx,.xls,.csv" onchange="importXL(event)" style="display:none"></label></div></div>';
   h+='<div class="main-tabs"><button class="main-tab'+(mainTab==="dashboard"?" active":"")+'" onclick="swTab(\'dashboard\')">📋 대시보드</button>';
   h+='<button class="main-tab'+(mainTab==="timeline"?" active":"")+'" onclick="swTab(\'timeline\')">📊 타임라인</button>';
@@ -535,33 +572,19 @@ function renderBody(){
   var h='<div class="panel'+(mainTab==="dashboard"?" active":"")+'">';
   if(dlCnt>0){h+='<div class="alert-banner" onclick="qfDelayed=!qfDelayed;qfProgress=false;qfUrgent=false;renderBody()"><span class="alert-icon">⚠️</span><span class="alert-text">지연 항목 (오늘: '+today()+')</span><span class="alert-count">'+dlCnt+'건</span></div>'}
   h+='<div class="stat-row">';
-  [{l:"전체",v:data.length,c:"var(--accent)",f:""},{l:"진행중",v:cntS("진행중"),c:"var(--yellow)",f:"진행중"},{l:"완료",v:cntS("완료"),c:"var(--green)",f:"완료"},{l:"대기",v:cntS("대기"),c:"var(--slate)",f:"대기"},{l:"취소",v:cntS("취소"),c:"var(--red)",f:"취소"}].forEach(function(s){var p=data.length?(s.v/data.length*100):0;h+='<div class="stat-card'+(filterStatus===s.f?" active":"")+'" onclick="filterStatus=filterStatus===\''+s.f+'\'?\'\':\''+s.f+'\';renderBody()"><div class="label"><span class="dot" style="background:'+s.c+'"></span>'+s.l+'</div><div class="value" style="color:'+s.c+'">'+s.v+'</div><div class="bar" style="width:'+p+'%;background:'+s.c+'"></div></div>'});
+  [{l:"전체",v:data.length,c:"var(--accent)",f:""},{l:"진행중",v:cntS("진행중"),c:"var(--yellow)",f:"진행중"},{l:"완료",v:cntS("완료"),c:"var(--green)",f:"완료"},{l:"대기",v:cntS("대기"),c:"var(--slate)",f:"대기"},{l:"취소",v:cntS("취소"),c:"var(--red)",f:"취소"}].forEach(function(s){var p=data.length?(s.v/data.length*100):0;var isAct=(s.f===""&&filterStatus.length===0)||(filterStatus.length===1&&filterStatus[0]===s.f);h+='<div class="stat-card'+(isAct?" active":"")+'" onclick="statCardClick(\''+s.f+'\')"><div class="label"><span class="dot" style="background:'+s.c+'"></span>'+s.l+'</div><div class="value" style="color:'+s.c+'">'+s.v+'</div><div class="bar" style="width:'+p+'%;background:'+s.c+'"></div></div>'});
   h+='</div><div class="quick-filters">';
   h+='<button class="qf-btn qf-delayed'+(qfDelayed?" active":"")+'" onclick="qfDelayed=!qfDelayed;if(qfDelayed){qfProgress=qfUrgent=false}renderBody()">🔴 지연 <strong>'+dlCnt+'</strong></button>';
   h+='<button class="qf-btn qf-progress'+(qfProgress?" active":"")+'" onclick="qfProgress=!qfProgress;if(qfProgress){qfDelayed=qfUrgent=false}renderBody()">🟡 진행중 <strong>'+ipCnt+'</strong></button>';
   h+='<button class="qf-btn qf-urgent'+(qfUrgent?" active":"")+'" onclick="qfUrgent=!qfUrgent;if(qfUrgent){qfDelayed=qfProgress=false}renderBody()">🔥 긴급 <strong>'+ugCnt+'</strong></button>';
-  if(qfDelayed||qfProgress||qfUrgent||filterStatus||filterType||filterL1||filterCustomer||searchText)h+='<button class="qf-btn" onclick="clearAll()" style="border-color:var(--red);color:var(--red)">✕ 초기화</button>';
-  h+='</div><div class="filter-chips" style="margin-bottom:14px">';
-  // Type dropdown
-  h+='<div class="filter-group"><span class="filter-group-label">유형</span>';
-  h+='<select class="filter-select" onchange="filterType=this.value;renderBody()"><option value="">전체</option>';
-  TYPES.forEach(function(t){h+='<option value="'+t+'"'+(filterType===t?' selected':'')+'>'+t+' ('+cntT(t)+')</option>'});
-  h+='</select></div>';
-  // L1 dropdown
-  h+='<div class="filter-group"><span class="filter-group-label">제품</span>';
-  h+='<select class="filter-select" onchange="filterL1=this.value;renderBody()"><option value="">전체</option>';
-  L1S.forEach(function(l){var c=data.filter(function(d){return d.l1===l}).length;if(c)h+='<option value="'+eA(l)+'"'+(filterL1===l?' selected':'')+'>'+l+' ('+c+')</option>'});
-  h+='</select></div>';
-  // Customer dropdown
-  h+='<div class="filter-group"><span class="filter-group-label">고객</span>';
-  h+='<select class="filter-select" onchange="filterCustomer=this.value;renderBody()"><option value="">전체</option>';
-  CUSTS.forEach(function(c){var n=data.filter(function(d){return d.customer===c}).length;if(n)h+='<option value="'+eA(c)+'"'+(filterCustomer===c?' selected':'')+'>'+c+' ('+n+')</option>'});
-  h+='</select></div>';
+  if(hasAnyFilter())h+='<button class="qf-btn" onclick="clearAllToDefault()" style="border-color:var(--text-dim);color:var(--text-dim)">↺ 기본값</button><button class="qf-btn" onclick="clearAll()" style="border-color:var(--red);color:var(--red)">✕ 전체초기화</button>';
   h+='</div>';
+  // 활성 필터 칩 표시 영역
+  h+=renderActiveFilters();
   h+='<div class="table-wrap"><div class="table-header"><span class="count">결과 <strong>'+filtered.length+'</strong>/'+data.length+'건</span></div>';
   if(!filtered.length)h+='<div class="empty-state"><div class="icon">📭</div><div class="msg">조건에 맞는 VOC 없음</div></div>';
   else{h+='<div style="overflow-x:auto"><table><thead><tr>';
-  [{k:"id",l:"ID",w:"90px"},{k:"customer",l:"고객사",w:"80px"},{k:"l1",l:"L1",w:"110px"},{k:"l2",l:"L2",w:"120px"},{k:"type",l:"유형",w:"60px"},{k:"title",l:"제목",w:""},{k:"status",l:"상태",w:"70px"},{k:"due",l:"마감",w:"100px"},{k:"assignee",l:"담당",w:"70px"},{k:"",l:"",w:"70px"}].forEach(function(c){if(!c.k){h+='<th style="width:'+c.w+'"></th>';return}var is=sortCol===c.k;h+='<th class="'+(is?"sorted":"")+'" style="'+(c.w?'width:'+c.w:'')+'" onclick="togSort(\''+c.k+'\')">'+c.l+'<span class="sort-arrow">'+(is?(sortDir==="asc"?"▲":"▼"):"▲")+'</span></th>'});
+  [{k:"id",l:"ID",w:"90px"},{k:"customer",l:"고객사",w:"90px",cf:true},{k:"l1",l:"L1",w:"110px",cf:true},{k:"l2",l:"L2",w:"120px",cf:true},{k:"type",l:"유형",w:"70px",cf:true},{k:"title",l:"제목",w:""},{k:"status",l:"상태",w:"80px",cf:true},{k:"due",l:"마감",w:"100px",cf:true},{k:"assignee",l:"담당",w:"80px",cf:true},{k:"",l:"",w:"70px"}].forEach(function(c){if(!c.k){h+='<th style="width:'+c.w+'"></th>';return}var is=sortCol===c.k;var hasF=c.cf&&getFilterArray(c.k).length>0;h+='<th class="'+(is?"sorted":"")+(hasF?" has-filter":"")+'" style="'+(c.w?'width:'+c.w:'')+'"><span onclick="togSort(\''+c.k+'\')" style="cursor:pointer">'+c.l+'<span class="sort-arrow">'+(is?(sortDir==="asc"?"▲":"▼"):"▲")+'</span></span>';if(c.cf)h+='<button class="col-filter-btn'+(hasF?' active':'')+'" onclick="event.stopPropagation();toggleColFilter(\''+c.k+'\',event)" title="필터">▼</button>';h+='</th>'});
   h+='</tr></thead><tbody>';
   filtered.forEach(function(item){var dl=isDelayed(item);h+='<tr class="'+(dl?"row-delayed":(isIP(item)?"row-progress":""))+'"><td><span class="id-cell">'+item.id+'</span>'+(item.urgent?'<span class="urgent-flag">🔥</span>':'')+'</td><td>'+eH(item.customer)+'</td><td><span class="l1-text">'+eH(item.l1)+'</span></td><td><span class="l2-text">'+eH(item.l2||"—")+'</span></td><td><span class="badge badge-type-'+item.type+'">'+item.type+'</span></td><td>'+eH(item.title)+'</td><td><span class="badge badge-status-'+item.status+'">'+item.status+'</span></td><td><span class="due-cell">'+eH(item.due||"—")+'</span>'+(dl?'<span class="delay-tag">지연</span>':'')+'</td><td>'+eH(item.assignee||"—")+'</td><td><button class="btn btn-sm" onclick="openEditModal(\''+item.id+'\')">편집</button></td></tr>'});
   h+='</tbody></table></div>'}
@@ -581,6 +604,178 @@ function renderBody(){
   document.getElementById("app-body").innerHTML=h;saveData();
 }
 function render(){renderFixed();renderBody()}
+
+// ─── COLUMN FILTERS (Excel-style multi-select) ───
+var COL_LABELS={status:"상태",type:"유형",l1:"L1",l2:"L2",customer:"고객사",assignee:"담당",due:"마감"};
+function getFilterArray(col){
+  if(col==="status")return filterStatus;
+  if(col==="type")return filterType;
+  if(col==="l1")return filterL1;
+  if(col==="l2")return filterL2;
+  if(col==="customer")return filterCustomer;
+  if(col==="assignee")return filterAssignee;
+  return [];
+}
+function setFilterArray(col,arr){
+  if(col==="status")filterStatus=arr;
+  else if(col==="type")filterType=arr;
+  else if(col==="l1")filterL1=arr;
+  else if(col==="l2")filterL2=arr;
+  else if(col==="customer")filterCustomer=arr;
+  else if(col==="assignee")filterAssignee=arr;
+}
+function getDistinctValues(col){
+  var map={};
+  data.forEach(function(d){var v=(d[col]==null?"":d[col]);if(!map[v])map[v]=0;map[v]++});
+  return Object.keys(map).sort(function(a,b){
+    if(a===""&&b!=="")return 1;
+    if(b===""&&a!=="")return -1;
+    return a.localeCompare(b,"ko");
+  }).map(function(k){return{value:k,count:map[k]}});
+}
+function hasAnyFilter(){
+  return searchText||qfDelayed||qfProgress||qfUrgent||filterStatus.length||filterType.length||filterL1.length||filterL2.length||filterCustomer.length||filterAssignee.length;
+}
+function statCardClick(f){
+  closeColFilterPopover();
+  if(!f){filterStatus=[];}
+  else if(filterStatus.length===1&&filterStatus[0]===f){applyDefaultFilters();}
+  else{filterStatus=[f];}
+  renderBody();
+}
+function toggleColFilter(col,ev){
+  if(openFilterCol===col){closeColFilterPopover();return}
+  closeColFilterPopover();
+  openFilterCol=col;
+  renderColFilterPopover(col,ev.currentTarget||ev.target);
+}
+function renderColFilterPopover(col,anchor){
+  var values=getDistinctValues(col);
+  var sel=getFilterArray(col);
+  var h='<div style="font-size:11px;font-weight:600;color:var(--text-dim);margin-bottom:6px;text-transform:uppercase;letter-spacing:.4px">'+(COL_LABELS[col]||col)+' 필터</div>';
+  h+='<input type="text" class="fp-search" id="fpSearchInput" placeholder="값 검색..." oninput="filterPopSearch(this)">';
+  h+='<div class="fp-actions"><span onclick="colFilterSelectAll(\''+col+'\')">전체 선택</span><span style="color:var(--text-muted);cursor:default">·</span><span onclick="colFilterClearSel(\''+col+'\')">전체 해제</span></div>';
+  h+='<div class="fp-options" id="fpOptions">';
+  values.forEach(function(v){
+    var checked=sel.indexOf(v.value)!==-1;
+    var label=v.value===""?"(빈값)":v.value;
+    h+='<label class="fp-opt" data-label="'+eH(label.toLowerCase())+'"><input type="checkbox" '+(checked?'checked':'')+' onchange="colFilterToggleVal(\''+col+'\',\''+eA(v.value)+'\',this.checked)"><span class="fp-lab">'+eH(label)+'</span><span class="fp-cnt">'+v.count+'</span></label>';
+  });
+  h+='</div>';
+  h+='<div class="fp-footer"><button class="btn btn-sm" onclick="closeColFilterPopover()">닫기</button></div>';
+  var pop=document.createElement('div');
+  pop.id='colFilterPopover';
+  pop.className='filter-popover';
+  pop.innerHTML=h;
+  document.body.appendChild(pop);
+  // position relative to anchor
+  var rect=anchor.getBoundingClientRect();
+  var pw=pop.offsetWidth, ph=pop.offsetHeight;
+  var top=rect.bottom+window.scrollY+4;
+  var left=rect.left+window.scrollX-pw/2;
+  if(left<8)left=8;
+  if(left+pw>window.innerWidth-8)left=window.innerWidth-pw-8;
+  if(top+ph>window.innerHeight+window.scrollY-8)top=rect.top+window.scrollY-ph-4;
+  pop.style.top=top+'px';
+  pop.style.left=left+'px';
+  setTimeout(function(){document.addEventListener('mousedown',colFilterOutside);},80);
+}
+function colFilterOutside(e){
+  var p=document.getElementById('colFilterPopover');
+  if(!p)return;
+  if(p.contains(e.target))return;
+  if(e.target.closest&&e.target.closest('.col-filter-btn'))return;
+  closeColFilterPopover();
+}
+function closeColFilterPopover(){
+  var p=document.getElementById('colFilterPopover');
+  if(p)p.remove();
+  document.removeEventListener('mousedown',colFilterOutside);
+  openFilterCol=null;
+}
+function colFilterToggleVal(col,val,checked){
+  var arr=getFilterArray(col).slice();
+  var idx=arr.indexOf(val);
+  if(checked&&idx===-1)arr.push(val);
+  else if(!checked&&idx!==-1)arr.splice(idx,1);
+  setFilterArray(col,arr);
+  rerenderBodyKeepPopover();
+}
+function colFilterSelectAll(col){
+  var vals=getDistinctValues(col).map(function(v){return v.value});
+  setFilterArray(col,vals);
+  // 체크박스 모두 체크
+  var opts=document.querySelectorAll('#fpOptions .fp-opt input');
+  for(var i=0;i<opts.length;i++)opts[i].checked=true;
+  rerenderBodyKeepPopover();
+}
+function colFilterClearSel(col){
+  setFilterArray(col,[]);
+  var opts=document.querySelectorAll('#fpOptions .fp-opt input');
+  for(var i=0;i<opts.length;i++)opts[i].checked=false;
+  rerenderBodyKeepPopover();
+}
+function filterPopSearch(inp){
+  var q=inp.value.toLowerCase();
+  var els=document.querySelectorAll('#fpOptions .fp-opt');
+  for(var i=0;i<els.length;i++){
+    var lab=els[i].getAttribute('data-label')||'';
+    els[i].style.display=lab.indexOf(q)===-1?'none':'';
+  }
+}
+// renderBody 호출 시 팝오버는 body에 별도 append되어 있으므로 영향받지 않음
+function rerenderBodyKeepPopover(){
+  var openCol=openFilterCol;
+  // body 내용을 다시 그리되, popover는 body의 자식이므로 유지됨
+  // 단, openFilterCol 변수도 유지
+  renderBody();
+  openFilterCol=openCol;
+}
+
+// ─── ACTIVE FILTER CHIPS ───
+function renderActiveFilters(){
+  var groups=[
+    {key:"status",label:"상태",arr:filterStatus},
+    {key:"customer",label:"고객사",arr:filterCustomer},
+    {key:"l1",label:"L1",arr:filterL1},
+    {key:"l2",label:"L2",arr:filterL2},
+    {key:"type",label:"유형",arr:filterType},
+    {key:"assignee",label:"담당",arr:filterAssignee},
+  ];
+  var chips=[];
+  groups.forEach(function(g){
+    if(!g.arr.length)return;
+    g.arr.forEach(function(v){
+      var label=v===""?"(빈값)":v;
+      chips.push('<span class="active-filter-chip"><span style="opacity:.7;font-size:10px">'+g.label+':</span> '+eH(label)+'<span class="x" onclick="removeFilterChip(\''+g.key+'\',\''+eA(v)+'\')" title="제거">×</span></span>');
+    });
+  });
+  // 항상 표시: 빈 상태일 때는 안내 + 빠른 필터 버튼들
+  var h='<div class="active-filters">';
+  if(chips.length){
+    h+='<span class="af-label">적용된 필터</span>';
+    h+=chips.join('');
+    h+='<span class="af-divider"></span>';
+  }else{
+    h+='<span class="af-label">필터</span>';
+    h+='<span class="af-hint">표 헤더의 ▼ 또는 아래 버튼으로 필터 추가</span>';
+  }
+  // 컬럼별 빠른 필터 버튼 (항상)
+  groups.forEach(function(g){
+    var n=g.arr.length;
+    h+='<button class="af-quick-btn'+(n?' active':'')+'" onclick="toggleColFilter(\''+g.key+'\',event)" title="'+g.label+' 필터">'+g.label+(n?'<span class="af-cnt">('+n+')</span>':'')+'</button>';
+  });
+  if(chips.length){
+    h+='<span class="af-clear" onclick="clearAllToDefault()">↺ 기본값으로</span>';
+  }
+  h+='</div>';
+  return h;
+}
+function removeFilterChip(col,val){
+  var arr=getFilterArray(col).filter(function(v){return v!==val});
+  setFilterArray(col,arr);
+  renderBody();
+}
 
 // ─── MODALS ───
 function openAddModal(){var h='<div class="modal-header"><h2>VOC 추가</h2><button class="modal-close" onclick="closeModal()">✕</button></div><div class="modal-body"><div class="form-grid">'+fSel("customer","고객사",CUSTS,"")+fSel("l1","L1",L1S,"",1)+'</div><div class="form-row"><label>L2</label><select id="f_l2"><option value="">L1 선택 먼저</option></select></div><div class="form-grid">'+fSel("type","유형",TYPES,"신규")+fSel("status","상태",STATS,"대기")+'</div>'+fIn("title","제목","")+'<div class="form-row"><label>설명</label><textarea id="f_desc"></textarea></div><div class="form-grid">'+fIn("due","마감일",today())+fIn("assignee","담당자","")+'</div>'+fIn("note","비고","")+'<div class="form-row"><label style="display:flex;align-items:center;gap:6px;cursor:pointer"><input type="checkbox" id="f_urgent"> 🔥 긴급</label></div></div><div class="modal-footer"><button class="btn" onclick="closeModal()">취소</button><button class="btn btn-primary" onclick="saveNew()">등록</button></div>';openModal(h)}
@@ -704,6 +899,56 @@ function delL2(l1,l2){
   renderL1Modal();
 }
 
+// ─── CUSTOMER MANAGEMENT ───
+function saveCUSTS(){
+  CUSTS=CUSTS.slice().sort();
+  try{localStorage.setItem("spavy-custs",JSON.stringify(CUSTS))}catch(e){}
+}
+function loadCUSTS(){
+  try{var s=localStorage.getItem("spavy-custs");if(s){var arr=JSON.parse(s);if(arr&&arr.length)CUSTS=arr}}catch(e){}
+}
+function openCustModal(){renderCustModal()}
+function renderCustModal(){
+  var h='<div class="modal-header"><h2>🏢 고객사 관리</h2><button class="modal-close" onclick="closeModal()">✕</button></div>';
+  h+='<div class="modal-body">';
+  h+='<div style="display:flex;gap:8px;margin-bottom:16px">';
+  h+='<input id="newCustInput" type="text" placeholder="새 고객사 이름..." style="flex:1;padding:8px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg-input);color:var(--text);font-size:13px;font-family:inherit;outline:none" onkeydown="if(event.key===\'Enter\')addCust()">';
+  h+='<button class="btn btn-primary" onclick="addCust()">＋ 추가</button>';
+  h+='</div>';
+  h+='<div style="max-height:400px;overflow-y:auto">';
+  CUSTS.slice().sort().forEach(function(c){
+    var cnt=data.filter(function(d){return d.customer===c}).length;
+    h+='<div style="display:flex;align-items:center;padding:10px 12px;background:var(--bg-input);gap:8px;border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:6px">';
+    h+='<span style="font-weight:600;flex:1">'+eH(c)+'</span>';
+    h+='<span style="font-size:11px;color:var(--text-dim)">'+cnt+'건</span>';
+    h+='<button class="btn btn-sm" style="border-color:var(--red);color:var(--red)" onclick="delCust(\''+eA(c)+'\')">삭제</button>';
+    h+='</div>';
+  });
+  h+='</div></div>';
+  h+='<div class="modal-footer"><button class="btn" onclick="closeModal();renderFixed();renderBody()">닫기</button></div>';
+  openModal(h);
+}
+function addCust(){
+  var inp=document.getElementById("newCustInput");
+  var name=(inp?inp.value:"").trim();
+  if(!name){alert("고객사 이름을 입력하세요");return}
+  if(CUSTS.indexOf(name)!==-1){alert("이미 존재하는 고객사입니다");return}
+  CUSTS.push(name);
+  saveCUSTS();
+  toast(name+" 고객사 추가","✅");
+  renderCustModal();
+}
+function delCust(name){
+  var cnt=data.filter(function(d){return d.customer===name}).length;
+  var msg=name+" 삭제";
+  if(cnt>0)msg+="\n⚠ 이 고객사에 "+cnt+"건의 VOC가 있습니다. 데이터는 유지되지만 분류에서 사라집니다.";
+  if(!confirm(msg))return;
+  CUSTS=CUSTS.filter(function(c){return c!==name});
+  saveCUSTS();
+  toast(name+" 삭제됨","🗑");
+  renderCustModal();
+}
+
 // ─── EXCEL ───
 function exportJSON(){
   var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
@@ -787,7 +1032,7 @@ function extractMail(){
 function addAllExt(){var c=extractedItems.length;extractedItems.forEach(function(x){x.id=nextId();x.urgent=false;x.assignee=x.assignee||"";x.note=x.note||"";x.status=x.status||"신규";data.push(x)});extractedItems=[];toast(c+"건 등록");renderBody()}
 
 // ─── PERSISTENCE ───
-var LSK="spavy-voc-v15";
+var LSK="spavy-voc-v16";
 function saveData(){try{localStorage.setItem(LSK,JSON.stringify(data))}catch(e){}}
 function loadData(){try{var s=localStorage.getItem(LSK);if(s)data=JSON.parse(s)}catch(e){}}
 function syncFromServer(){
@@ -797,12 +1042,15 @@ function syncFromServer(){
 }
 
 // ─── KEYBOARD ───
-document.addEventListener("keydown",function(e){if((e.ctrlKey||e.metaKey)&&e.key==="k"){e.preventDefault();var si=document.getElementById("searchInput");if(si)si.focus()}if(e.key==="Escape"){if(document.getElementById("modalOverlay").classList.contains("show"))closeModal();else if(searchText){searchText="";var si2=document.getElementById("searchInput");if(si2)si2.value="";renderBody()}}});
+document.addEventListener("keydown",function(e){if((e.ctrlKey||e.metaKey)&&e.key==="k"){e.preventDefault();var si=document.getElementById("searchInput");if(si)si.focus()}if(e.key==="Escape"){if(document.getElementById("colFilterPopover")){closeColFilterPopover();return}if(document.getElementById("modalOverlay").classList.contains("show"))closeModal();else if(searchText){searchText="";var si2=document.getElementById("searchInput");if(si2)si2.value="";renderBody()}}});
 
 // Clean old cache keys
-try{for(var ci=1;ci<15;ci++){localStorage.removeItem("spavy-voc-v"+ci)}}catch(e){}
+try{for(var ci=1;ci<16;ci++){localStorage.removeItem("spavy-voc-v"+ci)}}catch(e){}
 loadMODS();
-loadData();render();
+loadCUSTS();
+loadData();
+applyDefaultFilters();
+render();
 syncFromServer();
 </script>
 </body>
