@@ -1748,5 +1748,33 @@
     "note": "",
     "urgent": false,
     "id": "VOC-0127"
+  },
+  {
+    "customer": "삼성물산",
+    "l1": "Data Sync",
+    "l2": "",
+    "type": "개선",
+    "status": "진행중",
+    "title": "PCD-.pts 파일 지원 구조형식 추가",
+    "desc": "지원되는 내부 구조 형식은 아래와 같습니다.\nx y z\nx y z scalar\nx y z scalar r g b\nx y z r g b         (차주 업데이트 예정)\n",
+    "due": "2026-05-25",
+    "assignee": "윤덕현",
+    "note": "",
+    "urgent": false,
+    "id": "VOC-0128"
+  },
+  {
+    "customer": "E&A",
+    "l1": "360",
+    "l2": "",
+    "type": "개선",
+    "status": "진행중",
+    "title": "360이미지 Z축고정 회전 시 이상 ",
+    "desc": "360이미지 Z축고정 회전 시 이상 ",
+    "due": "2026-05-31",
+    "assignee": "윤덕현",
+    "note": "",
+    "urgent": false,
+    "id": "VOC-0129"
   }
 ]
