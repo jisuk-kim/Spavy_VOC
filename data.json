@@ -1776,5 +1776,33 @@
     "note": "",
     "urgent": false,
     "id": "VOC-0129"
+  },
+  {
+    "customer": "삼성전자",
+    "l1": "3D Model",
+    "l2": "",
+    "type": "신규",
+    "status": "진행중",
+    "title": "OBJ Export ",
+    "desc": "OBJ Export ",
+    "due": "2026-06-30",
+    "assignee": "하남국",
+    "note": "",
+    "urgent": false,
+    "id": "VOC-0130"
+  },
+  {
+    "customer": "E&A",
+    "l1": "3D Model",
+    "l2": "",
+    "type": "신규",
+    "status": "진행중",
+    "title": "VUE 파일 테스트 ",
+    "desc": "Smart3D와 연관된 VUE 파일 테스트",
+    "due": "2026-06-30",
+    "assignee": "하남국",
+    "note": "",
+    "urgent": false,
+    "id": "VOC-0131"
   }
 ]
