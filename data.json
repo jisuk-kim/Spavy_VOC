@@ -1776,5 +1776,19 @@
     "note": "",
     "urgent": false,
     "id": "VOC-0129"
+  },
+  {
+    "customer": "삼성물산",
+    "l1": "Spatial Studio",
+    "l2": "Spatial Data Positioning",
+    "type": "오류",
+    "status": "진행중",
+    "title": "Revit Positioning 동작이슈",
+    "desc": "금번에 신규 rvt을 올렸는데, revit postioning이 잘 작동하지 않는이슈가 있습니다.\n(Shared > Project 로 변경)\nSpatial Positioning에서 정상적으로 맞추고 저장 후\nBrowser 나 Spatial Positioning에 다시 불러보면 Postion은 Project로 잘 저장되어 있으나, 위치가 변경전 그대로 입니다.\n (이때 shared로 변경 후 다시 Project로 변경해주면 정상적으로 이동이 되지만, 저장 후 다시 열어보면 위치 미변동)\n관련 PJT와 데이터는 아래와 같으니 점검시 참고하시기 바랍니다.",
+    "due": "2026-06-15",
+    "assignee": "김행운",
+    "note": "",
+    "urgent": false,
+    "id": "VOC-0130"
   }
 ]
