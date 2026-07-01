@@ -1902,5 +1902,19 @@
     "note": "",
     "urgent": false,
     "id": "VOC-0138"
+  },
+  {
+    "customer": "E&A",
+    "l1": "공통",
+    "l2": "",
+    "type": "신규",
+    "status": "대기",
+    "title": "모니터링 항목 추가_우리 Ideation",
+    "desc": "- 지금 리소스 관련 항목인데...  추가적으로 확인 할만한 사항\n- 에러추적/로그 ",
+    "due": "2026-12-30",
+    "assignee": "여태기",
+    "note": "",
+    "urgent": false,
+    "id": "VOC-0139"
   }
 ]
