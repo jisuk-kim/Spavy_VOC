@@ -612,7 +612,7 @@
     "status": "진행중",
     "due": "2026-07-31",
     "assignee": "장나겸",
-    "note": "삼성전자 요구사항도 감안해서 설계, 개발 예정_7월 말 예정",
+    "note": "삼성전자 요구사항도 감안해서 설계, 개발 예정_7월 말 예정 | 8월 중순 E&A 정기회의(Transcript): 거의 완료, 테스트 중. 다음주 화요일 207 배포 예정.",
     "urgent": false
   },
   {
@@ -682,7 +682,7 @@
     "status": "완료",
     "due": "2026-04-30",
     "assignee": "장나겸",
-    "note": "단축키 자체 테스트중",
+    "note": "단축키 자체 테스트중 | 8월 중순 E&A 정기회의(Transcript): PBI에서 외부 테이블 크로스필터 후 뷰어 미활성 → I/E/줌 단축키 안 먹힘. 뷰어 클릭 후엔 동작. 별도 버그 항목 추가.",
     "urgent": false
   },
   {
@@ -738,7 +738,7 @@
     "status": "완료",
     "due": "2026-06-30",
     "assignee": "장나겸",
-    "note": "수정은 되었는데... 시각화개체가 최신배포..다시 보내겠다. ",
+    "note": "수정은 되었는데... 시각화개체가 최신배포..다시 보내겠다. | 8월 중순 E&A 정기회의(Transcript): PBI 프로젝트 변경 팝업에서 No 누르면 이후 모델 전환이 안 되는 오류 재확인. 별도 버그 항목 추가.",
     "urgent": false
   },
   {
@@ -822,7 +822,7 @@
     "status": "완료",
     "due": "2026-04-30",
     "assignee": "여태기",
-    "note": "",
+    "note": "8월 중순 E&A 정기회의(Transcript): 업데이트 공유 시 207번인지 4번인지 명시 요청(김나현 프로 배포 안내).",
     "urgent": false
   },
   {
@@ -878,7 +878,7 @@
     "status": "진행중",
     "due": "2026-07-31",
     "assignee": "하남국 ",
-    "note": "6/17 설계 시작도 안되었고 일부는 Catalog 기능에서 커버 될지도 확인해야함...  Clash 관련 없이 별도 고민.. 상세내용 전달 받기로함 ",
+    "note": "6/17 설계 시작도 안되었고 일부는 Catalog 기능에서 커버 될지도 확인해야함...  Clash 관련 없이 별도 고민.. 상세내용 전달 받기로함 | 8월 중순 E&A 정기회의(Transcript): PPT 요구사항 전달(Navisworks rotate/gizmo 기준). Quick Dimension(이력X) vs Dimension(이력)은 무관. 홀드.",
     "urgent": false
   },
   {
@@ -1885,7 +1885,7 @@
     "desc": "Test 가 필요. 일단 해보겠음  \n6/30-최영철 프로 8월 오픈전 개선 되면 좋겠음. ",
     "due": "2026-07-31",
     "assignee": "김세희 ",
-    "note": "",
+    "note": "8월 중순 E&A 정기회의(Transcript): 스터디 중이라 패스. PBI 시각화 객체에서 속성 조회 요구는 지속.",
     "urgent": false,
     "id": "VOC-0137"
   },
@@ -1913,7 +1913,7 @@
     "desc": "- 지금 리소스 관련 항목인데...  추가적으로 확인 할만한 사항\n- 에러추적/로그 ",
     "due": "2026-12-30",
     "assignee": "여태기",
-    "note": "",
+    "note": "8월 중순 E&A 정기회의(Transcript): 로그에 어떤 정보가 있는지 삼인이 보여주기로 함. 급하지 않음.",
     "urgent": false,
     "id": "VOC-0139"
   },
@@ -1936,12 +1936,12 @@
     "l1": "Data Studio",
     "l2": "Custom Tree",
     "type": "개선",
-    "status": "대기",
+    "status": "진행중",
     "title": "커스텀 트리 로딩 속도 개선",
-    "desc": "커스텀 트리 및 파일 리스트 로드 속도가 매우 느림 - 현재 개선 중 ",
+    "desc": "커스텀 트리 및 파일 리스트 로드 속도가 매우 느림 - 현재 개선 중 / 속도계산 작업 시작, 약 2주 소요 예상. MyTree와 목적은 다름.",
     "due": "2026-08-31",
     "assignee": "하남국 ",
-    "note": "",
+    "note": "8월 중순 E&A 정기회의(Transcript): 삼인 속도계산 착수, 약 2주. MyTree와 겹쳐 보이지만 목적 다름 확인.",
     "urgent": false,
     "id": "VOC-0141"
   },
@@ -2378,5 +2378,117 @@
     "note": "Revit 담당자 아니면 모를껀데... 삼성 E&A에서도 Autodesk 담당자와 컨텍해서 물어보기로 함",
     "urgent": false,
     "id": "VOC-0172"
+  },
+  {
+    "id": "VOC-0173",
+    "customer": "E&A",
+    "l1": "Data",
+    "l2": "QuerySet",
+    "type": "신규",
+    "title": "QuerySet 권한(Admin Only) — 조회는 전체, 수정/삭제는 어드민",
+    "desc": "레거시·도급정산 등 중요 QuerySet은 파워유저에게 조회만 열고 수정/삭제는 막고 싶음. 생성 시 Admin Only 체크하면 어드민만 수정 가능, 미체크 시 전원 조회. 조회는 전체 허용, 수정·삭제만 제한하는 1안이 단순.",
+    "status": "대기",
+    "due": "",
+    "assignee": "여태기",
+    "note": "8월 중순 E&A 정기회의(Transcript): E&A(박보영 측) 요청. 삼인 조회는 전체, 수정/삭제만 제한으로 이해.",
+    "urgent": false
+  },
+  {
+    "id": "VOC-0174",
+    "customer": "E&A",
+    "l1": "Browser",
+    "l2": "System Tree",
+    "type": "신규",
+    "title": "복합동 등 다수 파일 프로젝트에서 좌측 트리 텍스트 검색",
+    "desc": "복합동 프로젝트에 파일이 200개라 찾기 힘듦. 좌측 트리에 텍스트 검색창을 넣어 3D 파트/파일을 바로 찾고 싶음.",
+    "status": "대기",
+    "due": "",
+    "assignee": "",
+    "note": "8월 중순 E&A 정기회의(Transcript): E&A 신규 요청.",
+    "urgent": false
+  },
+  {
+    "id": "VOC-0175",
+    "customer": "E&A",
+    "l1": "Data Studio",
+    "l2": "",
+    "type": "신규",
+    "title": "3D 선택 후 Selected Filter로 테이블 ID 필터 (온디맨드)",
+    "desc": "3D에서 객체를 여러 개 선택한 뒤 버튼으로 해당 ID만 테이블 필터. 실시간 연동은 리소스 부담이라 원할 때만 필터를 선호. 구 Data Manager의 즉시 필터와 유사. Data Manager 재도입 시 Composite Relation 테이블 포함 여부는 검토.",
+    "status": "대기",
+    "due": "",
+    "assignee": "",
+    "note": "8월 중순 E&A 정기회의(Transcript): E&A는 Selected Filter 선호. 삼인 Data Manager 재도입 검토 중이라고 답함.",
+    "urgent": false
+  },
+  {
+    "id": "VOC-0176",
+    "customer": "E&A",
+    "l1": "Data Studio",
+    "l2": "",
+    "type": "신규",
+    "title": "Relation/Composite 테이블 그룹핑 합계 (포뮬러 숫자 필드)",
+    "desc": "그룹핑 시 수량 등 합계가 보이게. 포뮬러 필드는 숫자열로 보고 해당 컬럼만 합계. 필드 타입을 정하면 된다는 사전 전화 답변(하남국←박보영) 기준으로 범위 확인 후 작업 계획.",
+    "status": "진행중",
+    "due": "2026-08-31",
+    "assignee": "하남국",
+    "note": "8월 중순 E&A 정기회의(Transcript): 작업 계획 있음(삼인). 테이블뿐 아니라 쿼리 테이블까지 되면 더 좋음. | 개발 완료, 8/31 배포 예정",
+    "urgent": false
+  },
+  {
+    "id": "VOC-0177",
+    "customer": "E&A",
+    "l1": "Browser",
+    "l2": "Viewer",
+    "type": "기능제안",
+    "title": "뷰어 분리(듀얼 모니터) — 3D/테이블 분할 + 싱크",
+    "desc": "한 화면에 모델+프로퍼티+테이블이 버거움. 예전 ViewSync처럼 창을 복제해 한쪽은 3D만, 원본은 테이블 포함으로 싱크. WebGL 제약으로 3D 뷰 1개 이슈. 전체를 두 번 띄우면 리소스 과다. 테이블만 별도 브라우저로 빼는 방안 검토.",
+    "status": "대기",
+    "due": "",
+    "assignee": "",
+    "note": "8월 중순 E&A 정기회의(Transcript): 삼인 고민해보겠다고 답함. 물산 VOC-0029와 유사하나 E&A 현장(노트북+모니터) 니즈.",
+    "urgent": false
+  },
+  {
+    "id": "VOC-0178",
+    "customer": "E&A",
+    "l1": "SPAVY - PBI 시각화 객체",
+    "l2": "",
+    "type": "버그",
+    "title": "PBI 프로젝트 변경 팝업에서 No 선택 시 이후 모델 전환 불가",
+    "desc": "프로젝트 변경 팝업 Yes면 전환, No 누르면 그 이후로는 바꿔도 모델이 안 바뀜. 나갔다가 다시 들어와야 정상.",
+    "status": "진행중",
+    "due": "2026-08-31",
+    "assignee": "장나겸",
+    "note": "8월 중순 E&A 정기회의(Transcript): E&A 재현 보고. 삼인 확인하기로 함. | 개발 완료, 8/31 배포 예정",
+    "urgent": false
+  },
+  {
+    "id": "VOC-0179",
+    "customer": "E&A",
+    "l1": "SPAVY - PBI 시각화 객체",
+    "l2": "",
+    "type": "버그",
+    "title": "PBI 외부 테이블 크로스필터 후 단축키(I/E/줌) 비활성",
+    "desc": "외부 테이블에서 크로스필터로 들어오면 뷰어가 활성화되지 않아 I, E, 줌이 안 먹힘. 뷰어를 한 번 클릭하면 단축키 동작.",
+    "status": "진행중",
+    "due": "2026-08-31",
+    "assignee": "장나겸",
+    "note": "8월 중순 E&A 정기회의(Transcript): E&A 재현. 삼인 확인하기로 함. | 개발 완료, 8/31 배포 예정",
+    "urgent": false
+  },
+  {
+    "id": "VOC-0180",
+    "customer": "E&A",
+    "l1": "New Spatial Planning",
+    "l2": "",
+    "type": "버그",
+    "title": "카메라 상향 이동 시 속도 내면 멈춤",
+    "desc": "하단 방향은 되는데 위로 올리면 멈춤. 천천히 올리면 됨. 삼인 재현·수정 중(천천히 올리고 있는 중).",
+    "status": "진행중",
+    "due": "",
+    "assignee": "염용주",
+    "note": "8월 중순 E&A 정기회의(Transcript): 삼인 수정 예정.",
+    "urgent": false
   }
 ]
